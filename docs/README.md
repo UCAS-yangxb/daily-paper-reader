@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-06 ~ 2026-09-15</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-15</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 20 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>9</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 06:22:27 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 22:33:43 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,8 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 20 篇推荐（精读 9 篇，速读 11 篇）</p>
-<p>精读：《Safe Harness Self-Evolution: A Theoretical Analysis of Feasibility and Limits》（9.0/10）, 《NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness》（9.0/10）</p>
-<p>速读：《Environments as Scaffold: Enriching Feedback to Bootstrap Self-Evolving Agents in Long-Horizon Tasks》（8.0/10）, 《Co-Evolving Harnesses and Models: On-Policy Correction Helps Weaker Models Catch Up Where Imitation Fails》（8.0/10）, 《Procedural Graphs: Self-Evolving Execution Structures for LLM Agents》（8.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日从17篇中精读6篇、速读11篇，Dream-RSI与RSIAgent两篇满分领跑，主题直指“递归自我改进”。</p>
+<p>最值得看的是递归自我改进/自进化智能体：Dream-RSI用演化世界做递归自提升，RSIAgent在新环境中自主探索；速读可关注持续学习、LLM代理记忆预算优化与医疗多智能体。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +79,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">9 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Safe Harness Self-Evolution: A Theoretical Analysis of Feasibility and Limits">Safe Harness Self-Evolution: A Theoretical Analysis of Feasibility and Limits</span></li><li><span class="dpr-home-dashboard-paper-title" title="NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness">NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness</span></li><li><span class="dpr-home-dashboard-paper-title" title="SE-GoS: Self-Evolving Graph-of-Skills for Skill Library at Scale">SE-GoS: Self-Evolving Graph-of-Skills for Skill Library at Scale</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Dream-RSI: Recursive Self-Improvement through Evolving Worlds">Dream-RSI: Recursive Self-Improvement through Evolving Worlds</span></li><li><span class="dpr-home-dashboard-paper-title" title="RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments">RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement">Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>9</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -97,7 +95,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Environments as Scaffold: Enriching Feedback to Bootstrap Self-Evolving Agents in Long-Horizon Tasks">Environments as Scaffold: Enriching Feedback to Bootstrap Self-Evolving Agents in Long-Horizon Tasks</span></li><li><span class="dpr-home-dashboard-paper-title" title="Co-Evolving Harnesses and Models: On-Policy Correction Helps Weaker Models Catch Up Where Imitation Fails">Co-Evolving Harnesses and Models: On-Policy Correction Helps Weaker Models Catch Up Where Imitation Fails</span></li><li><span class="dpr-home-dashboard-paper-title" title="Procedural Graphs: Self-Evolving Execution Structures for LLM Agents">Procedural Graphs: Self-Evolving Execution Structures for LLM Agents</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Homeostatic Continual Learning">Homeostatic Continual Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents">LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse">EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>11</strong></span></div>
 </section>

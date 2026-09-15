@@ -1,0 +1,697 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-15T22:30:11.712779+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 11,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 14,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.14858v1",
+      "source": "arxiv",
+      "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+      "abstract": "Recursive self-improvement is becoming increasingly vital for autonomous AI agents, where progress hinges on discovering high-value solutions across complex domains. The driver of this process is effective exploration, however, managing and improving exploration strategies remains a major bottleneck. Current systems face a fundamental dilemma: fixed strategies fail to adapt as search spaces scale, while online policy optimization requires navigating vast meta-search spaces under delayed and expensive feedback over long-horizon rollouts. We introduce \\textsc{Dream-RSI}, a framework for scalable and recursively self-improving exploration. A lightweight orchestration layer makes exploration explicit and programmable while leaving the underlying coding agent unchanged. Our key insight is that accumulated discovery history can serve as a replay simulator over the realized search space. By performing dreaming in the replay simulator constructed from historical discovery trees, \\textsc{Dream-RSI} secures immediate, low-cost off-policy feedback to evaluate and refine exploration policies without invoking repetitive, expensive online evaluations. The improved policy is subsequently redeployed online to drive further discovery, continuously expanding the simulator pool in a self-improving loop. Across algorithm engineering, mathematical optimization, and GPU kernel engineering, \\textsc{Dream-RSI} achieves competitive or improved discovery quality while substantially reducing discovery cost in several settings.",
+      "authors": [
+        "Tong Zheng",
+        "Xidong Wu",
+        "Zheng Zhang",
+        "Zhankui He",
+        "Chaoyi Zhang",
+        "Benjamin Coleman",
+        "Ruoqiao Wei",
+        "Di Bai",
+        "Haolin Liu",
+        "Rui Liu",
+        "Xue Wang",
+        "Yue Zhuan",
+        "Wang-Cheng Kang",
+        "Renkai Xiang",
+        "Heng Huang",
+        "Xinwu Cheng",
+        "Yunsong Guo"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-14T00:10:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.14858v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "recursive self-improvement framework for autonomous agents via programmable exploration",
+      "llm_evidence_cn": "面向自主智能体的递归自我改进框架，通过可编程探索驱动",
+      "llm_evidence": "面向自主智能体的递归自我改进框架，通过可编程探索驱动",
+      "canonical_evidence": "面向自主智能体的递归自我改进框架，通过可编程探索驱动",
+      "llm_tldr_en": "Dream-RSI introduces a lightweight, programmable orchestration layer that makes exploration explicit, enabling scalable recursive self-improvement for autonomous coding agents without modifying the underlying model.",
+      "llm_tldr_cn": "针对自主智能体递归自我改进中探索策略难以随搜索空间扩展而适应、在线策略优化又受制于高成本延迟反馈的问题，本文提出Dream-RSI框架，通过轻量编排层把探索显式化、可编程化，同时不改动底层编码智能体。实验显示该框架能在复杂长程任务中实现可扩展的递归自改进探索，为智能体持续自主提升能力提供了新思路。",
+      "llm_tldr": "针对自主智能体递归自我改进中探索策略难以随搜索空间扩展而适应、在线策略优化又受制于高成本延迟反馈的问题，本文提出Dream-RSI框架，通过轻量编排层把探索显式化、可编程化，同时不改动底层编码智能体。实验显示该框架能在复杂长程任务中实现可扩展的递归自改进探索，为智能体持续自主提升能力提供了新思路。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.15364v1",
+      "source": "arxiv",
+      "title": "RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments",
+      "abstract": "Digital agents must often adapt to new environments whose interfaces, tools, and failure modes are not fully captured by pretrained models. We introduce \\textbf{RSIAgent}, a training-free multi-agent framework for recursive self-improvement through autonomous memory construction. RSIAgent coordinates curriculum, actor, and verifier agents to continually explore the environment, validate outcomes, and retain environment-specific knowledge, including reusable causal relationships between actions, conditions, and consequences. It further adopts a \\textbf{broad-then-deep} exploration strategy, combining parallel broad recursive self-exploration for discovering diverse environment structures with focused deep self-exploration for uncovering hard cases, hidden constraints, boundary conditions, and previously unknown causal dependencies. The resulting memory is frozen and can be directly reused for downstream tasks without updating model parameters. Experiments on OSWorld-v2 and Agent's Last Exam show that RSIAgent substantially improves strong open-source models, enabling Kimi-K3 and GLM-5.3 to outperform frontier closed-source models including GPT-6.",
+      "authors": [
+        "Sibo Zhu",
+        "Shicheng Fan",
+        "Xinyue Wang",
+        "Wenyi Wu",
+        "Kun Zhou",
+        "Biwei Huang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.CV"
+      ],
+      "published": "2026-09-14T10:46:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.15364v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "training-free multi-agent framework for recursive self-improvement in new environments",
+      "llm_evidence_cn": "免训练多智能体框架，在新环境中实现递归自我改进",
+      "llm_evidence": "免训练多智能体框架，在新环境中实现递归自我改进",
+      "canonical_evidence": "免训练多智能体框架，在新环境中实现递归自我改进",
+      "llm_tldr_en": "RSIAgent is a training-free multi-agent framework for recursive self-improvement, coordinating curriculum, actor, and verifier agents to explore new environments and build reusable memory via a broad-then-deep strategy.",
+      "llm_tldr_cn": "数字智能体在新环境中常因接口、工具与失败模式未被预训练模型充分覆盖而表现受限。本文提出免训练多智能体框架RSIAgent，协同课程、执行与验证智能体持续探索并验证结果，结合广后深策略自主构建可复用的环境记忆。结果显示该框架能积累动作、条件与后果间的因果关系知识，实现对新环境的递归自我改进，为智能体自主适应新环境提供了新范式。",
+      "llm_tldr": "数字智能体在新环境中常因接口、工具与失败模式未被预训练模型充分覆盖而表现受限。本文提出免训练多智能体框架RSIAgent，协同课程、执行与验证智能体持续探索并验证结果，结合广后深策略自主构建可复用的环境记忆。结果显示该框架能积累动作、条件与后果间的因果关系知识，实现对新环境的递归自我改进，为智能体自主适应新环境提供了新范式。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.13406v1",
+      "source": "arxiv",
+      "title": "Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement",
+      "abstract": "When we speak of recursive self-improvement (RSI), are we speaking of a phenomenon, a mechanism, or a prospect? Towards autonomous and evolving intelligence, RSI is being claimed at many scales, while no single framework that formally describes these emerging instances exists. Its counterpart in the classical realm, iterative policy improvement, is characterized by generalized policy iteration (GPI), a framework of broad applicability with well-understood theoretical properties, but only where the update principle and the evaluation base lie outside the agent. In this paper, we propose Generalized Agent Iteration (GAI), a formal framework that describes iterative policy improvement and RSI as two cases of a single learning paradigm. GAI defines the agent as a configuration of modifiable components within a system and models the learning process as a cycle of agent evaluation and agent improvement. Two pivotal dials then distinguish the instances: whether the improving mechanism is part of the agent and whether the standard it is measured against is grounded outside it. The former dial delineates the boundary between GPI and RSI, and the latter determines a system's polarity as anchored, goal drift, or fully self-referential. Moreover, we use these coordinates to place existing systems on the same two axes and make the defects of recursive self-improvement statable one condition at a time. We see this paper as a first step toward exploring a formal characterization of RSI that rests on the classical account, makes existing systems comparable, and provides a principled basis for analyzing and designing new ones.",
+      "authors": [
+        "Hongyao Tang",
+        "Yi Ma",
+        "Pengyi Li",
+        "Yifu Yuan"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-11T18:15:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.13406v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "formal framework for recursive self-improvement",
+      "llm_evidence_cn": "递归自我改进的形式化框架",
+      "llm_evidence": "递归自我改进的形式化框架",
+      "canonical_evidence": "递归自我改进的形式化框架",
+      "llm_tldr_en": "Recursive self-improvement lacks a unifying formal framework. This paper proposes Generalized Agent Iteration (GAI), describing iterative policy improvement and RSI as two cases of one formal scheme, giving self-improvement a theoretical footing.",
+      "llm_tldr_cn": "递归自我改进（RSI）被广泛宣称却缺乏统一的形式化描述，其经典对应物迭代策略改进虽有广义策略迭代理论，但要求更新原则与评估基准位于智能体外部。本文提出广义智能体迭代（GAI），将迭代策略改进与递归自我改进统一描述为同一形式框架下的两种情形，从而为自主演化智能提供理论基础。该框架澄清了RSI的机制与适用条件，为自进化智能体的形式化研究提供重要支撑。",
+      "llm_tldr": "递归自我改进（RSI）被广泛宣称却缺乏统一的形式化描述，其经典对应物迭代策略改进虽有广义策略迭代理论，但要求更新原则与评估基准位于智能体外部。本文提出广义智能体迭代（GAI），将迭代策略改进与递归自我改进统一描述为同一形式框架下的两种情形，从而为自主演化智能提供理论基础。该框架澄清了RSI的机制与适用条件，为自进化智能体的形式化研究提供重要支撑。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self improvement and meta learning techniques for evolving agent behaviors",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.14857v1",
+      "source": "arxiv",
+      "title": "ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement",
+      "abstract": "Recent work extends recursive self-improvement (RSI) to agent harnesses for long-horizon coding and terminal tasks, enabling agents to improve execution mechanisms from experience. However, generalizable harness RSI remains challenging. First, evolving harnesses on evaluation benchmarks or their subsets makes it difficult to distinguish reusable improvements from benchmark-specific adaptation. Second, single-trajectory updates can conflate systematic harness deficiencies with instance-specific reasoning and solution details, producing modifications that transfer poorly to unseen tasks. Third, localizing recurring behavioral deficiencies within monolithic harnesses is difficult, while whole-harness optimization can entangle unrelated mechanisms and complicate attribution and validation. We propose ModularRSI, a benchmark-disjoint, contrastive, and modular framework for generalizable harness evolution. ModularRSI contrasts successful and failed trajectories for the same task and aggregates evidence across tasks to identify recurring behavioral deficiencies. It decomposes the evolvable harness into five functional modules: Agent Loop, Tool Use, Observation Management, Context Management, and Task Completion Detection. Each module evolves independently within a restricted modification scope, followed by an integration stage that combines the evolved modules into a unified harness and resolves potential conflicts. To support benchmark-disjoint evolution, we curate 2,000 executable evolution tasks from external sources that are disjoint from downstream evaluation benchmarks. Experiments on TB2.0 and SWE-Bench Verified show consistent improvements on unseen in-domain and cross-domain tasks, with the evolved harness also transferring across different foundation models.",
+      "authors": [
+        "Siwei Wu",
+        "Jincheng Ren",
+        "Yizhi Li",
+        "Haau-Sing Li",
+        "Chengran Yang",
+        "Yuxuan Zhang",
+        "Weicheng Gu",
+        "Jian Yang",
+        "Riza Batista-Navarro",
+        "Chuanyi Zhang",
+        "Xianglong Liu",
+        "Ming Zhou",
+        "Bryan Dai",
+        "Chenghua Lin"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-14T00:10:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.14857v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "modular generalizable recursive self-improvement of agent harnesses for long-horizon tasks",
+      "llm_evidence_cn": "面向长程任务的智能体执行框架模块化可泛化递归自我改进",
+      "llm_evidence": "面向长程任务的智能体执行框架模块化可泛化递归自我改进",
+      "canonical_evidence": "面向长程任务的智能体执行框架模块化可泛化递归自我改进",
+      "llm_tldr_en": "ModularRSI addresses generalizable harness recursive self-improvement for long-horizon coding and terminal tasks, modularly localizing recurring behavioral deficiencies to produce improvements that transfer to unseen tasks.",
+      "llm_tldr_cn": "递归自我改进已被扩展到长程编码与终端任务的智能体执行框架，但在评测基准上演化难以区分可复用改进与基准特定适配，且单轨迹更新易混淆系统缺陷与实例细节。本文提出ModularRSI，以模块化方式定位并改进框架中的重复行为缺陷，避免整体优化的机制纠缠。结果表明该方法能产生更可迁移到未见任务的改进，提升了智能体执行框架递归自我改进的泛化性。",
+      "llm_tldr": "递归自我改进已被扩展到长程编码与终端任务的智能体执行框架，但在评测基准上演化难以区分可复用改进与基准特定适配，且单轨迹更新易混淆系统缺陷与实例细节。本文提出ModularRSI，以模块化方式定位并改进框架中的重复行为缺陷，避免整体优化的机制纠缠。结果表明该方法能产生更可迁移到未见任务的改进，提升了智能体执行框架递归自我改进的泛化性。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.15396v1",
+      "source": "arxiv",
+      "title": "SkillLift: Learning Dense Rubrics from Sparse Oracles for Efficient Skill Evolution",
+      "abstract": "LLM-based agents increasingly rely on persistent skills, i.e., reusable procedural prompts, to adapt without weight updates. Existing skill self-evolution methods directly revise skill text based on execution feedback, but each oracle evaluation requires a full agent rollout, creating a supervision bottleneck that confines search to failure-patching updates. Our key insight is that ranking is a smoother supervision target than absolute outcome regression: identifying which skill is better requires fewer oracle evaluations than predicting exact scores. Building on this insight, we propose SkillLift, which decouples skill search from oracle cost by learning an oracle-aligned rubric as a structured evaluation space. We formalize this as a bilevel optimization problem solved via alternating optimization: an inner loop uses the frozen rubric as a cheap surrogate to guide skill revision at no oracle cost, while an outer loop invokes a small number of oracle rollouts to re-align the rubric via rank correlation, amortizing oracle cost and stabilizing text-space updates. Experiments on complex agent task benchmarks show that our method outperforms existing auto-skill methods with 40--70\\% less token cost compared to frontier evolving methods. Codes are available at https://github.com/WalteR-MittY-pro/SkillLift.",
+      "authors": [
+        "Haoxiang Kang",
+        "Ming Wen"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-14T11:30:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.15396v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "skill self-evolution methods for LLM agents",
+      "llm_evidence_cn": "面向LLM智能体的技能自进化方法",
+      "llm_evidence": "面向LLM智能体的技能自进化方法",
+      "canonical_evidence": "面向LLM智能体的技能自进化方法",
+      "llm_tldr_en": "Existing skill self-evolution needs costly oracle rollouts, limiting search to failure patching. SkillLift learns an oracle-aligned rubric as a structured evaluation space, decoupling skill search from oracle cost for efficient skill evolution.",
+      "llm_tldr_cn": "基于LLM的智能体依赖持久化技能实现免权重更新的适应，但现有技能自进化方法直接依据执行反馈改写技能文本，每次评测都需完整 rollout，形成监督瓶颈，使搜索局限于修补失败。本文提出SkillLift，利用排序比绝对分数回归更平滑这一洞见，学习与oracle对齐的评分准则作为结构化评估空间，将技能搜索与oracle开销解耦。实验表明该方法能以更少评测实现更高效的技能进化，为智能体自主技能获取提供更经济的自进化范式。",
+      "llm_tldr": "基于LLM的智能体依赖持久化技能实现免权重更新的适应，但现有技能自进化方法直接依据执行反馈改写技能文本，每次评测都需完整 rollout，形成监督瓶颈，使搜索局限于修补失败。本文提出SkillLift，利用排序比绝对分数回归更平滑这一洞见，学习与oracle对齐的评分准则作为结构化评估空间，将技能搜索与oracle开销解耦。实验表明该方法能以更少评测实现更高效的技能进化，为智能体自主技能获取提供更经济的自进化范式。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.11682v1",
+      "source": "arxiv",
+      "title": "COBRA-Skills: Contextual Bandit-Guided Evolution for Agent Skill Optimization",
+      "abstract": "Large language model (LLM) agents can benefit from reusable skills distilled from prior task experience, yet existing skill optimization methods often rely on costly execution-based evaluation and substantial task data. We introduce \\textbf{COBRA-Skills}, an efficient framework that formulates skill optimization as budgeted sequential optimization over a dynamically evolving candidate space. COBRA-Skills couples contextual-bandit-guided prioritization with evidence-grounded skill evolution, selectively allocating evaluations to promising or informative candidates while continually refining the skill population from execution feedback. Across six heterogeneous agent benchmarks and three target models, COBRA-Skills consistently achieves the strongest average performance among compared methods, while reducing optimization cost by 55--58\\% relative to SkillOpt and using only 50 unique optimization examples per benchmark. Further analyses show that COBRA-Skills remains robust to changes in the agent harness and performs effectively when the target model itself is used for skill generation and refinement.",
+      "authors": [
+        "Pingchen Lu",
+        "Xiangyi Wang",
+        "Xiang Li",
+        "Jie Mao",
+        "Zikun Qu",
+        "Junfeng Luo",
+        "Yao Shu",
+        "Bryan Kian Hsiang Low",
+        "Zhongxiang Dai"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-10T15:12:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.11682v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "skill evolution and autonomous acquisition of reusable agent skills from execution feedback",
+      "llm_evidence_cn": "智能体可复用技能的进化与自主获取",
+      "llm_evidence": "智能体可复用技能的进化与自主获取",
+      "canonical_evidence": "智能体可复用技能的进化与自主获取",
+      "llm_tldr_en": "COBRA-Skills casts LLM agent skill optimization as budgeted sequential optimization over a dynamically evolving candidate space, combining contextual-bandit prioritization with evidence-grounded skill evolution to cut costly execution evaluations.",
+      "llm_tldr_cn": "现有LLM智能体的技能优化方法依赖昂贵的执行评估与大量任务数据，难以高效扩展。本文提出COBRA-Skills，将技能优化建模为动态候选空间上的预算约束序贯优化，结合上下文赌博机引导的优先级排序与基于证据的技能进化，把评估预算集中到有前景或信息量大的候选上。在六个异构智能体基准和三个目标模型上，该方法持续取得更强性能。其贡献在于以低成本实现可复用技能的自主获取与持续精炼。",
+      "llm_tldr": "现有LLM智能体的技能优化方法依赖昂贵的执行评估与大量任务数据，难以高效扩展。本文提出COBRA-Skills，将技能优化建模为动态候选空间上的预算约束序贯优化，结合上下文赌博机引导的优先级排序与基于证据的技能进化，把评估预算集中到有前景或信息量大的候选上。在六个异构智能体基准和三个目标模型上，该方法持续取得更强性能。其贡献在于以低成本实现可复用技能的自主获取与持续精炼。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.13771v1",
+      "source": "arxiv",
+      "title": "Homeostatic Continual Learning",
+      "abstract": "In this paper, I formulate a Continual Learning problem and propose a method named \"Homeostatic Continual Learning\" that enables an AI agent to learn continuously in a changing environment without catastrophic forgetting. The core of the method is to find outliers in the environment data when the agent experiences an outlier in its output. Through this method, the agent gradually completes its model and policy and performs well in more and more contexts. I also suggest that we may use the method to build a world model where the agent factorizes the objects in the world into features, abstract objects into comparable instances of concepts and map concepts to intents through features. I discuss the works needed to render the method practical, the connections to many fields in Artificial Intelligence and the broader implications of the method.",
+      "authors": [
+        "Yue Jin"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-12T07:29:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.13771v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "continual learning in a changing environment without catastrophic forgetting",
+      "llm_evidence_cn": "在变化环境中持续学习且不发生灾难性遗忘",
+      "llm_evidence": "在变化环境中持续学习且不发生灾难性遗忘",
+      "canonical_evidence": "在变化环境中持续学习且不发生灾难性遗忘",
+      "llm_tldr_en": "Proposes Homeostatic Continual Learning, where an agent detects outliers in its own outputs, finds corresponding environment outliers, and gradually completes its model and policy without catastrophic forgetting in changing environments.",
+      "llm_tldr_cn": "持续学习面临在变化环境中学习新知识却发生灾难性遗忘的核心难题。本文形式化了一个持续学习问题并提出稳态持续学习方法：当智能体输出出现离群时，转而寻找环境数据中的离群点，从而逐步补全模型与策略。该方法使智能体在越来越多的情境中表现良好，作者还讨论了以该方法构建世界模型的设想。其贡献在于为智能体的持续适应提供了新的稳态机制视角。",
+      "llm_tldr": "持续学习面临在变化环境中学习新知识却发生灾难性遗忘的核心难题。本文形式化了一个持续学习问题并提出稳态持续学习方法：当智能体输出出现离群时，转而寻找环境数据中的离群点，从而逐步补全模型与策略。该方法使智能体在越来越多的情境中表现良好，作者还讨论了以该方法构建世界模型的设想。其贡献在于为智能体的持续适应提供了新的稳态机制视角。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.13436v1",
+      "source": "arxiv",
+      "title": "Toward Self-Adaptive Physical AI: Can LLM Agents Manage Long-Horizon Physical Tasks?",
+      "abstract": "Large Language Model (LLM) agents offer a promising path toward autonomously managing long-term physical tasks without human intervention. However, physical tasks require agents to continuously observe the environment, make consequential actions, and remain effective as the environment changes. Existing approaches either require substantial data and retraining, or primarily focus on agents operating in the virtual world. In this work, we explore the feasibility of building a self-adaptive physical AI agent that manages long-term physical tasks in a zero-shot manner and adapts to environmental changes without human intervention. We design a multi-agent framework that integrates planning, tool calling, observation, and verification, and evaluate it on agricultural tasks against reinforcement learning (RL) agents under different weather patterns. Our results show that zero-shot LLM agents can achieve comparable management outcomes to RL agents under the same weather pattern and adapt more effectively than RL when evaluated under a shifted environment, highlighting a promising path toward self-adaptive physical AI agents.",
+      "authors": [
+        "Varun Kaushik",
+        "Yayun Tan",
+        "Xiaofan Yu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-11T18:52:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.13436v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "self-adaptive agent adapting to environmental changes",
+      "llm_evidence_cn": "适应环境变化的自适应智能体",
+      "llm_evidence": "适应环境变化的自适应智能体",
+      "canonical_evidence": "适应环境变化的自适应智能体",
+      "llm_tldr_en": "Physical long-horizon tasks need agents that adapt to changing environments without retraining. This paper builds a zero-shot self-adaptive multi-agent framework integrating planning, tool calling, observation, and verification.",
+      "llm_tldr_cn": "LLM智能体有望自主管理长期物理任务，但物理任务要求持续观测环境、执行关键动作并在环境变化时保持有效，现有方法要么需要大量数据与重训练，要么局限于虚拟世界。本文探索以零样本方式构建自适应物理AI智能体，设计集成规划、工具调用、观测与验证的多智能体框架，使其无需人工干预即可适应环境变化。实验评估了其在长程物理任务中的可行性，为自适应智能体在动态环境中的部署提供参考。",
+      "llm_tldr": "LLM智能体有望自主管理长期物理任务，但物理任务要求持续观测环境、执行关键动作并在环境变化时保持有效，现有方法要么需要大量数据与重训练，要么局限于虚拟世界。本文探索以零样本方式构建自适应物理AI智能体，设计集成规划、工具调用、观测与验证的多智能体框架，使其无需人工干预即可适应环境变化。实验评估了其在长程物理任务中的可行性，为自适应智能体在动态环境中的部署提供参考。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "adaptive mechanisms enabling agents to evolve in dynamic environments",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.09113v2",
+      "source": "arxiv",
+      "title": "SAEScientist-Bench: Can AI Agents Conduct Autonomous SAE Interpretability Research?",
+      "abstract": "While research on recursive self-improvement (RSI) has predominantly automated model training pipelines, reliable autonomous development demands a missing pillar: post-hoc monitoring and auditing to understand what models learn and ensure safe alignment. Mechanistic interpretability tools are essential to bridge this gap, among which Sparse Autoencoders (SAEs) serve as a cornerstone by isolating interpretable features for model inspection and steering. In this paper, we introduce SAEScientist-Bench to evaluate whether AI agents can act as scientists utilizing SAE tools for autonomous mechanistic discovery. Given a target concept, an agent designs contrastive probes and navigates a Gemma Scope dictionary of 131K+ features in Gemma-2-9B-IT to discover the optimal feature, evaluated against curated expert reference features anchored on Neuronpedia across activation rank, concept selectivity on contrastive texts, and causal steering. Across 10 agent configurations and 20 tasks, frontier agents demonstrate genuine discovery capabilities and lead different evaluation dimensions, but remain well behind the expert baseline, approaching expert levels on separating target concepts from contrastive controls while lagging substantially in causal generation steering. Further analysis reveals that although agents can design contrasts to rule out spurious candidates, they frequently misinterpret experimental measurements. These results establish experimental model understanding as a measurable capability for closed-loop autonomous AI R&D. Our code is available at https://github.com/Trae1ounG/SAEScientist.",
+      "authors": [
+        "Yuqiao Tan",
+        "Shizhu He",
+        "Jun Zhao",
+        "Kang Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-09-08T17:45:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.09113v2",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "AI agents conducting autonomous research for recursive self-improvement",
+      "llm_evidence_cn": "AI智能体自主开展研究以实现递归自我改进",
+      "llm_evidence": "AI智能体自主开展研究以实现递归自我改进",
+      "canonical_evidence": "AI智能体自主开展研究以实现递归自我改进",
+      "llm_tldr_en": "Recursive self-improvement research has automated training pipelines but lacks post-hoc monitoring. SAEScientist-Bench evaluates whether AI agents can act as scientists, using Sparse Autoencoder tools to design probes and autonomously discover interpretable features.",
+      "llm_tldr_cn": "递归自我改进研究多聚焦自动化模型训练流程，却缺少理解模型所学、保障对齐的事后监测与审计环节。本文提出SAEScientist-Bench，评估AI智能体能否像科学家一样运用稀疏自编码器工具开展自主机理发现：给定目标概念，智能体设计对比探针并在Gemma-2-9B-IT的13万余特征字典中导航。实验考察了智能体的自主研究能力与局限。该工作为智能体自主科研与递归自我改进的监测审计提供了评测工具。",
+      "llm_tldr": "递归自我改进研究多聚焦自动化模型训练流程，却缺少理解模型所学、保障对齐的事后监测与审计环节。本文提出SAEScientist-Bench，评估AI智能体能否像科学家一样运用稀疏自编码器工具开展自主机理发现：给定目标概念，智能体设计对比探针并在Gemma-2-9B-IT的13万余特征字典中导航。实验考察了智能体的自主研究能力与局限。该工作为智能体自主科研与递归自我改进的监测审计提供了评测工具。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.14138v1",
+      "source": "arxiv",
+      "title": "LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents",
+      "abstract": "As LLM agents become integrated into increasingly complex workflows, they must continually acquire new capabilities while retaining competence on previously learned tasks. Lifelong agents address this through experience replay, injecting past interactions into the prompt to leverage prior experience during inference. However, replay is not free: every replayed trajectory competes with retrieval, reasoning, tool use, and verification for the same limited prompt and compute budget, making effective resource allocation essential. Existing approaches allocate these resources using fixed replay policies, regardless of whether replay is beneficial for the current task. We identify this as inference-time memory allocation, a distinct problem class for lifelong agents, and introduce LIMBO: the first online framework to our knowledge that treats memory as a controllable inference-time resource and jointly optimizes memory strategy and inference budget for each incoming task. Unlike prior approaches that fix the replay policy or require model weights, teacher supervision, or offline retraining, LIMBO learns this allocation online in a single pass, explicitly balancing task performance and inference cost without modifying the underlying agent. Across three LLM backbones on LifelongAgentBench, LIMBO achieves better cost-accuracy tradeoffs than state-of-the-art memory-augmented baselines and nearly matches all strongest such baselines at up to ~83% lower inference cost (~53% on average). LIMBO adapts its policy across models and environments without retraining, demonstrating that effective allocation can be learned online rather than manually specified.",
+      "authors": [
+        "Siddharth Sharma",
+        "Nilesh Prasad Pandey",
+        "Onat Gungor",
+        "Tajana Rosing"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-09-12T20:39:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.14138v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "lifelong agents continually acquire new capabilities while retaining prior competence",
+      "llm_evidence_cn": "终身学习智能体持续获取新能力并保持旧任务能力",
+      "llm_evidence": "终身学习智能体持续获取新能力并保持旧任务能力",
+      "canonical_evidence": "终身学习智能体持续获取新能力并保持旧任务能力",
+      "llm_tldr_en": "LLM agents must continually acquire new skills while retaining old ones, but experience replay competes with retrieval and reasoning for limited budget. LIMBO poses inference-time memory allocation and optimizes replay and budget adaptively.",
+      "llm_tldr_cn": "随着LLM智能体融入复杂工作流，它们需要持续获取新能力并保持对旧任务的胜任，终身学习通过经验回放来复用过往交互。然而回放并非免费，每条轨迹都要与检索、推理、工具使用和验证争夺有限的提示与算力预算，现有方法却用固定回放策略。本文识别出推理时记忆分配这一问题，提出LIMBO对记忆与预算进行自适应优化，使智能体更高效地实现持续学习与适应。",
+      "llm_tldr": "随着LLM智能体融入复杂工作流，它们需要持续获取新能力并保持对旧任务的胜任，终身学习通过经验回放来复用过往交互。然而回放并非免费，每条轨迹都要与检索、推理、工具使用和验证争夺有限的提示与算力预算，现有方法却用固定回放策略。本文识别出推理时记忆分配这一问题，提出LIMBO对记忆与预算进行自适应优化，使智能体更高效地实现持续学习与适应。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "methods for lifelong learning and continual adaptation in autonomous intelligent agents",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.11060v1",
+      "source": "arxiv",
+      "title": "Grounding Agent Memory: Environment-Probing Curation for Enterprise Agents",
+      "abstract": "Persistent memory is entering production-oriented agent platforms to help long-horizon agents accumulate experience across sessions. Yet a post-task curator agent restricted to completed trajectories can preserve errors, overgeneralize partial evidence, or retain stale knowledge. We introduce environment-probing curation, a deployment-compatible extension that gives an existing asynchronous curator agent least-privilege, read-only world tools to check, scope, and refresh candidate memories. It requires no model retraining and leaves the task agent, retriever, memory representation, and production write authority unchanged. In a production-like GitHub Copilot (GHCP) harness built on its SDK, we compare stateless execution, full in-context learning, GHCP + Mem, and GHCP + Mem (w/ Env Probing) on CLBench database exploration and 90 adapted APEX management-consulting tasks. On CLBench, probing raises pass rate from 39% to 73% and pass-discounted reward from 8.60 to 22.60 while reducing queries from 8.8 to 4.7 per question and task-agent cost from \\$3.38 to \\$1.68. Across six APEX worlds, all 18 memory-versus-baseline mean reward comparisons are positive and task-agent tool calls fall by 16--75%; probing gives the best task-agent reward gain per dollar in five worlds. Probing also attains higher mean reward than GHCP + Mem on both Sonnet 4.6 and Opus 4.7 without schema drift. Environment probing therefore turns existing agent-memory curation into an environment-informed, auditable process while preserving a compact task-time interface.",
+      "authors": [
+        "Susheel Suresh",
+        "Hazel Mak",
+        "Sahil Bhatnagar",
+        "Chhaya Methani",
+        "Alejandro Gutierrez Munoz"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.SE"
+      ],
+      "published": "2026-09-10T04:06:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.11060v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "persistent memory curation for long-horizon agents",
+      "llm_evidence_cn": "面向长程智能体的持久记忆整理",
+      "llm_evidence": "面向长程智能体的持久记忆整理",
+      "canonical_evidence": "面向长程智能体的持久记忆整理",
+      "llm_tldr_en": "Post-task memory curators restricted to completed trajectories can preserve errors and stale knowledge. Environment-probing curation gives the curator read-only world tools to check and refresh memories without retraining.",
+      "llm_tldr_cn": "持久记忆已进入生产级智能体平台以帮助长程智能体跨会话积累经验，但仅依赖已完成轨迹的事后整理智能体可能保留错误、过度泛化局部证据或留存过时知识。本文提出环境探测式整理，为既有异步整理智能体赋予最小权限的只读世界工具，用于核验、限定范围并刷新候选记忆，无需重训练即可部署。在类GitHub Copilot框架上的对比表明该方法改善了记忆质量，支撑智能体跨会话的持续适应。",
+      "llm_tldr": "持久记忆已进入生产级智能体平台以帮助长程智能体跨会话积累经验，但仅依赖已完成轨迹的事后整理智能体可能保留错误、过度泛化局部证据或留存过时知识。本文提出环境探测式整理，为既有异步整理智能体赋予最小权限的只读世界工具，用于核验、限定范围并刷新候选记忆，无需重训练即可部署。在类GitHub Copilot框架上的对比表明该方法改善了记忆质量，支撑智能体跨会话的持续适应。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "methods for lifelong learning and continual adaptation in autonomous intelligent agents",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15161v1",
+      "source": "arxiv",
+      "title": "EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse",
+      "abstract": "Large language model (LLM) driven multi-agent systems have shown promise in complex clinical reasoning, yet existing approaches rely on static strategies and lack persistent clinical memory, preventing self-evolving from prior diagnostic successes and failures. We present EMR, a self-evolving medical multi-agent system via Experience Mining and Reuse. EMR introduces a hierarchical clinical experience library that organizes accumulated knowledge into three levels: clinical principles, diagnostic patterns, and representative cases. During inference, EMR emulates multidisciplinary consultation: a planner agent coordinates domain-specific department agents for specialized reasoning, while a summary agent synthesizes their analyses into a final decision. Critically, EMR automatically extracts correct diagnostic insights and failure-related warnings from multi-agent reasoning trajectories, incrementally updating the experience library to guide future cases. Experiments on medical reasoning benchmarks demonstrate that EMR consistently outperforms state-of-the-art medical multi-agent baselines. Further analysis reveals that the hierarchical experience enables cross-specialty generalization and transfer across diverse LLM backbones, offering a scalable and in",
+      "authors": [
+        "Dongsheng Shi",
+        "Yue Li",
+        "Xin Yi",
+        "Linlin Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-09-14T07:41:56+00:00",
+      "link": "https://arxiv.org/pdf/2609.15161v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-evolving LLM multi-agent system that improves from prior diagnostic successes and failures",
+      "llm_evidence_cn": "能从既往诊断成败中自我进化的多智能体系统",
+      "llm_evidence": "能从既往诊断成败中自我进化的多智能体系统",
+      "canonical_evidence": "能从既往诊断成败中自我进化的多智能体系统",
+      "llm_tldr_en": "EMR builds a hierarchical clinical experience library spanning principles, diagnostic patterns and cases, letting an LLM multi-agent system self-evolve from past diagnostic successes and failures instead of relying on static strategies.",
+      "llm_tldr_cn": "现有LLM驱动的多智能体临床推理系统依赖静态策略且缺乏持久临床记忆，无法从既往诊断成败中自我进化。本文提出EMR，构建分层临床经验库，将积累知识组织为临床原则、诊断模式与代表性病例三个层级，并在推理时模拟多学科会诊，由规划智能体协调专科智能体、总结智能体汇总结论。该系统实现了从经验中持续学习与自我进化。其贡献在于把经验挖掘与复用引入医疗多智能体，提升复杂临床推理的适应性。",
+      "llm_tldr": "现有LLM驱动的多智能体临床推理系统依赖静态策略且缺乏持久临床记忆，无法从既往诊断成败中自我进化。本文提出EMR，构建分层临床经验库，将积累知识组织为临床原则、诊断模式与代表性病例三个层级，并在推理时模拟多学科会诊，由规划智能体协调专科智能体、总结智能体汇总结论。该系统实现了从经验中持续学习与自我进化。其贡献在于把经验挖掘与复用引入医疗多智能体，提升复杂临床推理的适应性。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.11433v1",
+      "source": "arxiv",
+      "title": "Safety-aware Skill Adaptation for Reinforcement Learning in Dynamic Environments",
+      "abstract": "Skill adaptation frameworks based on reinforcement learning often require restrictive assumptions to maintain stability, such as fixed observations or tightly controlled exploration schedules. In cluttered and dynamic environments, however, unrestricted exploration can lead to unsafe behaviour and unstable learning, particularly when task-relevant observations lie near obstacles or involve moving objects. In this work, we present Dist-GPRL, a distance-aware and safety-guided reinforcement learning framework for structured robot skill adaptation. Building upon Gaussian Process (GP)-based skill parameterisation, our framework sequentially adapts overlapping local windows of sparse trajectory via-points rather than modifying the complete skill at every policy step. Raw policy outputs are correlated through the GP covariance structure, producing temporally coherent trajectory updates while reducing the action-space and credit-assignment difficulties associated with global trajectory adaptation. Safety is incorporated through two complementary forms of guidance. A safe-subspace prior derived from the Hausdorff Approximation Planner (HAP) biases policy exploration toward feasible regions, while dynamically updated distance field clearance and gradient rewards provide local obstacle awareness. A trajectory-kinematics similarity regulariser further preserves the demonstrated velocity and acceleration characteristics during adaptation. We evaluate the framework on two dynamic object-manipulation tasks in simulation and transfer the learned policy to real-world robot execution. Experimental results demonstrate higher task success, lower collision frequency, and more stable learning than the baselines, while preserving the kinematic characteristics of the demonstrated skill.",
+      "authors": [
+        "A K M Nadimul Haque",
+        "Sheila Sutjipto",
+        "Marc G. Carmichael",
+        "Teresa Vidal-Calleja"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-10T12:05:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.11433v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "safety-guided RL framework for structured robot skill adaptation in dynamic environments",
+      "llm_evidence_cn": "面向动态环境的技能自适应与安全引导强化学习框架",
+      "llm_evidence": "面向动态环境的技能自适应与安全引导强化学习框架",
+      "canonical_evidence": "面向动态环境的技能自适应与安全引导强化学习框架",
+      "llm_tldr_en": "Skill adaptation frameworks often need restrictive assumptions and can behave unsafely in cluttered dynamic environments. Dist-GPRL uses Gaussian Process skill parameterisation to sequentially adapt sparse trajectory via-points with distance-aware safety guidance.",
+      "llm_tldr_cn": "基于强化学习的技能适应框架通常依赖固定观测或严格探索调度等强假设，在杂乱动态环境中无约束探索易导致不安全行为与不稳定学习。本文提出Dist-GPRL框架，基于高斯过程对技能参数化，通过顺序调整稀疏轨迹途经点的重叠局部窗口来安全地适应技能。该方法使机器人能在障碍与运动物体附近进行技能自适应，为动态环境下的安全技能进化提供了可行途径。",
+      "llm_tldr": "基于强化学习的技能适应框架通常依赖固定观测或严格探索调度等强假设，在杂乱动态环境中无约束探索易导致不安全行为与不稳定学习。本文提出Dist-GPRL框架，基于高斯过程对技能参数化，通过顺序调整稀疏轨迹途经点的重叠局部窗口来安全地适应技能。该方法使机器人能在障碍与运动物体附近进行技能自适应，为动态环境下的安全技能进化提供了可行途径。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "adaptive mechanisms enabling agents to evolve in dynamic environments",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15779v1",
+      "source": "arxiv",
+      "title": "EvoOntology: A Self-Evolving Ontology Layer for Data Agents",
+      "abstract": "Data agents aim to fulfill natural-language instructions over heterogeneous data, including tables, files, and databases. However, data agents face a challenging agent-data gap: heterogeneous data resides outside the agent, while the agent can access it (e.g., column names and file paths) only through generic tools. Existing approaches either let agents directly explore raw data sources or inject manually constructed semantic layers into prompts. However, neither scales well to large heterogeneous data sources nor adapts to different agent behaviors. In this paper, we introduce EvoOntology, a self-evolving ontology layer for data agents. EvoOntology encapsulates the ontology as an MCP server comprising a schema layer, a content layer, and a tool layer, enabling agents to actively query and interact with the ontology at runtime. To this end, we introduce a builder agent for autonomous ontology construction and a self-evolution loop that continuously refines the ontology through attribution-guided typed edits that are accepted only after a backbone-conditional paired evaluation. Experiments on three well-adopted data-agent benchmarks with four LLM backbones demonstrate that EvoOntology consistently outperforms strong baselines and existing semantic-layer approaches, effectively bridging the agent-data gap and enabling more effective interaction with heterogeneous data. Code: https://github.com/ruc-datalab/EvoOntology",
+      "authors": [
+        "Meiduo Chong",
+        "Shaolei Zhang",
+        "Ju Fan",
+        "Xiaoyong Du"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL",
+        "cs.DB"
+      ],
+      "published": "2026-09-14T15:59:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.15779v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-evolving ontology layer adapts a data agent to heterogeneous data and behaviors",
+      "llm_evidence_cn": "自演化本体层让数据智能体适应异构数据与多样行为",
+      "llm_evidence": "自演化本体层让数据智能体适应异构数据与多样行为",
+      "canonical_evidence": "自演化本体层让数据智能体适应异构数据与多样行为",
+      "llm_tldr_en": "EvoOntology introduces a self-evolving ontology layer for data agents, packaged as an MCP server with schema, content, and tool layers, to bridge the agent-data gap and adapt to heterogeneous data sources and agent behaviors.",
+      "llm_tldr_cn": "数据智能体在处理表格、文件和数据库等异构数据时面临智能体-数据鸿沟，直接探索原始数据或手工注入语义层都难以扩展与适配。本文提出EvoOntology，将本体封装为含模式层、内容层和工具层的MCP服务器，使其能随智能体行为自演化。结果表明该本体层更能扩展到大规模异构数据源并适配多样智能体行为，为数据智能体提供了可自演化的语义基础设施。",
+      "llm_tldr": "数据智能体在处理表格、文件和数据库等异构数据时面临智能体-数据鸿沟，直接探索原始数据或手工注入语义层都难以扩展与适配。本文提出EvoOntology，将本体封装为含模式层、内容层和工具层的MCP服务器，使其能随智能体行为自演化。结果表明该本体层更能扩展到大规模异构数据源并适配多样智能体行为，为数据智能体提供了可自演化的语义基础设施。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "large language model based agents with self-evolution capabilities",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.12486v1",
+      "source": "arxiv",
+      "title": "Adaptive Agent Design",
+      "abstract": "We consider an agent acting against a general non-Markovian environment. The agent maintains its agent states, but is free to choose a transition kernel across those states and optimize its state-feedback control policies. We study the bi-level agent design problem that optimizes the transition kernel and the policy it induces, given said kernel with offline data of observations and actions obtained via a behavioral policy. For general environments, we show that a soft $Q$-learning algorithm converges almost surely to the fixed point of a soft Bellman equation defined by the stationary averages that the behavioral policy and the chosen kernel induce, and we delineate what separates the resulting policy from an optimal one. In partially observed Markov decision problems, we analyze convergence properties of parametrized transition kernel design via zero-th order and Bayesian optimization techniques.",
+      "authors": [
+        "Raj Kiriti Velicheti",
+        "Subhonmesh Bose",
+        "Tamer Başar"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY",
+        "cs.AI",
+        "cs.GT",
+        "math.OC"
+      ],
+      "published": "2026-09-11T06:32:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.12486v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "agent freely chooses transition kernel and optimizes policy, adaptive agent design",
+      "llm_evidence_cn": "智能体可自主选择状态转移核并优化策略的自适应设计",
+      "llm_evidence": "智能体可自主选择状态转移核并优化策略的自适应设计",
+      "canonical_evidence": "智能体可自主选择状态转移核并优化策略的自适应设计",
+      "llm_tldr_en": "This paper studies an agent facing a general non-Markovian environment that can choose its state transition kernel and control policy. A soft Q-learning algorithm converges to a fixed point, characterizing adaptive agent design.",
+      "llm_tldr_cn": "本文研究一个面对一般非马尔可夫环境的智能体，它维护自身状态并可自由选择状态间的转移核，同时优化状态反馈控制策略。作者提出双层智能体设计问题，在给定行为策略的离线观测与动作数据下联合优化转移核及其诱导的策略，并证明软Q学习几乎必然收敛到软贝尔曼方程的定点。该工作刻画了智能体如何自适应地调整自身结构，为可自我设计的自适应智能体提供了理论基础。",
+      "llm_tldr": "本文研究一个面对一般非马尔可夫环境的智能体，它维护自身状态并可自由选择状态间的转移核，同时优化状态反馈控制策略。作者提出双层智能体设计问题，在给定行为策略的离线观测与动作数据下联合优化转移核及其诱导的策略，并证明软Q学习几乎必然收敛到软贝尔曼方程的定点。该工作刻画了智能体如何自适应地调整自身结构，为可自我设计的自适应智能体提供了理论基础。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "adaptive mechanisms enabling agents to evolve in dynamic environments",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15820v1",
+      "source": "arxiv",
+      "title": "AlgoEvo: Self-Evolving Agentic Search for Automated Algorithm Discovery",
+      "abstract": "Large language models have advanced automated algorithm discovery by synthesizing executable code, but existing frameworks trap them in rigid search pipelines with pre-defined control flows. This limitation restricts adaptive reasoning, blocks cross-paradigm transfer, and discards valuable execution feedback. We propose AlgoEvo, a unified agentic framework that transforms automated algorithm discovery into an interactive, knowledge-accumulating process. An autonomous agent dynamically inspects, diagnoses, and edits code based on runtime feedback. A design skill hub decouples paradigm-specific knowledge from the core discovery engine, allowing a single workflow to seamlessly handle single-objective, multi-objective, and multi-component design. Meanwhile, a hierarchical experience mechanism organizes search trajectories into a task-level tree to guide exploration and consolidates cross-task patterns into reusable skills. Across six representative benchmark tasks, AlgoEvo matches or surpasses specialized methods with substantially fewer evaluations and reduced token consumption, demonstrating strong intra-task accumulation, cross-task transfer, and the ability to reproduce or exceed existing state-of-the-art performance through flexible skill activation.",
+      "authors": [
+        "Junhao Qiu",
+        "Qinglong Hu",
+        "Xialiang Tong",
+        "Mingxuan Yuan",
+        "Liyong Lin",
+        "Qingfu Zhang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-14T16:24:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.15820v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-evolving agentic search that accumulates knowledge and edits code from runtime feedback",
+      "llm_evidence_cn": "基于运行时反馈累积知识并修改代码的自进化智能体搜索",
+      "llm_evidence": "基于运行时反馈累积知识并修改代码的自进化智能体搜索",
+      "canonical_evidence": "基于运行时反馈累积知识并修改代码的自进化智能体搜索",
+      "llm_tldr_en": "AlgoEvo turns automated algorithm discovery into an interactive, knowledge-accumulating process where a self-evolving agent inspects, diagnoses and edits code from runtime feedback, with a design skill hub enabling cross-paradigm transfer.",
+      "llm_tldr_cn": "现有基于大模型的自动算法发现框架受限于预设控制流的刚性搜索流程，阻碍自适应推理并丢弃执行反馈。本文提出AlgoEvo，将算法发现转化为交互式、知识累积的过程：自主智能体依据运行时反馈动态检查、诊断并修改代码，设计技能中心将范式相关知识从发现引擎解耦，使单一流程同时支持单目标、多目标与多组件设计。实验显示该方法能跨范式迁移并持续积累知识，推动了自进化智能体在算法发现中的应用。",
+      "llm_tldr": "现有基于大模型的自动算法发现框架受限于预设控制流的刚性搜索流程，阻碍自适应推理并丢弃执行反馈。本文提出AlgoEvo，将算法发现转化为交互式、知识累积的过程：自主智能体依据运行时反馈动态检查、诊断并修改代码，设计技能中心将范式相关知识从发现引擎解耦，使单一流程同时支持单目标、多目标与多组件设计。实验显示该方法能跨范式迁移并持续积累知识，推动了自进化智能体在算法发现中的应用。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.13548v1",
+      "source": "arxiv",
+      "title": "AutoTailor: Automatic, User-Aligned Capability Selection and Adaptation for Web Agents",
+      "abstract": "Web agents can utilize reusable tools to reduce the cost and latency of low-level browser interaction, but automatically discovered tool collections can be large, redundant, and poorly aligned with user demand. We present AutoTailor, a meta-agentic framework for constructing and maintaining a compact set of trajectory-derived Model Context Protocol (MCP) APIs. Offline, AutoTailor converts web trajectories into parameterized browser-automation programs, applies a Quality Filter to remove APIs with unsuitable granularity and redundant functionality, and applies a Usage Likelihood Filter to prioritize broadly useful capabilities while preserving semantic coverage. Online, Dynamic Reselection monitors task outcomes and API usage, identifies recurring coverage gaps, adds relevant candidates, and prunes persistently unused capabilities. We evaluate AutoTailor on 106 WebArena Postmill tasks. Offline filtering reduces the initial 1,283 unrefined APIs to 87, and Dynamic Reselection produces a 33-API set. With reasoning and acting (ReAct) fallback, this set achieves 90.6% correctness, compared with 87.5% for ReAct alone, while reducing average total request-token cost by 57.8% and latency by 29.4%. Without ReAct, it achieves 60.1% correctness, marginally matching the performance of unrefined set, while reducing request-token usage by 94.9%. Together, these results show that static filtering produces a compact inventory of APIs expected to support core, high-likelihood tasks, while dynamic reselection further tailors that inventory to observed user needs. This combination improves accuracy and latency while sharply reducing token usage and end-to-end cost, demonstrating the value of user-aligned capability management for efficient web agents.",
+      "authors": [
+        "Xinyun Cao",
+        "Adriana Szekeres",
+        "Fazle Elahi Faisal"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.SE"
+      ],
+      "published": "2026-09-11T21:24:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.13548v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "meta-agentic framework for capability selection and adaptation of web agents",
+      "llm_evidence_cn": "面向Web智能体能力选择与自适应的元智能体框架",
+      "llm_evidence": "面向Web智能体能力选择与自适应的元智能体框架",
+      "canonical_evidence": "面向Web智能体能力选择与自适应的元智能体框架",
+      "llm_tldr_en": "Web agents using reusable tools often face large redundant collections misaligned with user needs. AutoTailor is a meta-agentic framework that builds and maintains compact MCP APIs via quality and usage filters and online dynamic reselection.",
+      "llm_tldr_cn": "Web智能体借助可复用工具降低浏览器交互成本，但自动发现的工具集合往往庞大冗余且与用户需求不匹配。本文提出AutoTailor这一元智能体框架，离线将网页轨迹转换为参数化浏览器自动化程序，经质量过滤与使用似然过滤构建紧凑的MCP接口集合，在线通过动态重选监控任务结果与API使用。该方法实现了智能体能力的自动选择与持续自适应，为可自我维护能力的智能体提供了方案。",
+      "llm_tldr": "Web智能体借助可复用工具降低浏览器交互成本，但自动发现的工具集合往往庞大冗余且与用户需求不匹配。本文提出AutoTailor这一元智能体框架，离线将网页轨迹转换为参数化浏览器自动化程序，经质量过滤与使用似然过滤构建紧凑的MCP接口集合，在线通过动态重选监控任务结果与API使用。该方法实现了智能体能力的自动选择与持续自适应，为可自我维护能力的智能体提供了方案。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

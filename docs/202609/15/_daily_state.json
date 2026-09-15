@@ -1,0 +1,281 @@
+{
+  "date": "20260915",
+  "date_label": "",
+  "generated_at": "2026-09-15 22:33:43 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.14858v1",
+      "route": "202609/15/2609.14858v1-dream-rsi-recursive-self-improvement-through-evolving-worlds",
+      "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "面向自主智能体的递归自我改进框架，通过可编程探索驱动",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.15364v1",
+      "route": "202609/15/2609.15364v1-rsiagent-autonomous-exploration-for-recursive-self-improvement-in-new-environments",
+      "title": "RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "免训练多智能体框架，在新环境中实现递归自我改进",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.13406v1",
+      "route": "202609/15/2609.13406v1-generalized-agent-iteration-one-formal-framework-for-iterative-policy-improvement-and-recursive-self-improvement",
+      "title": "Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "递归自我改进的形式化框架",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.14857v1",
+      "route": "202609/15/2609.14857v1-modularrsi-modular-and-generalizable-recursive-harness-self-improvement",
+      "title": "ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向长程任务的智能体执行框架模块化可泛化递归自我改进",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.15396v1",
+      "route": "202609/15/2609.15396v1-skilllift-learning-dense-rubrics-from-sparse-oracles-for-efficient-skill-evolution",
+      "title": "SkillLift: Learning Dense Rubrics from Sparse Oracles for Efficient Skill Evolution",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向LLM智能体的技能自进化方法",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.11682v1",
+      "route": "202609/15/2609.11682v1-cobra-skills-contextual-bandit-guided-evolution-for-agent-skill-optimization",
+      "title": "COBRA-Skills: Contextual Bandit-Guided Evolution for Agent Skill Optimization",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "智能体可复用技能的进化与自主获取",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.13771v1",
+      "route": "202609/15/2609.13771v1-homeostatic-continual-learning",
+      "title": "Homeostatic Continual Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在变化环境中持续学习且不发生灾难性遗忘",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.14138v1",
+      "route": "202609/15/2609.14138v1-limbo-lifelong-inference-time-memory-and-budget-optimization-for-llm-agents",
+      "title": "LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "终身学习智能体持续获取新能力并保持旧任务能力",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.15161v1",
+      "route": "202609/15/2609.15161v1-emr-self-evolving-medical-multi-agent-system-via-experience-mining-and-reuse",
+      "title": "EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "能从既往诊断成败中自我进化的多智能体系统",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.15779v1",
+      "route": "202609/15/2609.15779v1-evoontology-a-self-evolving-ontology-layer-for-data-agents",
+      "title": "EvoOntology: A Self-Evolving Ontology Layer for Data Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "自演化本体层让数据智能体适应异构数据与多样行为",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.15820v1",
+      "route": "202609/15/2609.15820v1-algoevo-self-evolving-agentic-search-for-automated-algorithm-discovery",
+      "title": "AlgoEvo: Self-Evolving Agentic Search for Automated Algorithm Discovery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于运行时反馈累积知识并修改代码的自进化智能体搜索",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.13436v1",
+      "route": "202609/15/2609.13436v1-toward-self-adaptive-physical-ai-can-llm-agents-manage-long-horizon-physical-tasks",
+      "title": "Toward Self-Adaptive Physical AI: Can LLM Agents Manage Long-Horizon Physical Tasks?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "适应环境变化的自适应智能体",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.09113v2",
+      "route": "202609/15/2609.09113v2-saescientist-bench-can-ai-agents-conduct-autonomous-sae-interpretability-research",
+      "title": "SAEScientist-Bench: Can AI Agents Conduct Autonomous SAE Interpretability Research?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "AI智能体自主开展研究以实现递归自我改进",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.11060v1",
+      "route": "202609/15/2609.11060v1-grounding-agent-memory-environment-probing-curation-for-enterprise-agents",
+      "title": "Grounding Agent Memory: Environment-Probing Curation for Enterprise Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向长程智能体的持久记忆整理",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.11433v1",
+      "route": "202609/15/2609.11433v1-safety-aware-skill-adaptation-for-reinforcement-learning-in-dynamic-environments",
+      "title": "Safety-aware Skill Adaptation for Reinforcement Learning in Dynamic Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向动态环境的技能自适应与安全引导强化学习框架",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.12486v1",
+      "route": "202609/15/2609.12486v1-adaptive-agent-design",
+      "title": "Adaptive Agent Design",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "智能体可自主选择状态转移核并优化策略的自适应设计",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    },
+    {
+      "paper_id": "2609.13548v1",
+      "route": "202609/15/2609.13548v1-autotailor-automatic-user-aligned-capability-selection-and-adaptation-for-web-agents",
+      "title": "AutoTailor: Automatic, User-Aligned Capability Selection and Adaptation for Web Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向Web智能体能力选择与自适应的元智能体框架",
+      "first_seen_at": "2026-09-15 22:33:43 UTC",
+      "updated_at": "2026-09-15 22:33:43 UTC"
+    }
+  ]
+}
