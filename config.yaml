@@ -25,3 +25,65 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: self-evolve
+      description: 请帮我查找和自进化智能体相关的文献
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: self-evolving agents
+          keyword_cn: 自进化智能体
+          query: self-evolving agents that autonomously improve their capabilities over time
+        - keyword: self-improving agents
+          keyword_cn: 自改进智能体
+          query: agents capable of self-improvement and autonomous skill acquisition
+        - keyword: lifelong learning
+          keyword_cn: 终身学习
+          query: lifelong learning and continual adaptation in artificial agents
+        - keyword: evolutionary algorithms
+          keyword_cn: 进化算法
+          query: evolutionary algorithms for evolving agent behaviors and architectures
+        - keyword: large language model agents
+          keyword_cn: 大语言模型智能体
+          query: large language model based agents with self-evolution capabilities
+        - keyword: agent adaptation
+          keyword_cn: 智能体自适应
+          query: adaptive mechanisms enabling agents to evolve in dynamic environments
+      intent_queries:
+        - query: survey of self evolving agents that autonomously improve their architecture and skills
+          query_cn: 自进化智能体自主改进架构与技能的综述
+          enabled: true
+          source: manual
+          note: ''
+        - query: methods for lifelong learning and continual adaptation in autonomous intelligent agents
+          query_cn: 自主智能体终身学习与持续适应的方法
+          enabled: true
+          source: manual
+          note: ''
+        - query: self improvement and meta learning techniques for evolving agent behaviors
+          query_cn: 用于演化智能体行为的自我改进与元学习技术
+          enabled: true
+          source: manual
+          note: ''
+        - query: open ended learning and evolutionary approaches for self evolving artificial agents
+          query_cn: 面向自进化人工智能体的开放式学习与进化方法
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-09-15T06:12:35.560Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
