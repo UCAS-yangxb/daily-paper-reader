@@ -1,0 +1,1305 @@
+Title: Efficient Exploration Is Enough
+
+URL Source: https://arxiv.org/pdf/2609.07575v1
+
+Published Time: Wed, 09 Sep 2026 02:27:11 GMT
+
+Number of Pages: 29
+
+Markdown Content:
+# Efficient Exploration Is Enough 
+
+Mikel Malagón 1∗
+
+, Jon Vadillo 1, Josu Ceberio 1, Michael Bowling 2,3,4, Jose A. Lozano 51University of the Basque Country (UPV/EHU) 
+
+> 2
+
+University of Alberta 
+
+> 3
+
+Alberta Machine Intelligence Institute 
+
+> 4
+
+Canada CIFAR AI Chair 
+
+> 5
+
+Basque Center for Applied Mathematics (BCAM) 
+
+# Abstract 
+
+This work introduces an alternative view of efficient exploration and studies its theoretical and empirical implications in the absence of extrinsic rewards. Specif-ically, we define efficient explorers as agents that prioritize generating generaliz-able experience, i.e., data that supports learning models capable of predicting and adapting across the environment. This allows us to analyze efficient exploration through the lens of prediction and generalization. Theoretically, we demonstrate that optimally efficient explorers naturally schedule their trajectories to visit the most informative and learnable regions first. Empirically, we show that optimiz-ing for these agents gives rise to an automatic curriculum of progressively more complex behaviors, even in relatively simple environments. These results indicate that pursuing this purely intrinsic objective alone is enough to drive the emergence of highly sophisticated behaviors. We believe that this new framework provides a principled mechanism by which agent-environment systems may sustain an open-ended process of increasingly complex behavior without external rewards, tasks, or objectives. 
+
+# 1 Introduction 
+
+Agents—understood as systems acting by themselves according to certain goals or norms in an environment [Barandiaran et al., 2009]—constitute the substrates of intelligent life as we know it. The class of systems that satisfy this definition is broad, yet exploration is a ubiquitous behavior across all of them. As such, exploration has been a topic of great focus in the field of Reinforcement Learning (RL) [Sutton and Barto, 2018]. The field has produced a rich taxonomy of exploration strategies, ranging from classical methods such as ϵ-greedy, Thompson sampling [Thompson, 1933], and upper confidence bounds [Auer et al., 2002], to intrinsic motivation approaches widely used in deep RL, including count-based exploration [Bellemare et al., 2016], Intrinsic Curiosity Module (ICM) [Pathak et al., 2017], and Random Network Distillation (RND) [Burda et al., 2019]. Most of these works are shaped by the idea that exploration implies maximizing environment cover-age, i.e., visiting as many distinct regions of it as possible [Strehl and Littman, 2008, Henaff et al., 2022]. Furthermore, methods that do not pursue full coverage typically restrict their focus to regions or skills relevant to a specific downstream task [Farebrother et al., 2026] or balance exploration with extrinsic reward. Thus, in the absence of extrinsic objectives, efficient exploration is broadly under-stood as efficient uniform environment coverage [Thrun, 1992]. However, we believe this perspec-tive overlooks the role of generalization. Experience gathered in one region might allow accurately predicting dynamics in other unseen scenarios. When models can generalize, or with proper priors, uniform environment coverage—even strategies that maximize the immediate prediction error of a  
+
+> ∗Correspondence to: Mikel Malagón <mikel.malagon@ehu.eus> .Preprint. arXiv:2609.07575v1 [cs.LG] 7 Sep 2026
+
+model [Schmidhuber, 1991, Shyam et al., 2019]—no longer represent the most efficient approach to exploration. Building on this idea, we propose a new definition of efficient exploration: 
+
+“An agent efficiently explores its environment if it prioritizes generating the most 
+
+generalizable experience .” 
+
+Specifically, by experience we refer to the agent’s history of interactions (i.e., observations and ac-tions), while generalizable implies a model and a broader target distribution to generalize toward. This model—commonly known as a world model [Ha and Schmidhuber, 2018]—is learned to esti-mate the environment’s dynamics from the agent’s ongoing stream of experience, and should ideally predict any scenario that might occur within the environment as well as possible. Thus, this purely intrinsic efficient exploration objective requires agents to generate histories that reduce the global prediction error of the world model over the long run. To illustrate, consider an agent embodied as a humanoid robot on an island. Under our definition, an agent that learns to walk robustly across diverse terrains would be an efficient explorer, as effective locomotion is a prerequisite for generating diverse, generalizable experience. Conversely, an agent that engages in reckless behavior risks damaging itself, prematurely ending its ability to gather data. Thus, survival naturally emerges as a necessary condition for efficient exploration: it maximizes the time available to interact with the environment, ensuring the world model receives sufficient data to generalize as broadly as possible. Ultimately, progressively more complex behaviors—such as swimming to nearby islands, building shelters to ensure long-term survival, or learning to predict the weather—would naturally arise as mechanisms to further increase exploration efficiency. This contrasts with the reward is enough hypothesis by Silver et al. [2021], which argues that intelligent behaviors, including exploration, are ultimately driven by the maximization of extrinsic rewards. Here, we explore an alternative perspective, and provide theoretical and empirical evidence that efficient exploration—a purely intrinsic signal—is enough to drive the emergence of increasingly complex and sophisticated behaviors, including survival mechanisms traditionally thought to be explicitly motivated by extrinsic reward. The remainder of this paper offers a particular formalization of efficient exploration and investigates its theoretical and empirical implications in the absence of extrinsic rewards, where an agent’s op-timality is solely determined by its exploration efficiency. Theoretically, this framework allows us to analyze efficient exploration through the lens of prediction and model generalization. First, we demonstrate that efficient exploration can be achieved by deterministic, targeted behaviors. Second, under standard Markovian assumptions and a tabular world model, we show that exploration effi-ciency requires agents to schedule their visits such that the most informative and learnable regions of the environment are visited first, delaying visits to hard-to-model regions and naturally avoiding the noisy-TV problem or absorbing states. Furthermore, we establish connections between efficient exploration, survival, and prior work on intrinsic motivation. Empirically, we investigate the behav-iors that drive efficient exploration in partially observable settings where agents and world models are parametrized by Neural Networks (NNs) and formal theoretical analysis is intractable. To this end, we employ a simple Monte Carlo (MC) approximation method to optimize agents towards efficient exploration. When observing these efficient explorers, we find that complex behaviors automatically emerge, including exploiting environmental symmetries, solving simple mazes, and employing sophisticated navigation strategies. Furthermore, we note that this optimization process naturally induces sequences of progressively more complex behaviors. Consequently, we believe this work represents a step toward the understanding and principled generation of complex behav-iors in the absence of extrinsic goals for natural and artificial agents. Due to space constraints, a thorough review of the literature and detailed connections to prior work are deferred to Appendix A. 
+
+# 2 Preliminaries 
+
+Notation Uppercase Greek letters and calligraphic uppercase letters denote sets ( Λ, A), and lower-case Latin and Greek letters denote variables and functions ( α, f ), except for the indicator function 
+
+1. Uppercase Latin letters are reserved for random variables ( X). Conditional probability functions are denoted as p : X → ∆( Y), where ∆( Y) is the probability simplex over Y. Thus, p(· | x) is a conditional distribution over Y conditioned on x ∈ X . We write p(y | x) for the probability value assigned to y given x.2action    
+
+> Agent observation Environment
+> History World model
+
+Figure 1: Diagram of the considered setting. We denote by A and O the sets of all possible actions and observations respectively, which we as-sume are finite. Following the development of Abel et al. [2023], we refer to histories as sequences of action and observation pairs (a, o ) generated by the interactions between an agent and its en-vironment, where the set of all possible histories of any length is H = ⋃∞
+
+> t=0
+
+(A × O )t. We use 
+
+Ht = ( A × O )t to refer to the set of all histories h1: t = ( a1o1, . . . , a tot) of t interactions, where 
+
+h1:0 = ∅ is the empty history. Given h1: t and i ≤ t, the history h1: i denotes the prefix of length 
+
+i of the history h1: t, thus h1: i = ( a1o1, . . . , a ioi). Following Abel et al. [2025], we employ the convention of actions preceding observations , that is, action ai causes observation oi.
+
+Definition 2.1. An agent is a function λ : H → ∆( A) that maps histories to probability distribu-tions over actions. 
+
+Definition 2.2. An environment is a function e : H × A → ∆( O) that maps tuples of histories and actions to probability distributions over observations. 
+
+Let Λall denote the set of all possible agents, Λdet ⊆ Λall be the subset of deterministic agents 
+
+Λdet = {λ ∈ Λall : ∀h∈H ∃a∈A λ(a | h) = 1 }, and E be the space of all environments. We denote by Λ a non-empty subset Λ ⊆ Λall of agents of interest. Where specified, we assume contains Λ all possible agents for histories of length t.
+
+Assumption 2.3. ∀h1: t∈H t ∀λ∈Λall ∃λ′∈Λ such that ∀i∈[1 ,t ] λ(h1: i−1) = λ′(h1: i−1).
+
+Furthermore, note that the definitions above are general and capture both the Markovian and non-Markovian cases, fully and partially observable settings, and episodic and non-episodic settings as discussed by Abel et al. [2023]. At this point, we can define the probability distribution over histories of length t induced by following an agent λ ∈ Λall in an environment e ∈ E as, 
+
+p(h1: t | λ, e ) = 
+
+> t
+
+∏
+
+> i=1
+
+e(oi | h1: i−1, a i) λ(ai | h1: i−1), (1) where h1: i−1 is the prefix of length i − 1 of h1: t and ai is the i-th action in h1: t. We denote by H1: t
+
+the random variable corresponding to histories following this distribution. As mentioned in Section 1, we evaluate an agent’s exploration efficiency by the generalizability of the experience it generates. As the agent interacts with the environment, its ongoing stream of expe-rience (i.e., its history) is used to dynamically estimate a world model at each interaction step. Im-portantly, we do not require that the agent explicitly possesses or accesses this world model. Rather, the model serves primarily as an external construct to quantify the agent’s exploration efficiency based on the model’s ability to generalize over time (see Figure 1). Nevertheless, our formalism is sufficiently general to accommodate agents that do act based on an internal world model learned from experience. To formalize these concepts, we define world models analogously to environments as follows. 
+
+Definition 2.4. A world model is a function f : H × A → ∆( O) that maps a tuple of a history and an action to a probability distribution over observations. 
+
+Let F be the set of all world models (hypothesis space). Note that for an environment e, the optimal world model f ∗ is given by f ∗ = e. Given a history generated by an agent, we formalize the estimation of these models through a generic learning rule. 
+
+Definition 2.5. A learning rule is a function ω : H → F that maps histories to world models. 
+
+We denote by Ω the set of all possible learning rules. For instance, the learning rule ˜ω ∈ Ω that returns a world model that best fits the environment for a particular input history h1: t (not necessarily 3f ∗) is given by, 
+
+˜ω(h1: t) ∈ arg min  
+
+> f∈F
+> t
+
+∑
+
+> i=1
+
+d(f (· | h1: i−1, a i), e(· | h1: i−1, a i)), (2) where the discrepancy function d is a divergence or metric that computes the statistical distance between two probability distributions (in this case, over observations). Namely, 
+
+d : ∆( O) × ∆( O) → R+, where d(f (· | h, a ), e (· | h, a )) = 0 iff f (· | h, a ) = e(· | h, a ). For example, d can be instantiated as the total variation distance or the Kullback-Leibler divergence. In this context, given an environment e and a world model f , we define a global loss function that quantifies the overall discrepancy between the probability distributions generated by both functions across all actions and realizable histories up to the time horizon t.
+
+Definition 2.6. Under an environment e and a time horizon t, the global loss of a world model f is, 
+
+ℓglobal  
+
+> t
+
+(f ) = 
+
+> t−1
+
+∑
+
+> k=0
+
+EH1: k |λunif ,e 
+
+[∑
+
+> a∈A
+
+d(f (· | H1: k, a ), e (· | H1: k, a ))]
+
+, (3) 
+
+where λunif is the uniform agent, i.e., ∀h∈H ,a ∈A λunif (a | h) = 1 /|A| .
+
+First, note that Equation (3) computes the world model error (i.e., the discrepancy) exactly once for every possible transition up to step t. Second, for each history, it weights the error of this (k + 1) -th transition by the probability of encountering the preceding history h1: k under the distribution induced by the uniform agent acting in the environment e. Although evaluating the loss under the uniform policy λunif might initially seem arbitrary, this agent effectively serves as an unbiased history sampler for the environment e.
+
+Proposition 2.7. Let λunif ∈ Λall be the agent that always takes actions with uniform probability, 
+
+∀h∈H ,a ∈A λunif (a | h) = 1 /|A| . Then, p(h1: k | λunif , e ) = |A| −k ∏ki=1 e(oi | h1: i−1, a i) .
+
+The proof of Proposition 2.7 is deferred to Appendix B.1. Intuitively, this proposition establishes that under λunif , the probability of a history is strictly proportional to the environment’s intrinsic transition dynamics. Because the action selection probabilities factor out as the constant |A| −k, the resulting distribution over histories is governed solely by the environment’s likelihood. This weight-ing scheme ensures that discrepancies are not treated equally; errors occurring in highly improbable scenarios under e are naturally discounted, whereas errors in likely scenarios are prioritized. Finally, note that at each timestep t, the world model is estimated exclusively using the interactions the agent has collected so far—that is, the history up to step t, which we refer to as its experience .As noted by Javed and Sutton [2024], the agent will typically only ever observe a minuscule fraction of the full history space H with which to minimize the global loss. Therefore, an efficient explorer must strategically gather its experience to yield the most generalizable data possible. We explore this dynamic in detail in the subsequent sections. 
+
+# 3 Exploration efficiency 
+
+We define the exploration efficiency of an agent in terms of the Expected Cumulative Error (ECE) induced by its behavior, measured via the global predictive error of world models estimated from its generated histories. 
+
+Definition 3.1. Under an environment e, a learning rule ω, and a time horizon t ∈ N, the expected cumulative error of an agent λ ∈ Λall is defined as, 
+
+εt(λ) = EH1: t|λ,e 
+
+[ t∑
+
+> i=1
+
+ℓglobal  
+
+> t
+
+(ω(H1: i)) 
+
+]
+
+, (4) 
+
+where H1: i refers to the prefix of H1: t truncated at timestep i.
+
+Informally, εt aggregates the expected global losses of the sequence of world models generated over 
+
+t interaction steps. Specifically, the model evaluated at each step i ∈ [1 , t ] is estimated using the history collected by executing agent λ in environment e up to that step, i.e., H1: i. To simplify the 4notation, we omit the environment e and the learning rule ω from εt, and they are implicitly fixed by the context. Under our framework, agents that achieve a lower ECE correspond to more efficient explorers. Note that we employ ℓglobal  
+
+> t
+
+rather than ℓglobal  
+
+> i
+
+, meaning that each world model is evaluated across all input histories of lengths [0 , t − 1] .
+
+Definition 3.2. Let λ, λ ′ ∈ Λall , and a time horizon t ∈ N. The agent λ is a more efficient explorer 
+
+than λ′ iff εt(λ) < ε t(λ′).
+
+Consequently, exploration efficiency is an ordinal property, i.e., an agent is an efficient explorer only relative to others. Thus, within Λ ⊆ Λall and a fixed time horizon t, there exists a subset Λ∗ 
+
+> t
+
+⊆ Λ of optimal explorers that minimize Equation (4). 
+
+Definition 3.3. For a given time horizon t, a learning rule ω, and an environment of interest e, we define the set of optimal explorers as those agents Λ∗ 
+
+> t
+
+⊆ Λ that achieve minimum ECE. Namely, 
+
+Λ∗ 
+
+> t
+
+= arg min 
+
+> λ∈Λ
+
+εt(λ). (5) Note that multiple agents may achieve the same minimum ECE value. We therefore define opti-mal explorers as a set rather than a single agent, as different behaviors can induce histories that are equally informative about the environment up to a time horizon t. For example, starting from the same initial knowledge, two individuals who pursue different fields of study—such as biology and physics—may resolve similar uncertainty about their environment (the real world) over their lifetimes. Although their experiences differ substantially at the behavioral level, both trajectories can produce similarly generalizable models of the environment even under the same learning rule. Furthermore, in a symmetric environment such as an empty grid world, two agents that explore the space using different patterns (e.g., clockwise versus counterclockwise sweeps) may generate experience with identical generalization properties and achieving the same ECE. This intuition is captured by the next theoretical properties of the set of optimal explorers. 
+
+Theorem 3.4. Let Λ∗ 
+
+> t
+
+be the set of optimal agents for a time horizon t. Given Assumption 2.3, and for all t ∈ N and ω ∈ Ω, the following hold: 1. There always exists at least one fully deterministic optimal explorer: ∀e∈E , Λ∗ 
+
+> t
+
+∩ Λdet ̸ = ∅.2. There exist environments with stochastic optimal explorers: ∃e∈E Λ∗ 
+
+> t
+
+\ Λdet ̸ = ∅.
+
+The proof for Theorem 3.4 is provided in Appendix B.3. Intuitively, the first property establishes that efficient exploration does not inherently require randomness; unlike classical heuristics that inject stochastic noise to stumble upon novel states, optimally efficient exploration can be realized as a completely deliberate, systematic, and targeted process of data collection. At the same time, the second property clarifies that determinism is not a strict requirement. By proving that there exist environments with non-deterministic optimal explorers, we show that when an environment presents multiple equally informative pathways, an agent can act stochastically across them without suffering any loss in its overall exploration efficiency. 
+
+# 4 Theoretical analysis 
+
+In this section, we theoretically characterize the optimally efficient exploration behavior under stan-dard Markovian dynamics, stationarity, a tabular world model, and the squared L2 norm as discrep-ancy function. 2 Crucially, this tractable setting builds intuition that extends beyond these idealized constraints, as we demonstrate in Section 5. We start by assuming a fully observable Markovian environment defined by a controlled Markov process [Puterman, 1994]. 
+
+Definition 4.1. A controlled Markov process (cMP) is a Markov Decision Process (MDP) without the reward function and discount factor. It is defined by the triplet (S, A, p e), where S is the space of states, A is the space of actions, and pe is the transition probability function pe : S × A → ∆( S).
+
+As the cMP is defined over states, we restrict the history definition from Section 2 to use states rather than observations, that is, O = S, e(h1: t, a ) = pe(st, a ), and h1:0 = s0 ∈ S . We also make the following assumption about agents.           
+
+> 2In this case, d(fh(· | s, a ), p e(· | s, a )) = ∥fh(· | s, a )−pe(· | s, a )∥22.
+
+5Assumption 4.2. Agents are stationary and Markovian. 
+
+Under this assumption, the more general agent definition from Definition 2.1 simplifies to λ : S → 
+
+∆( A). For the remainder of this section, we therefore treat λ ∈ Λall as a function over states rather than histories. As introduced in Section 2, world models estimate the environment ( pe in this case) from histories generated by an agent. In this section, we analyze a specific instantiation of the learning rule ω,defining it as a smoothed empirical estimator that derives pe directly from the transition frequencies within the input history h. Under the Markovian assumption (Definition 4.1), the resulting world models take the form f : S × A × H → ∆( S). For convenience, we let fh denote the model estimated from history h, meaning ω(h) = fh throughout this section. Namely, 
+
+fh(s′|s, a ) = c′(s′, s, a ; h) + αc(s, a ; h) + α|S| , (6) where the function c(s, a ; h) counts the number of times the state-action pair (s, a ) occurs in h,
+
+c′(s′, s, a ; h) denotes the number of times the transition (s, a, s ′) appears in the history h, and α > 0.Specifically, c(s, a ; ht) = ∑ti=1 1(si = s ∧ ai = a) and c′(s′, s, a ; ht) = ∑t−1 
+
+> i=1
+
+1(si+1 = s′ ∧ si =
+
+s ∧ ai = a). Algebraically, Equation (6) represents the posterior predictive mean of a Dirichlet-Multinomial model with a symmetric prior α. Additionally, the Markovian assumption allows us to simplify the global loss ℓglobal  
+
+> t
+
+in Equation (3) as follows. 
+
+Proposition 4.3. Under a cMP environment (see Definition 4.1) whose dynamics are defined by pe
+
+and agents in Λall follow Assumption 4.2, Equation (3) can be simplified as, 
+
+ℓglobal  
+
+> t
+
+(f ) = ∑
+
+> a,s
+
+d(f (· | s, a ), p e(· | s, a )) νt−1 
+
+> pe
+
+(s) (7) 
+
+where νt−1 
+
+> pe
+
+(s) = ∑t−1 
+
+> k=0
+
+Pr( Sk = s | λunif , p e) and is greater as the state s has greater visiting probability according to the transition function pe in the cMP (details in Remark B.2). 
+
+The proof of Proposition 4.3 is provided in Appendix B.4. Finally, by instantiating the discrepancy function d as the squared L2 norm in the global loss (see Equation (7)), we derive an alternative expression for optimal explorers under the setting introduced in this section. 
+
+Theorem 4.4. Let the triplet (S, A, p e) be a cMP following Definition 4.1 and Λ be a set of agents under Assumption 4.2. Assume further that the discrepancy function d is the squared L2 norm. Then, the problem of finding the optimal explorers Λ∗ 
+
+> t
+
+is equivalent to solving the following minimization problem, 
+
+arg min 
+
+> λ∈Λ
+> t
+
+∑
+
+> i=1
+
+∑
+
+> a,s
+
+νt−1 
+
+> pe
+
+(s)
+
+(
+
+Vpe (s, a ) EN |λ,p e
+
+[ N
+
+(N + α|S| )2
+
+]
+
++ Bpe (s, a ) EN |λ,p e
+
+[ α2
+
+(N + α|S| )2
+
+]) 
+
+, (8) 
+
+where N = c(s, a ; H1: i), Vpe (s, a ) = ∑ 
+
+> s′
+
+pe(s′ | s, a )(1 − pe(s′ | s, a )) is the variance of the environment’s next state distribution at (s, a ), and Bpe (s, a ) = ∑ 
+
+> s′
+
+(1 − |S| pe(s′ | s, a )) 2 is the smoothing bias that measures how far the prior of f (see Definition 6) is from the true next state distribution. 
+
+We defer the proof of Theorem 4.4 to Appendix B.5. Under the assumptions of this section, this theorem reformulates the efficient exploration problem (in Equation (5)) into an equivalent opti-mization problem. Remarkably, this analytical reframing allows us to clearly expose the underlying mechanics of optimally efficient exploration as follows. 
+
+Interpretation Equation (8) shows that the contribution of each state-action pair (s, a ) to the total ECE is governed by two terms, both weighted by νt−1 
+
+> pe
+
+(s), the probability of visiting s
+
+via a random walk in t − 1 steps. The first term inside the brackets is proportional to the variance Vpe (s, a ), which grows with the entropy of the transition dynamics pe(· | s, a ), and its expectation decays as O(1 /N ), where N is the visit count to (s, a ). The second term de-pends on the bias Bpe (s, a ), which captures the discrepancy between the world model’s prior 6and pe(· | s, a ). This term behaves inversely: it decreases as transition entropy rises, and its expectation decays more rapidly at O(N −2). Figure 2 illustrates this dynamic by plotting the ECE contribution of a given (s, a ) tuple across different entropy levels of pe(· | s, a ).
+
+Figure 2: ECE in a particular (s, a )
+
+tuple, for α = 1, S = {s, s ′},
+
+νt−1 
+
+> pe
+
+(s) = νt−1 
+
+> pe
+
+(s′) = 1 , and dif-ferent values of p = pe(s′ | s, a ).When the entropy of pe(· | s, a ) is very high, the model’s prior aligns with the true distribution. As a result, the ECE starts at zero, implicitly discouraging the agent from allocating visits to these (s, a ) tuples. For transitions with high (but non-maximal) entropy, the slower O(N −1) variance term dominates, mean-ing a large number of visits is required to noticeably reduce the error. Conversely, for low-entropy transitions, the rapidly de-caying O(N −2) bias term governs the error. Consequently, an efficient explorer seeking to minimize ECE most rapidly will naturally prioritize these easier-to-model, deterministic transi-tions, strategically allocating visits away from highly stochas-tic regions where loss reduction is prohibitively slow. Further-more, in the extreme case of maximal entropy, the prior natu-rally aligns with reality, resulting in an initial ECE of zero that inherently discourages visitation. 
+
+Modeling accuracy vs. environment coverage The expected loss reduction in Equation (8) de-cays at rates of O(N −1) and O(N −2) with respect to the state-action visitation count N , sharing important similarities with count-based intrinsic motivation which often employ 1/√N bonuses [Sutton and Barto, 2018, Bellemare et al., 2016]: the marginal utility of revisiting transitions dimin-ishes over time. Despite this similarity, Equation (8) implies that an agent might not be able to uni-formly distribute visits across the environment without sacrificing its overall ECE. Because inherent learning costs vary dramatically across state-action pairs, the agent must strategically under-sample or entirely ignore difficult-to-learn transitions. Instead, it prioritizes its finite interaction budget on regions that lead to rapid and reliable improvements in global predictive accuracy, i.e., ℓglobal  
+
+> t
+
+.
+
+Survival Additionally, Theorem 4.4 establishes a formal link between efficient exploration and survival. Consider that the environment contains an absorbing state—such as one representing the 
+
+death of the agent. If an agent enters this state at timestep i it is forced to allocate all of its remaining visitation budget t − i to a single state-action pair. Because the expected error in Equation (8) decays as O(N −2) for deterministic transitions (as those of the absorbing state) the marginal reduction in ECE from these redundant visits to the same state quickly vanishes. In this case, the agent wastes its budget on a learned transition while leaving other learnable regions of the environment unexplored. Therefore, to globally minimize ECE, an optimal explorer must inherently avoid absorbing states, giving rise to emergent survival behaviors as a requirement of efficient exploration. 
+
+# 5 Empirical analysis 
+
+Having analyzed the mechanics of efficient exploration under idealized conditions in Section 4, we now investigate its implications within more complex, partially observable environments where agents and world models are parameterized by deep NNs. Empirical evidence supports that efficient exploration serves as a natural catalyst for complex, purposeful behavior. Specifically, we show that exploration efficiency—in the absence of extrinsic rewards—drives agents to spontaneously generate progressively sophisticated behaviors. 
+
+Environments We employ SmallWorld , a custom suite of grid-based environments illustrated in Figures 3 and 4. Rather than RGB pixels, SmallWorld grids are defined by scalar cell values in [−1, 1] , where negative values denote solid obstacles, zero represents empty space, and positive values indicate entities such as agents. Agents execute discrete movement actions (up, down, left, right) and receive partial, agent-centered observations as square matrices ( n × n local slices of the grid). We use four environments: Empty , a simple bare room; Blocks , an open area with three solid obstacles; Maze , a map partitioned into four rooms; and RandColors , which contains two rooms whose cell values change randomly at each timestep, serving as sources of stochastic noise. We use 
+
+n = 5 for all environments except Empty , where n = 7 . See Appendix C.1 for details. 7Empty Blocks Figure 3: Environments are illustrated on the left, where the agent is denoted in blue , obstacles in dark gray , and traversable space in light gray . Corresponding results on the right display sequences of per-cell visitation heatmaps (lighter areas indicate more visits) progressing from early ES generations (left) to more efficiently exploring agents (right). 
+
+Method We parameterize the agents using Gated Recurrent Units (GRUs) [Cho et al., 2014] and the world models as feed-forward NNs that process sequences of the past eight interactions, opti-mized via AdamW [Loshchilov and Hutter, 2019] (i.e., the learning rule). We use basic MC esti-mation to approximate the ECE and employ the OpenES [Salimans et al., 2017] Evolution Strategy (ES) to optimize a population of agents towards more efficient exploration by minimizing this objec-tive. Importantly, this method serves primarily as a simple tool for empirical analysis rather than a primary contribution of this work. See Appendix C for additional details and hyperparameters. 
+
+5.1 Results 
+
+For the Empty and Blocks environments, Figure 3 illustrates the evolution of per-cell visitation heatmaps, progressing from early generations on the left to the best efficient explorers found by the ES on the right. Focusing on the Empty environment, a clear behavioral shift is visible. Ini-tially, agents focus on uniform coverage of the space (leftmost heatmap). However, as the ES finds agents that explore more efficiently, this unstructured exploration shifts into progressively specific trajectories. By the final generation, the agents converge on a helix-like navigation pattern (right-most heatmap). We attribute this structure to the predictive challenges of partial observability (see Figure 7 in Appendix C.6). Specifically, straight traversals with homogeneous floor observations make predicting incoming walls more challenging for the world model. The emergent helix pattern addresses this by actively and periodically sampling these regions of the environment, providing the world model with highly informative and non-redundant data. A similar shift toward structured behavior occurs in the Blocks environment. Here, the most efficient agent found by the ES (rightmost heatmap) adopts a highly targeted strategy that exploits the inherent symmetries of the environment. Because the upper and lower blocks present identical transition dynamics, gathering data from both is redundant. By intensely sampling just one of these regions, the agent acquires the data necessary to accurately generalize to interactions across all structurally similar areas (see Figure 8 in Appendix C.6). This illustrates how efficient exploration naturally penalizes redundancy while driving agents to exploit the regions of the environment that lead to broader generalization, such as structural symmetries. In the Maze environment, the lack of structural symmetries leads to full coverage (Figure 6c in Appendix C.6). Yet, the most efficient explorers achieve this through a highly structured, cyclic trajectory rather than a random walk. As shown by the agent’s initial 45 steps (see plot (b) in Fig-ure 4), it prioritizes sampling the most informative regions (walls and corners) before transitioning to more predictable open areas. Furthermore, rather than moving to the adjacent bottom-right room, the agent goes to the upper region, avoiding redundant resampling of the starting area. This behavior aligns with our theoretical results: efficient exploration inherently schedules trajectories such that highly informative regions are visited first. The RandColors environment introduces regions of varying modeling difficulty, combining a de-terministic corridor with two stochastic rooms, where the irreducible error in the right room is five times the left’s. Tracking the best agent’s trajectory across timestep intervals, in plot (d) of Figure 4, we observe that during the first 140 steps, the agent traverses the corridor in a zig-zag trajectory—learning the patterns that generalize across the corridor—and then transitions into the left (low entropy) room. Only later, as seen in plot (e) of Figure 4 (showing steps 350 to 450), the 8Maze  
+
+> (b)
+> RandColors
+> (d) (c) (e) (a)
+
+Figure 4: Plots (a) and (c) depict the Maze and RandColors environments following the same col-oring scheme as in Figure 3 and including the colors , , and as traversable space (i.e., floor). The rest of the plots show the most efficiently exploring agents’ trajectory across specific timesteps in blue (where earlier steps have higher transparency). Plot (b) shows the first 45 timesteps in Maze ,while (d) and (e) show the timestep intervals 1-140 and 350-450 in RandColors respectively. agent shifts to the (higher entropy) right room exclusively. This progression shows that the agent actively constructs a curriculum [Bengio et al., 2009] for the world model: it prioritizes sampling the most informative and learnable regions before tackling harder, higher-entropy areas. As shown in Figure 6d of Appendix C.6, the agent ultimately dedicates more of its overall interaction time to the right room, as reducing the prediction error in this higher-entropy room demands more data (aligning with Figure 2). Consistent with our theoretical results, this confirms that efficient explorers allocate interactions based on modeling difficulty, informativeness, and generalization capability. 
+
+# 6 Discussion 
+
+From foundational RL algorithms [Strehl and Littman, 2008, Sutton and Barto, 2018] to current state-of-the-art methods [Schulman et al., 2017, Gallici et al., 2025], exploration is primarily driven by random noise. In contrast, Theorem 3.4 demonstrates that optimal efficient exploration is achieved through deliberate and targeted (even deterministic) data collection, motivating the development of strategies that rely on structure and generalization rather than stochasticity. Furthermore, Theorem 4.4 broadens the principled understanding of the behaviors that lead this op-timal efficient exploration under common RL assumptions. Intuitively, it establishes that an efficient explorer sequentially prioritizes the most learnable and informative regions of the environment be-fore addressing parts with higher inherent entropy or irreducible error. Section 4 also provides a theoretical connection to survival: behaviors that optimize exploration efficiency, rather than imme-diate, localized surprise [Schmidhuber, 1991, Pathak et al., 2017, Burda et al., 2019], naturally lead to survival; a vital property for non-episodic and non-ergodic environments, such as the real world. Section 5 goes beyond the assumptions of Section 4 to the more complex setting of partially ob-servable environments, and NN-based (nonstationary) agents and world models capable of general-ization. Results align with our previous theoretical findings, illustrating how efficient exploration gives rise to sophisticated emergent behaviors that automatically create curricula for world models. For instance, agents actively exploit symmetries in the environment and systematically sequence interactions according to modeling complexity. Additional discussion on these emerging curricula is provided in Appendix D.1. Furthermore, the evolutionary process employed to optimize towards efficient exploration in Sec-tion 5 reveals a meta-level curriculum. By tracking the best agents across generations (see Figure 3) of the evolutionary process, we observe behaviors that grow progressively more sophisticated over time. The emergence of highly structured, non-trivial behaviors—such as the helix pattern in the 
+
+Empty environment—suggests that in richer, unconstrained domains, optimizing for efficient explo-ration could provide a principled mechanism to sustain the open-ended generation of increasingly complex behavior [Hughes et al., 2024]. Importantly, unlike recent trends in this area [Bauer et al., 2023, Faldor et al., 2025], we show that efficient exploration is enough to drive this open-ended pro-cess entirely in the absence of extrinsic objectives or tasks [Silver et al., 2021]. See Appendix D.2 for an extended discussion on the open-endedness definition by Hughes et al. [2024] and our efficient exploration framework. Finally, extending our theoretical analysis to accommodate more expressive model classes presents an exciting path forward. In particular, analyzing efficient exploration under world models with gen-eralization properties—such as Gaussian Processes or Neural Tangent Kernels [Jacot et al., 2018]— would offer deeper and rigorous insights into how optimal explorers exploit features of complex environments. Furthermore, while the basic MC estimation of the ECE employed in Section 5 9served to observe the behaviors of efficient explorers beyond the assumptions of Section 4, devel-oping scalable approximations for more complex settings remains a promising direction for future work. 
+
+Acknowledgments 
+
+We are grateful to Xabier Barandiaran, Miguel Aguilera, Iñigo Urteaga, and Borja Calvo for the insightful conversations and feedback in the early stages of the project. We also thank Ainhize Barrainkua and Mahshid Rahmani Hanzaki for reading preliminary versions of this paper, and Jose A. Pascual for the technical support. Mikel Malagón acknowledges a predoctoral grant from the Spanish MICIU/AEI with code PREP2022-000309, associated with the research project PID2022-137442NB-I00 funded by the Spanish MICIU/AEI/10.13039/501100011033 and FEDER, EU. Josu Ceberio has been partially supported by the Spanish MICIU/AEI/10.13039/PID2023-149195NB-I00. This work is also funded through the BCAM Severo Ochoa accreditation CEX2021-001142-S/MICIN/AEI/10.13039/501100011033; and the Research Groups 2026-2029 (IT2109-26), the BERC 2026-2029 program and Elkartek (KK-2026/00055 and KK-2026/00087) from the Basque Government. Finally, this research was partially funded by the Natural Sciences and Engineering Research Council of Canada (NSERC) and the Canada CIFAR AI Chairs program. 
+
+# References 
+
+David Abel, André Barreto, Benjamin Van Roy, Doina Precup, Hado P van Hasselt, and Satinder Singh. A definition of continual reinforcement learning. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 36:50377–50407, 2023. David Abel, Mark K Ho, and Anna Harutyunyan. Three dogmas of reinforcement learning. In In Proceedings of the Reinforcement Learning Conference (RLC) , 2024. David Abel, Michael Bowling, Andre Barreto, Will Dabney, Shi Dong, Steven Stenberg Hansen, Anna Harutyunyan, Khimya Khetarpal, Clare Lyle, Razvan Pascanu, Georgios Piliouras, Doina Precup, Jonathan Richens, Mark Rowland, Tom Schaul, and Satinder Singh. Plasticity as the mirror of empowerment. In Proceedings of the Conference on Neural Information Processing Systems (NeurIPS) , 2025. Douglas Adams. The Hitchhiker’s Guide to the Galaxy . Pan Books, 1979. Blaise Aguera y Arcas. What is Intelligence?: Lessons from AI about Evolution, Computing, and Minds . MIT Press, 2025. Peter Auer, Nicolo Cesa-Bianchi, and Paul Fischer. Finite-time analysis of the multiarmed bandit problem. Machine Learning , 47(2):235–256, 2002. Mohammad Gheshlaghi Azar, Ian Osband, and Rémi Munos. Minimax regret bounds for reinforce-ment learning. In Proceedings of the International Conference on Machine Learning (ICML) ,pages 263–272, 2017. Xabier E Barandiaran, Ezequiel Di Paolo, and Marieke Rohde. Defining agency: Individuality, normativity, asymmetry, and spatio-temporality in action. Adaptive Behavior , 17(5):367–386, 2009. Jakob Bauer, Kate Baumli, Feryal Behbahani, Avishkar Bhoopchand, Nathalie Bradley-Schmieg, Michael Chang, Natalie Clay, Adrian Collister, Vibhavari Dasagi, Lucy Gonzalez, et al. Human-timescale adaptation in an open-ended task space. In Proceedings of the International Conference on Machine Learning (ICML) , pages 1887–1935, 2023. Marc Bellemare, Sriram Srinivasan, Georg Ostrovski, Tom Schaul, David Saxton, and Remi Munos. Unifying count-based exploration and intrinsic motivation. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 2016. Yoshua Bengio, Jérôme Louradour, Ronan Collobert, and Jason Weston. Curriculum learning. In 
+
+Proceedings of the International Conference on Machine Learning (ICML) , pages 41–48, 2009. 10 Michael Beukman, Samuel Coward, Michael Matthews, Mattie Fellows, Minqi Jiang, Michael D Dennis, and Jakob Nicolaus Foerster. Refining minimax regret for unsupervised environment design. In Proceedings of the International Conference on Machine Learning (ICML) , 2024. James Bradbury, Roy Frostig, Peter Hawkins, Matthew James Johnson, Yash Katariya, Chris Leary, Dougal Maclaurin, George Necula, Adam Paszke, Jake VanderPlas, Skye Wanderman-Milne, and Qiao Zhang. JAX: composable transformations of Python+NumPy programs, 2018. URL http: //github.com/jax-ml/jax .Jake Bruce, Michael D Dennis, Ashley Edwards, Jack Parker-Holder, Yuge Shi, Edward Hughes, Matthew Lai, Aditi Mavalankar, Richie Steigerwald, Chris Apps, et al. Genie: Generative interac-tive environments. In Proceedings of the International Conference on Machine Learning (ICML) ,2024. Yuri Burda, Harrison Edwards, Amos Storkey, and Oleg Klimov. Exploration by random network distillation. In Proceedings of the International Conference on Learning Representations (ICLR) ,2019. Nuttapong Chentanez, Andrew Barto, and Satinder Singh. Intrinsically motivated reinforcement learning. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 17, 2004. Kyunghyun Cho, Bart Van Merriënboer, Ça˘ glar Gulçehre, Dzmitry Bahdanau, Fethi Bougares, Hol-ger Schwenk, and Yoshua Bengio. Learning phrase representations using rnn encoder–decoder for statistical machine translation. In Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMNLP) , pages 1724–1734, 2014. François Chollet. On the measure of intelligence. arXiv preprint arXiv:1911.01547 , 2019. Gregoire Deletang, Anian Ruoss, Paul-Ambroise Duquenne, Elliot Catt, Tim Genewein, Christo-pher Mattern, Jordi Grau-Moya, Li Kevin Wenliang, Matthew Aitchison, Laurent Orseau, et al. Language modeling is compression. In Preceedings of the 2024 International Conference on Learning Representations (ICLR) , 2024. Shibhansh Dohare, J Fernando Hernandez-Garcia, Qingfeng Lan, Parash Rahman, A Rupam Mah-mood, and Richard S Sutton. Loss of plasticity in deep continual learning. Nature , 632(8026): 768–774, 2024. Kenji Doya. Bayesian Brain: Probabilistic Approaches to Neural Coding . MIT Press, 2002. Esraa Elelimy, David Szepesvari, Martha White, and Michael Bowling. Rethinking the foundations for continual reinforcement learning. In Proceedings of the Reinforcement Learning Conference (RLC) , 2025. Maxence Faldor, Jenny Zhang, Antoine Cully, and Jeff Clune. OMNI-EPIC: Open-endedness via models of human notions of interestingness with environments programmed in code. In Proceed-ings of the International Conference on Learning Representations (ICLR) , 2025. Jesse Farebrother, Matteo Pirotta, Andrea Tirinzoni, Marc G Bellemare, Alessandro Lazaric, and Ahmed Touati. Compositional planning with jumpy world models. In ICLR 2026 the 2nd Work-shop on World Models: Understanding, Modelling and Scaling , 2026. Meire Fortunato, Mohammad Gheshlaghi Azar, Bilal Piot, Jacob Menick, Matteo Hessel, Ian Os-band, Alex Graves, Volodymyr Mnih, Remi Munos, Demis Hassabis, Olivier Pietquin, Charles Blundell, and Shane Legg. Noisy networks for exploration. In Proceedings of the International Conference on Learning Representations (ICLR) , 2018. Karl Friston. The free-energy principle: a rough guide to the brain? Trends in Cognitive Sciences ,13(7):293–301, 2009. Karl Friston. The free-energy principle: a unified brain theory? Nature Reviews Neuroscience , 11 (2):127–138, 2010. 11 Matteo Gallici, Mattie Fellows, Benjamin Ellis, Bartomeu Pou, Ivan Masmitja, Jakob Nicolaus Foerster, and Mario Martin. Simplifying deep temporal difference learning. In Proceedings of the International Conference on Learning Representations (ICLR) , 2025. Jean-Baptiste Gaya, Thang Doan, Lucas Caccia, Laure Soulier, Ludovic Denoyer, and Roberta Raileanu. Building a subspace of policies for scalable continual learning. In Proceedings of the International Conference of Learning Representations (ICLR) , 2023. David E Goldberg. Loci and the traveling salesman problem. In Proceedings of the 1st International Conference on Genetic Algorithms, IEEE , pages 154–159, 1985. Richard Langton Gregory. Perceptions as hypotheses. Philosophical Transactions of the Royal Society of London. B, Biological Sciences , 290(1038):181–197, 1980. David Ha and Jürgen Schmidhuber. Recurrent world models facilitate policy evolution. In Proceed-ings of the Advances in Neural Information Processing Systems (NeurIPS) , pages 2451–2463. 2018. Hermann v. Helmholtz. Handbuch der physiologischen Optik . L. Voss, 1867. Mikael Henaff, Roberta Raileanu, Minqi Jiang, and Tim Rocktäschel. Exploration via ellipti-cal episodic bonuses. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 2022. Matteo Hessel, Joseph Modayil, Hado Van Hasselt, Tom Schaul, Georg Ostrovski, Will Dabney, Dan Horgan, Bilal Piot, Mohammad Azar, and David Silver. Rainbow: Combining improvements in deep reinforcement learning. In Proceedings of the AAAI Conference on Artificial Intelligence (AAAI) , 2018. Yuzhen Huang, Jinghan Zhang, Zifei Shan, and Junxian He. Compression represents intelligence linearly. In Proceedings of the Conference on Language Modeling (COLM) , 2024. Edward Hughes, Michael D Dennis, Jack Parker-Holder, Feryal Behbahani, Aditi Mavalankar, Yuge Shi, Tom Schaul, and Tim Rocktäschel. Position: Open-endedness is essential for artificial su-perhuman intelligence. In Proceedings of the International Conference on Machine Learning (ICML) , 2024. Arthur Jacot, Franck Gabriel, and Clément Hongler. Neural tangent kernel: Convergence and gen-eralization in neural networks. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 31, 2018. Khurram Javed and Richard S. Sutton. The big world hypothesis and its ramifications for artificial intelligence. In Finding the Frame: An RLC Workshop for Examining Conceptual Frameworks ,2024. Chi Jin, Akshay Krishnamurthy, Max Simchowitz, and Tiancheng Yu. Reward-free exploration for reinforcement learning. In Proceedings of the International Conference on Machine Learning (ICML) , 2020. Khimya Khetarpal, Matthew Riemer, Irina Rish, and Doina Precup. Towards continual reinforce-ment learning: A review and perspectives. Journal of Artificial Intelligence Research (JAIR) , 75: 1401–1476, 2022. David C Knill and Alexandre Pouget. The bayesian brain: the role of uncertainty in neural coding and computation. Trends in Neurosciences , 27(12):712–719, 2004. Akarsh Kumar, Chris Lu, Louis Kirsch, Yujin Tang, Kenneth O Stanley, Phillip Isola, and David Ha. Automating the search for artificial life with foundation models. arXiv preprint arXiv:2412.17799 ,2024. Robert Tjarko Lange. evosax: Jax-based evolution strategies. In Proceedings of the Companion Conference on Genetic and Evolutionary Computation (GECCO) , pages 659–662, 2023. Shane Legg, Marcus Hutter, et al. A collection of definitions of intelligence. Frontiers in Artificial Intelligence and Applications , 157:17, 2007. 12 Joel Lehman and Kenneth O Stanley. Abandoning objectives: Evolution through the search for novelty alone. Evolutionary Computation , 19(2):189–223, 2011. Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In Proceedings of the International Conference on Learning Representations (ICLR) , 2019. Clare Lyle, Zeyu Zheng, Evgenii Nikishin, Bernardo Avila Pires, Razvan Pascanu, and Will Dabney. Understanding plasticity in neural networks. In Proceedings of the International Conference on Machine Learning (ICML) , pages 23190–23211, 2023. Mikel Malagon, Josu Ceberio, and Jose A Lozano. Self-composing policies for scalable continual reinforcement learning. In Proceedings of the International Conference on Machine Learning (ICML) , 2024. Michael Matthews, Michael Beukman, Chris Lu, and Jakob Nicolaus Foerster. Kinetix: Investigat-ing the training of general agents through open-ended physics-based control tasks. In Proceedings of the International Conference on Learning Representations (ICLR) , 2025. Sobhan Miryoosefi and Chi Jin. A simple reward-free approach to constrained reinforcement learn-ing. In Proceedings of the International Conference on Machine Learning (ICML) , pages 15666– 15698, 2022. Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Andrei A Rusu, Joel Veness, Marc G Belle-mare, Alex Graves, Martin Riedmiller, Andreas K Fidjeland, Georg Ostrovski, et al. Human-level control through deep reinforcement learning. Nature , 518(7540):529–533, 2015. Volodymyr Mnih, Adria Puigdomenech Badia, Mehdi Mirza, Alex Graves, Timothy Lillicrap, Tim Harley, David Silver, and Koray Kavukcuoglu. Asynchronous methods for deep reinforcement learning. In Proceedings of the International Conference on Machine Learning (ICML) , 2016. Dustin Morrill, Ryan D’Orazio, Marc Lanctot, James R Wright, Michael Bowling, and Amy R Greenwald. Efficient deviation types and learning for hindsight rationality in extensive-form games. In Proceedings of the International Conference on Machine Learning (ICML) , pages 7818–7828, 2021. Pierre-Yves Oudeyer, Frdric Kaplan, and Verena V Hafner. Intrinsic motivation systems for au-tonomous mental development. IEEE Transactions on Evolutionary Computation (IEEE TEC) ,11(2):265–286, 2007. Jack Parker-Holder, Minqi Jiang, Michael Dennis, Mikayel Samvelyan, Jakob Foerster, Edward Grefenstette, and Tim Rocktäschel. Evolving curricula with regret-based environment design. In 
+
+Proceedings of the International Conference on Machine Learning (ICML) , pages 17473–17498, 2022. Thomas Parr, Giovanni Pezzulo, and Karl J Friston. Active inference: the free energy principle in mind, brain, and behavior . MIT Press, 2022. Deepak Pathak, Pulkit Agrawal, Alexei A Efros, and Trevor Darrell. Curiosity-driven exploration by self-supervised prediction. In Proceedings of the International Conference on Machine Learning (ICML) , 2017. Martin L. Puterman. Markov Decision Processes: Discrete Stochastic Dynamic Programming . John Wiley & Sons, 1994. Marc Rigter, Minqi Jiang, and Ingmar Posner. Reward-free curricula for training robust world models. In Proceedings of the International Conference on Learning Representations (ICLR) ,2024. Andrei A Rusu, Neil C Rabinowitz, Guillaume Desjardins, Hubert Soyer, James Kirkpatrick, Koray Kavukcuoglu, Razvan Pascanu, and Raia Hadsell. Progressive neural networks. arXiv preprint arXiv:1606.04671 , 2016. Tim Salimans, Jonathan Ho, Xi Chen, Szymon Sidor, and Ilya Sutskever. Evolution strategies as a scalable alternative to reinforcement learning. arXiv preprint arXiv:1703.03864 , 2017. 13 Jürgen Schmidhuber. A possibility for implementing curiosity and boredom in model-building neu-ral controllers. In Proceedings of the International Conference on Simulation of Adaptive Behav-ior: From Animals to Animats , pages 222–227, 1991. Jürgen Schmidhuber. Driven by compression progress: A simple principle explains essential aspects of subjective beauty, novelty, surprise, interestingness, attention, curiosity, creativity, art, science, music, jokes. In Workshop on Anticipatory Behavior in Adaptive Learning Systems , pages 48–76. Springer, 2008. John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. Proximal policy optimization algorithms. arXiv preprint arXiv:1707.06347 , 2017. Pranav Shyam, Wojciech Ja´ skowski, and Faustino Gomez. Model-based active exploration. In 
+
+Proceedings of the International Conference on Machine Learning (ICML) , pages 5779–5788. PMLR, 2019. David Silver, Satinder Singh, Doina Precup, and Richard S Sutton. Reward is enough. Artificial Intelligence , 299:103535, 2021. Lisa B Soros, Joel Lehman, and Kenneth O Stanley. Open-endedness: The last grand challenge you’ve never heard of, 2017. URL https://www.oreilly.com/radar/ open-endedness-the-last-grand-challenge-youve-never-heard-of/ .Kenneth O Stanley and Joel Lehman. Why greatness cannot be planned: The myth of the objective .Springer, 2015. Alexander L Strehl and Michael L Littman. An analysis of model-based interval estimation for markov decision processes. Journal of Computer and System Sciences , 74(8):1309–1331, 2008. Richard S. Sutton and Andrew G. Barto. Reinforcement Learning: An Introduction . MIT Press, 2018. William R Thompson. On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika , 25(3/4):285–294, 1933. Sebastian B Thrun. Efficient exploration in reinforcement learning . Carnegie Mellon University, 1992. Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and Anima Anandkumar. Voyager: An open-ended embodied agent with large language models. 
+
+Transactions on Machine Learning Research (TMLR) , 2024. Maciej Wołczyk, Michał Zaj ˛ ac, Razvan Pascanu, Łukasz Kuci´ nski, and Piotr Miło´ s. Continual world: A robotic benchmark for continual reinforcement learning. Proceedings of the Advances in Neural Information Processing Systems (NeurIPS) , 34:28496–28510, 2021. Zihan Zhang, Simon Du, and Xiangyang Ji. Near optimal reward-free reinforcement learning. In 
+
+Proceedings of the International Conference on Machine Learning (ICML) , pages 12402–12412, 2021. 14 A Connections to previous work 
+
+There exist many connections between the ideas presented in this paper and prior work across dif-ferent fields. A comprehensive treatment of these connections or formal unification with existing theories is beyond the scope of this paper. Instead, we briefly discuss a few influential perspectives that are most closely related at a conceptual level, drawing informal connections and clarifying key conceptual differences. 
+
+Exploration and intrinsic motivation in RL Techniques designed to enhance exploration are nearly ubiquitous in reinforcement learning. Common approaches include injecting noise into the agents decision-making process [Mnih et al., 2015, Fortunato et al., 2018, Hessel et al., 2018], en-tropy regularization [Mnih et al., 2016, Schulman et al., 2017], and explicit reward bonuses for exploration [Chentanez et al., 2004, Bellemare et al., 2016, Henaff et al., 2022], commonly referred to as intrinsic motivation. Methods in the latter category rely on auxiliary signals that quantify some notion of exploration and encourage agents to maximize it. A prominent class of intrinsic motivation methods are those based on visitation counts, which try to maximize environment coverage. Early examples include the work of Strehl and Littman [2008], which augments the reward with a term proportional to N (s, a )−1/2, where N (s, a ) denotes the number of times action a has been taken in state s. More recently, Bellemare et al. [2016] extended this idea to non-tabular settings by approximating state visitation counts using density models. While effective at encouraging coverage [Henaff et al., 2022] as a form of exploration, these methods do not distinguish between states in terms of their informativeness—under efficient exploration, not all regions of the environment are equally valuable, as some interactions might lead to experience that generalizes more broadly to the underlying structure of the environment or is easier to learn. For instance, see results in Figures 3 and 4 from Section 5). Another widely used exploration signal is model surprise. Early work by Schmidhuber [1991], fol-lowed by Chentanez et al. [2004] and Oudeyer et al. [2007], proposed using the prediction error of a world model as an intrinsic reward. Subsequent approaches further developed this idea by measuring disagreement among ensembles of predictive models [Shyam et al., 2019], the error of an inverse dynamics model [Pathak et al., 2017], or the error in predicting the features of a randomly initial-ized and fixed network [Burda et al., 2019]. Although these methods employ predictive models to drive exploration, their objectives differ fundamentally from efficient exploration as defined in this work. In particular, maximizing immediate surprise favors local prediction errors, whereas our for-mulation prioritizes sampling trajectories that improve model generalization across the environment as a whole, even if this entails revisiting (or not) familiar states or reducing prioritizing long-term prediction error over short-term one (e.g., see results for the Maze environment in Figure 4). 
+
+Continual reinforcement learning Javed and Sutton [2024] argue that continual RL [Abel et al., 2023] is required for developing agents that are embodied in complex big worlds as ours. Indeed, continual RL has attracted increasing attention in recent years [Khetarpal et al., 2022]. However, many existing approaches [Rusu et al., 2016, Wołczyk et al., 2021, Gaya et al., 2023, Malagon et al., 2024] retain central assumptions inherited from the traditional RL paradigm that may be ill-suited to continual RL scenarios [Abel et al., 2024, Elelimy et al., 2025]. In particular, Elelimy et al. [2025] identify four foundational assumptions of conventional RL that conflict with the goals of continual RL [Abel et al., 2023]: the Markov decision process formal-ism, reliance on atemporal artifacts such as fixed training and deployment phases, evaluation via expected cumulative reward, and episodic benchmarks. In contrast, the framework we develop in Sections 2 and 3 deliberately avoids these assumptions by proposing formalisms that do not rely on episodic environments, explicit reward functions (of any type), Markov assumptions, or predefined task boundaries. Moreover, we argue that efficient exploration is a sufficient (intrinsic) objective for continual learning agents to develop increasingly complex behaviors autonomously with minimal restrictions. 
+
+Reward-free reinforcement learning Reward-free reinforcement learning commonly partitions the agents interaction with the environment into two distinct stages [Jin et al., 2020, Zhang et al., 2021, Miryoosefi and Jin, 2022]. In the first stage, the agent explores the environment to collect a dataset of interactions [Azar et al., 2017]. In the second, this dataset is used—often via planning—to 15 derive a policy with bounded regret for an arbitrary downstream reward function [Jin et al., 2020]. Although this line of work also studies exploration in the absence of explicit rewards, exploration efficiency is ultimately evaluated in terms of the usefulness of the collected experience for solving externally specified reward functions. In contrast, our work does not treat exploration as a preparatory phase for later reward optimization. Instead, we avoid reliance on atemporal artifacts such as fixed training and deployment stages—a common practice in the RL literature that has been critically examined by Abel et al. [2024] and Elelimy et al. [2025]. We define exploration efficiency as an intrinsic, ongoing (nonstationary) objective, independent of any explicit utility or reward function, and study its consequences in non-episodic and partially observable settings that do not necessarily fulfill the Markov property. 
+
+Open-endedness A growing body of work argues that explicit objective optimization can hinder long-term progress by prematurely converging to local optima and failing to discover necessary stepping stones [Stanley and Lehman, 2015, Soros et al., 2017]. This perspective emphasizes open-ended exploration over direct optimization, suggesting that breakthroughs arise from serendipity and novelty search rather than predefined goals [Lehman and Stanley, 2011, Kumar et al., 2024]. The emergence of intelligent behavior via open-ended novelty search has inspired a growing num-ber of works in recent years [Bauer et al., 2023, Bruce et al., 2024, Matthews et al., 2025], even characterizing it as essential for superhuman-level intelligence [Hughes et al., 2024]. Most of these approaches require on an automatic process to generate diverse tasks and environ-ments, often framed as Unsupervised Environment Design (UED) [Parker-Holder et al., 2022, Bauer et al., 2023, Rigter et al., 2024, Beukman et al., 2024]. Thus, works based on UED and others such as OMNI-EPIC [Faldor et al., 2025] or Voyager [Wang et al., 2024] rely on systems capable of pro-ducing large and evolving task distributions. While effective at expanding the space of behaviors an agent may encounter, these methods typically assume substantial control over the environment-generation process. Moreover, directly increasing task diversity also expands the task space, increas-ing the challenge of identifying tasks that are both informative and learnable. In contrast, our work does not assume access to environment or task generation mechanisms. Instead, we focus on a fixed environment and study how efficient exploration can sustain the emergence of increasingly complex behavior through the agent’s interaction dynamics alone, as shown in Section 5 and discussed in Appendix D.2. 
+
+Active inference Since Helmholtz [1867], a broad class of cognition theories agree that the brain maintains and updates an internal model of the environment [Gregory, 1980, Doya, 2002, Knill and Pouget, 2004, Friston, 2009]. The Free Energy Principle (FEP) [Friston, 2010] has been proposed as a unifying account of this view. Under the FEP, living agents are characterized as systems that minimize the surprise of their sensory observations—equivalently, a variational free-energy bound— thereby maintaining homeostasis [Parr et al., 2022]. While active inference [Parr et al., 2022], the action-oriented formulation of the FEP, shares some similarities with the present work—notably, behavior that is driven by the reduction of model error—there are fundamental differences. Active inference requires agents to have prior preferences over the causes of sensory inputs, which in the case of living agents can encode preferences over survival-relevant states (e.g., a fish assigning high prior probability to being in water). In contrast, our formulation assumes no such priors. Instead, we argue that behaviors commonly associated with preferences, including those supporting survival, can emerge from efficient exploration alone. Furthermore, efficient exploration evaluates and minimizes model error globally, over the entire set of behaviors that may occur in a given environment (see Definition 2.6), rather than minimizing expected surprise restricted to trajectories experienced under a particular agent. 
+
+Intelligence There are many definitions of intelligence [Legg et al., 2007, Aguera y Arcas, 2025], and this paper does not propose a new one. Nevertheless, several influential ideas are closely re-lated to the ones presented in this paper and are therefore worth briefly discussing, mainly those by Schmidhuber [2008] and Chollet [2019]—note that Silver et al. [2021] is already discussed in Section 1. Intelligence as a process of compression has motivated multiple views on the topic Schmidhuber [2008], Deletang et al. [2024], Huang et al. [2024]. These are based on the idea that intelligent behav-ior emerges from an agents drive to discover compact representations of its experience. In particular, 16 Schmidhuber [2008] proposes compression progress—the intrinsic objective of acting to improve the compressibility of observed data—as a unifying explanation for phenomena such as curiosity, creativity, scientific discovery, and art. While our framework can be interpreted through a compres-sion lens, it differs fundamentally in what is being compressed. Under compression progress, agents seek actions that immediately improve the compressibility of their lived experience. In contrast, ef-ficient exploration prioritizes experience that improves the compressibility of the environment itself, potentially at the expense of short-term compression gains. This distinction leads to qualitatively different behaviors and objectives, some have already been discussed in the first paragraph of this section, as [Schmidhuber, 1991] implements approximated compression progress. Another influential perspective is offered by Chollet [2019], who defines intelligence as a measure of skill-acquisition efficiency over a scope of tasks. Although we do not establish a formal connection between this definition and our efficient exploration formalism, both share important conceptual characteristics. In sufficiently rich environments, efficient exploration requires rapid acquisition of reusable skills. For example, as illustrated by the robot scenario in the introduction, a robot that quickly learns to navigate the hostile island will explore more efficiently and at the same time— under Chollet’s definition—be more intelligent than one that does not. At the same time, important differences remain: Chollet’s definition is explicitly task-centric, whereas efficient exploration is agnostic to externally specified tasks, i.e., extrinsic objectives. Finally, we do not claim that efficient exploration constitutes a definition or measure of intelligence. Rather, we view intelligent behavior as a prerequisite for achieving efficient exploration in suffi-ciently challenging environments, positioning efficient exploration as a driver and beneficiary of intelligence rather than its formal characterization. 
+
+# B Proofs 
+
+B.1 Proof of Proposition 2.7 
+
+Let λunif ∈ Λall be the agent that always takes actions uniformly at random. Then, according to Equation (1), the probability over histories of length k that it induces in environment e is given by, 
+
+p(h1: k | λunif , e ) = 
+
+> k
+
+∏
+
+> i=1
+
+e(oi | h1: i−1, a i)λunif (ai | h1: i−1). (9) As, ∀h∈H ,a ∈A λunif (a | h) = 1 /|A| = c, then, we can write the equation above as, 
+
+p(h1: k | λunif , e ) = 
+
+> k
+
+∏
+
+> i=1
+
+e(oi | h1: i−1, a i) c = ckk∏
+
+> i=1
+
+e(oi | h1: i−1, a i), (10) and thus, proving Proposition 2.7. 
+
+B.2 Proposition B.1 Proposition B.1. Let Λ∗ 
+
+> t
+
+be the set of optimally exploring agents for some time horizon t as defined in Equation (5) . For all optimal explorers in λ∗ ∈ Λ∗ 
+
+> t
+
+, for all history prefixes h1: i−1 ∈ H i−1 of length 1 ≤ i ≤ t and actions ai, a ′ 
+
+> i
+
+∈ A such that λ∗(ai | h1: i−1) > 0 ∧ λ∗(a′ 
+
+> i
+
+| h1: i−1) > 0, then, 
+
+EH1: t
+
+[ t∑
+
+> k=i
+
+ℓglobal  
+
+> t
+
+(ω(H1: k)) | H1: i−1 = h1: i−1, A i = ai ; λ∗, e 
+
+]
+
+=
+
+EH1: t
+
+[ t∑
+
+> k=i
+
+ℓglobal  
+
+> t
+
+(ω(H1: k)) | H1: i−1 = h1: i−1, A i = a′ 
+
+> i
+
+; λ∗, e 
+
+]
+
+. (11) 
+
+Proof. We prove this by contradiction. Suppose that there exists actions ai and a′ 
+
+> i
+
+in the support of 
+
+λ∗(h1: i−1) such that taking the next action Ai = ai leads to a higher (less efficient) ECE compared to Ai = a′
+
+> i
+
+, i.e., replace the equality in Equation (11) with a > inequality. We can construct a new agent λ ∈ Λall that is identical to λ∗ except that it redistributes the probability mass from ai to a′
+
+> i
+
+,i.e., λ(a′ 
+
+> i
+
+| h1: i−1) = λ∗(ai | h1: i−1) + λ∗(a′ 
+
+> i
+
+| h1: i−1) and λ(ai | h1: i−1) = 0 .17 By Assumption 2.3, ∃λ ∈ Λ that behaves identically to λ∗ (in almost all histories up to length t)but completely avoids the suboptimal choice ai in favor of a′ 
+
+> i
+
+given h1: i−1, strictly improving the ECE, εt(λ) < ε t(λ∗). This directly contradicts the premise that λ∗ ∈ Λ∗ 
+
+> t
+
+. Therefore, all actions with positive probability under an optimal explorer yield the exact same expected future cumulative global loss. ■
+
+B.3 Proof of Theorem 3.4 
+
+Based on Proposition B.1 we prove the properties in Theorem 3.4 independently. 
+
+1) There always exists at least one fully deterministic optimal explorer: ∀e∈E , Λ∗ 
+
+> t
+
+∩ Λdet ̸ = ∅.
+
+As Λ is a non-empty subset of Λall (see Definition 2.1), then, Λ∗ 
+
+> t
+
+is a non-empty subset of Λ. Let 
+
+λ∗ ∈ Λ∗ 
+
+> t
+
+be an optimal explorer. If λ∗ ∈ Λdet , the proof trivially concludes. Let λ∗ /∈ Λdet . We can always create a deterministic agent λdet ∈ Λdet by deterministically selecting an action in the support of λ∗(h). Namely, 
+
+λdet (a | h) = 
+
+{1 if a = ˆ a for some selected ˆa ∈ { a′ ∈ A : λ∗(a′ | h) > 0},
+
+0 otherwise . (12) By Proposition B.1, for any history prefix h1: i−1, all actions in the support of λ∗(h1: i−1) lead to the exact same future ECE. By backward induction from timestep t to 1, replacing the stochastic action selection over λ∗(h1: i−1) with a deterministic choice of ˆa (see Equation (12) above) at each step does not alter the future ECE. Consequently, εt(λdet ) = εt(λ∗), and thus, λdet ∈ Λ∗ 
+
+> t
+
+∩ Λdet . This proves the first property in Theorem 3.4. 
+
+2) There exist environments with stochastic optimal explorers: ∃e∈E Λ∗ 
+
+> t
+
+\ Λdet ̸ = ∅.
+
+We prove this by constructing an environment e ∈ E where a non-deterministic optimal explorer exists. Let e ∈ E where λ1det , λ 2det ∈ Λ∗ 
+
+> t
+
+∩Λdet and ∃h1: t∈H t such that p(h1: t | λunif , e ) > 0, and for a prefix 
+
+h1: i of length i of the history h1: t both agents take the same sequence of actions and then differ, i.e., 
+
+∃i∈[0 ,t −1] p(h1: i | λ1det , e ) = p(h1: i | λ2det , e ) ∧ p(h1: i+1 | λ1det , e )̸ = p(h1: i+1 | λ2det , e ).3 Note that at this timestep i + 1 , we can stochastically choose between the action a1 
+
+> i+1
+
+= arg max a∈A λ1det (a |
+
+h1: i) and a2 
+
+> i+1
+
+= arg max a∈A λ2det (a | h1: i) and still obtain the optimal ECE as long as the rest of the choices are coherent with the chosen agent λ1det or λ2det . In other words, we can construct an agent λ ∈ Λ∗ 
+
+> t
+
+\ Λdet that given the k-th prefix of h1: t act according the following rule, 
+
+λ(a | h1: k) = 
+
+
+
+λ1det (a | h1: k) if k < i pλ 1det (a | h1: k) + (1 − p)λ2det (a | h1: k) if k = iλ1det (a | h1: k) if k > i and ai+1 = a1
+
+> i+1
+
+λ2det (a | h1: k) if k > i and ai+1 = a2
+
+> i+1
+
+(13) where p ∈ [0 , 1] and for any other history that is not h1: t the agent follows either λ1det or λ2det .4 Note that λ must achieve the same ECE as λ1det or λ2det , as otherwise we reach a direct contradiction with Proposition B.1. Therefore, λ ∈ Λ∗ 
+
+> t
+
+, completing the proof for the second property in Theorem 3.4. 
+
+Examples Examples of these environments include some symmetric environments, in which the visitation order of some regions of the environment results in equally informative experiences. For instance, visiting an empty room in a clockwise pattern or anti-clockwise pattern can lead to equally informative experiences. Other examples include selecting from multiple portals that lead to the same region of the environment, or the trivial case in which ω always returns the same function 
+
+f ∈ F , ∀h∈H ω(h) = f .
+
+B.4 Proof of Proposition 4.3 
+
+Given Assumption 4.2 in Section 4, we have that λ(h1: t) = λ(h1: t−1atst) = λ(st), where we use the h1: t = h1: t−1atst to denote a history of length t − 1 where the action at and state st are                      
+
+> 3Note that for deterministic agents p(h|λdet , e )>0iff λdet always takes the actions in hgiven observations in h.
+> 4In Equation (13), using λ1det (a|h1: k)or λ2det (a|h1: k)for the first branch leads to the same action choice.
+
+18 concatenated to create a history of length t. Similarly, we have that f (s | h1: t−1, a t) = f (s |
+
+st−1, a t) as pe is Markovian (see Definition 4.1). Therefore, we can write ℓglobal  
+
+> t
+
+in Equation (3) as, 
+
+ℓglobal  
+
+> t
+
+(f ) = 
+
+> t−1
+
+∑
+
+> k=0
+
+∑
+
+> h1: k
+
+p(h1: k | pe, λ unif ) ∑
+
+> a
+
+d(f (· | h1: k, a ), p e(· | h1: k, a )),
+
+=
+
+> t−1
+
+∑
+
+> k=0
+
+∑
+
+> h1: k
+
+∑
+
+> a
+
+p(h1: k | pe, λ unif ) d(f (· | sk, a ), p e(· | sk, a )). (14) Note that sk in the equations above is the k-th (last) state of the history h1: k. By using hsk ∈ H sk =
+
+{hk ∈ H k : sk = s} to denote a history of length k where the last state in the history is s, we can write the equation above as, 
+
+ℓglobal  
+
+> t
+
+(f ) = 
+
+> t−1
+
+∑
+
+> k=0
+
+∑
+
+> a
+
+∑
+
+> s
+
+ ∑ 
+
+> hs
+> 1: k∈H sk
+
+p(hs 
+
+> 1: k
+
+| pe, λ unif )
+
+ d(f (· | s, a ), p e(· | s, a ))
+
+= ∑
+
+> a
+
+∑
+
+> s
+
+d(f (· | s, a ), p e(· | s, a )) t−1∑
+
+> k=0
+
+∑ 
+
+> hs
+> 1: k∈H sk
+
+p(hs 
+
+> 1: k
+
+| pe, λ unif )= ∑
+
+> a
+
+∑
+
+> s
+
+d(f (· | s, a ), p e(· | s, a )) t−1∑
+
+> k=0
+
+Pr( Sk = s | λunif , p e)
+
+︸ ︷︷ ︸ 
+
+> νt−1
+> pe (s)
+
+. (15) Note that, νt−1 
+
+> pe
+
+(s) is the expected probability of visiting state s in the steps k ∈ [1 , t ), and can be further simplified under the Markovian assumption (see Definition 4.1). 
+
+Remark B.2. Let P ∈ [0 , 1] |S|×∥ states |, where each value is given by, 
+
+Pss ′ = 1
+
+|A| 
+
+∑
+
+> a
+
+pe(s′ | s, a ). (16) 
+
+Recall, h1:0 = s0, thus, 
+
+νt−1 
+
+> pe
+
+(s) = 
+
+> t−1
+
+∑
+
+> k=0
+
+(1s0 Pk)s (17) 
+
+where 1s0 is a vector of zeros of length |S| except in the index corresponding to s0, where it takes the value 1. 
+
+This completes the proof for Proposition 4.3. 
+
+B.5 Proof of Theorem 4.4 
+
+Proof. Assuming the squared L2 norm as the discrepancy function d in Equation (7) we can expand the optimization problem from Equation (5) as, 
+
+Λ∗ = arg min 
+
+> λ∈Λ
+
+EH1: t|λ,p e
+
+[ t∑
+
+> i=1
+
+∑
+
+> s,a
+
+νt−1 
+
+> pe
+
+(s) ∥ fH1: i (· | s, a ) − pe(· | s, a ) ∥22
+
+]
+
+= arg min 
+
+> λ∈Λ
+> t
+
+∑
+
+> i=1
+
+∑
+
+> s′,a,s
+
+νt−1 
+
+> pe
+
+(s) EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − pe(s′ | s, a )) 2]
+
+. (18) In the equation above, the function fH1: i is defined by Equation 6, that can be written as, 
+
+fH1: i = X + αN + α|S| , (19) where N and X are the random variables for c(s, a ; H1: i) and c′(s′, s, a ; H1: i) respectively. Further-more, for the sake of clarity, let p = pe(s′ | s, a ) for the rest of this section. 19 Remark B.3. Conditioned on N = n, we have that X | (N = n) ∼ Binomial (n, p ).
+
+Therefore, by conditioning on N = n the expected value, variance, and bias of the estimator fH1: i
+
+are given by, 
+
+EH1: t|λ,p e [fH1: i (s′ | s, a ) | N = n] = EH1: t|λ,p e [X | N = n] + αn + α|S| = np + αn + α|S| , (20) Var H1: t|λ,p e [fH1: i (s′ | s, a ) | N = n] = Var H1: t|λ,p e [X | N = n](n + α|S| )2 = np (1 − p)(n + α|S| )2 , (21) Bias (fH1: i (s′ | s, a ) | N = n) = np + αn + α|S| − p = α(1 − |S| p)
+
+n + α|S| . (22) Thus, using the bias-variance decomposition on the expected value in objective function from Equa-tion (19)conditioned on N = n,
+
+EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − pe(s′ | s, a )) 2 | N = n
+
+]
+
+= Var H1: t|λ,p e [fH1: i (s′ | s, a ) | N = n] + Bias (fH1: i (s′ | s, a ) | N = n)2
+
+= np (1 − p)(n + α|S| )2 + α2(1 − |S| p)2
+
+(n + α|S| )2 . (23) Note that we can recover the original MSE expression from Equation (18) by taking the expectation over N in Equation (23). Namely, 
+
+EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − p)2]
+
+= EN |λ,p e
+
+[
+
+EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − p)2 | N = n
+
+]] 
+
+.
+
+(24) 
+
+Remark B.4. For the sake of completeness, note that in the Equation (24) above, 
+
+N ∼ p(N = n | λ, p e) = EH1: t|λ,p e [1(c(s, a ; H1: i) = n)] , (25) 
+
+and the probability distribution p(h1: t | λ, p e) over which the expectation is defined is specified in Section 4. 
+
+By replacing the result from Equation (23) into the expression above, 
+
+EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − p)2]
+
+= EN |λ,p e
+
+[ N p (1 − p)(N + α|S| )2
+
+]
+
++ EN |λ,p e
+
+[ α2(1 − |S| p)2
+
+(N + α|S| )2
+
+]
+
+. (26) Since p, α, and |S| do not depend on N , these can be factored out as, 
+
+EH1: t|λ,p e
+
+[
+
+(fH1: i (s′ | s, a ) − p)2]
+
+= p(1 − p)EN |λ,p e
+
+[ N
+
+(N + α|S| )2
+
+]
+
++ α2(1 − |S| p)2EN |λ,p e
+
+[ 1(N + α|S| )2
+
+]
+
+. (27) Now by replacing this result in Equation (18) in the beginning of this section, 
+
+Λ∗ = arg min 
+
+> λ∈Λ
+> t
+
+∑
+
+> i=1
+
+∑
+
+> s′,a,s
+
+νt−1 
+
+> pe
+
+(s) p(1 − p)EN |λ,p e
+
+[ N
+
+(N + α|S| )2
+
+]
+
++ α2(1 − |S| p)2EN |λ,p e
+
+[ 1(N + α|S| )2
+
+]
+
+. (28) Recall that p = pe(s′ | s, a ) and N = c(s, a ; H1: i). Moreover, the p(1 − p) expression above resem-bles the Gini impurity, Vpe (s, a ) = ∑ 
+
+> s′
+
+pe(s′ | s, a )(1 − pe(s′ | s, a )) . Thus, we can equivalently write, 
+
+Λ∗ 
+
+> t
+
+= arg min 
+
+> λ∈Λ
+> t
+
+∑
+
+> i=1
+
+∑
+
+> a,s
+
+νt−1 
+
+> pe
+
+(s) Vpe (s, a ) EN |λ,p e
+
+[ N
+
+(N + α|S| )2
+
+]
+
++ νt−1 
+
+> pe
+
+(s) α2Bpe (s, a ) EN |λ,p e
+
+[ 1(N + α|S| )2
+
+]
+
+, (29) where Bpe (s, a ) = ∑ 
+
+> s′
+
+(1 − |S| pe(s′ | s, a )) 2 is the bias term. This completes the proof of Theo-rem 4.4. ■
+
+20 (a) Empty (b) Maze (c) Blocks (d) RandColors 
+
+Figure 5: Sample illustrations of the employed environments. The dark gray color indicates obstacles, while single cells colored in blue correspond to agents, the rest of the colors indicate traversable space (i.e., left and right rooms in RandColors ). 
+
+# C Experimentation details 
+
+C.1 SmallWorld environment 
+
+All empirical results reported in this section are obtained in SmallWorld , an environment suite developed specifically for this study. SmallWorld consists of grid-based worlds in which each cell is assigned a scalar value in the range [−1, 1] . This value determines the cell type: negative values correspond to solid (impenetrable) cells, such as walls or obstacles; zero denotes floor cells; and positive values represent other entities, such as items, collectible objects, or agents. Different agents may be assigned different cell values, which makes them distinguishable from one another. Observations are real-valued square matrices corresponding to agent-centered slices of the grid. For example, when the observation window has size 7, each observation is a 7 × 7 matrix, and the entry at position (3 , 3) always contains the value of the agent’s own cell. When an agent is close to a boundary of the environment, portions of the observation window that fall outside the grid are filled with a designated padding value of −1. Actions are discrete, and all environments considered in this section share the same action set: move up, down, left, or right. Figure 5 illustrates the environments used in our experiments. 
+
+Empty This environment consists of an empty 10 × 10 grid-world containing a single agent with partial observations as described above. The agent’s initial position is sampled uniformly at random. 
+
+Maze This environment is a 10 × 10 grid containing solid obstacles arranged as a simple maze with four rooms of different sizes. The agent’s initial position is randomized. 
+
+Blocks This environment comprises a 16 × 15 grid-world that is empty except for three 2 × 2 solid blocks. As in the previous environments, the agent’s initial position is randomized. 
+
+Random Colors This environment consists of a 15 × 11 grid with a large vertical corridor and two rooms located in the upper third of the map. The cell values of both rooms are assigned randomly at each timestep, with all cells within a given room sharing the same value. The left room takes values in {0.6, 0.7} with equal probability, whereas the right room takes values in {0.6, 0.7, 0.8, 0.9}, also uniformly at random. The agent always starts at the bottom-center position shown in Figure 5d. Finally, although the visualizations in Figure 5 are shown in color for illustrative purposes, the underlying environments are not represented using RGB values; instead, they are defined by scalar cell values in the range [−1, 1] .
+
+C.2 Approximating the ECE 
+
+Exactly computing the ECE of an agent (Equation (4)) is analytically intractable for most environ-ments of interest, including the relatively simple domains within SmallWorld . As noted in Sec-tion 5, we approximate the ECE via Monte Carlo estimation, averaging over history samples drawn from p(h | λunif , e ) and p(h | λ, e ) to estimate the expectations in Equations (3) and (4). However, relying only on trajectories sampled purely from the uniform agent p(h | λunif , e ) intro-duces some practical challenges. Specifically, in some environments, random walks can predomi-21 nantly generate relatively predictable trajectories. As the ES progresses and the agents’ world mod-els improve, the difference in ECE between competing high-performing agents becomes negligible on most of these trajectories. Consequently, the number of uniform samples required to maintain sufficient evaluation resolution—that is, to accurately distinguish which agents in the population have the lowest ECE—increases. To mitigate this sample inefficiency, for some environments, we augment the evaluation set used to estimate Equation (3) with some histories sampled from systematic deviations of the current population’s agents. Let ϕ : Λ → Λ denote a deviation function that applies a structural modification to an agent [Elelimy et al., 2025]. As the λunif assigns a non-zero probability to any sequence of actions, any trajectory sampled from p(h | ϕ(λ), e ) remains strictly within the support of p(h |
+
+λunif , e ). By explicitly drawing some histories from these deviated distributions alongside uniform samples, we ensure that the finite evaluation batch covers regions of the trajectory space where the performance of competing agents actually diverges, stabilizing and improving the convergence of the ES for some environments. We implement these deviations as simple stochastic perturbations of the agents’ behavior: at each step, with probability α, the action is sampled uniformly at random, and with probability 1 − α, the agent’s prescribed action is executed. Note that a perturbation of α = 0 corresponds to the identity function—i.e., executing the unmodified agent—and that if α = 1 then ϕα(λ) = λunif (which is used for most cases). We adopt this straightforward perturbation class for simplicity, but richer families of deviations could be integrated for the same purpose [Morrill et al., 2021]. 
+
+C.3 Method overview 
+
+Algorithm 1 provides an overview of the method used to estimate the ECE and optimize a population of agents for exploration efficiency. Specifically, the global loss in Equation (3) is approximated on line 25, and the ECE is estimated on line 30. Note that this pseudocode is a simplification of the highly optimized JAX implementation [Bradbury et al., 2018] used for our experiments. In practice, the history sampling process and world model training are highly parallelized. To further improve computational efficiency, our implementation initializes the training of the current world model using parameters learned during the previous update step. Additionally, rather than training world models for every single history prefix, we train them at batched intervals (of size t divided by the total number of world model training steps, see Table 1) using progressively more data. Consequently, the world models are updated less frequently than the agent takes steps in the environment. For the specific components in Algorithm 1, the loss function ℓ is the Mean Squared Error (MSE) between the observed environment transitions and the world model predictions. The inner-loop op-timization of the world models, ω, uses AdamW [Loshchilov and Hutter, 2019]. Finally, for the outer-loop evolutionary strategy (ES), we use OpenES [Salimans et al., 2017] though the implemen-tation provided by the evosax library [Lange, 2023]. 
+
+C.4 Hyperparameters 
+
+We provide the list of employed hyperparameters in Table 1. In the case of the view window size of the agents, we maintain a default 5 × 5 window unless mentioned otherwise. Specifically, we only employ the 7 × 7 window size in the experiments for the Empty environment in Figure 3. Regarding the perturbation probabilities α (see Appendix C.2), Table 2 shows the different values employed per environment. Note that for the environments Blocks and Maze we exclusively employ α = 1 ,which corresponds to sampling histories only by random walks (see Appendix C.2 for details). As mentioned in Section 5, we represent agents and world models as NNs. In the case of agents, we employ a single Feed-Forward (FF) layer followed by a GRU module and two FF layers. The input to the agent’s network is the flattened N × N matrix corresponding to the current observation window, whose values are in the [−1, 1] range. For world models, we employ a fully-connected MLP architecture, where the inputs are flattened S × N × N observation matrices ( S is the sequence length) concatenated with a flattened matrix of S × |A| one-hot encoded actions. 22 Algorithm 1 Optimizing towards Efficient Exploration with ES 
+
+Require: Environment e, Population size N , Generations G, Time horizon T , Number of repeti-tions R, Perturbation rates R = {α1, . . . , α k} 
+
+> 1:
+
+Initialize Evolutionary Strategy (ES) parameters θ (e.g., mean and covariance)  
+
+> 2:
+
+for g = 1 to G do  
+
+> 3:
+
+Sample population of agents P = {λ1, . . . , λ N } using ES (θ) 
+
+> 4:
+
+# Construct evaluation set  
+
+> 5:
+
+Heval ← ∅  
+
+> 6:
+
+for λ ∈ P do  
+
+> 7:
+
+for α ∈ R do  
+
+> 8:
+
+Sample many evaluation histories Hϕα(λ) 
+
+> t
+
+∼ p(· | ϕα(λ), e ) 
+
+> 9:
+
+Heval ← H eval ∪ H ϕα(λ) 
+
+> t
+> 10:
+
+end for  
+
+> 11:
+
+end for  
+
+> 12:
+
+# Estimate ECE  
+
+> 13:
+
+for r = 1 to R do  
+
+> 14:
+
+# Collect agent-specific training data  
+
+> 15:
+
+T ← ∅  
+
+> 16:
+
+for λ ∈ P do  
+
+> 17:
+
+Sample history hλ 
+
+> 1: T
+
+∼ p(h | λ, e ) 
+
+> 18:
+
+T ← T ∪ { hλ 
+
+> 1: T
+
+} 
+
+> 19:
+
+end for  
+
+> 20:
+
+# Train world models  
+
+> 21:
+
+for λ ∈ Λ do  
+
+> 22:
+
+εrλ ← 0 
+
+> 23:
+
+for k = 1 to T do  
+
+> 24:
+
+fk ← ω(hλ
+
+> 1: k
+
+), where hλ 
+
+> 1: k
+
+is the k-th prefix of the training data hλ 
+
+> 1: T
+
+∈ T for agent λ. 
+
+> 25:
+
+εrλ ← εrλ + 1
+
+> |H eval |
+
+∑ 
+
+> h∈H eval
+
+ℓ(fk, h ) 
+
+> 26:
+
+end for  
+
+> 27:
+
+end for  
+
+> 28:
+
+end for  
+
+> 29:
+
+for λ ∈ Λ do  
+
+> 30:
+
+ελ ← 1
+
+> R
+
+∑Rr=1 εrλ 
+
+> 31:
+
+end for  
+
+> 32:
+
+# Update population  
+
+> 33:
+
+Update ES parameters θ ← ES_Update (θ, {ελ1 , . . . , ε λN }) 
+
+> 34:
+
+end for  
+
+> 35:
+
+return Agent λ∗ ∈ P with the lowest ελ∗
+
+C.5 Hardware details 
+
+Experiments have been conducted in a single cluster node with eight Nvidia A5000 GPUs, an AMD EPYC 7252 CPU, and 377GB of RAM. Experiments were parallelized to run across the eight or four GPUs, where a single run required approximately 10 hours. 
+
+C.6 Extended results 
+
+In this appendix section we provide additional experiments, figures, and extend discussions on the results shown in Section 5 of the main paper. Figure 6 presents the per-cell visitation heatmaps of the most efficient agents discovered by the ES across all four environments (introduced in Section 5 and detailed in Appendix C.1). In the Empty environment (Figure 6a), the most efficient exploration strategy converges on a helix-like cyclic pattern that largely avoids both the central region and the immediate edges of the room. The evolution from simpler to more structured behaviors is illustrated in Figure 9. 23 Table 1: Hyperparameters shared across all experiments in Section 5 and Appendix C.6. NAME VALUE 
+
+GENERAL TIME HORIZON (t) 512 AGENTS 
+
+HIDDEN SIZE 128 NUMBER OF LAYERS 4ACTIVATION FUNCTION ReLU 
+
+DEFAULT VIEW SIZE 5 × 5
+
+WORLD MODELS 
+
+NUMBER OF LAYERS 4ADAM W LEARNING RATE 0.005 EVALUATION BATCH SIZE 512 TRAINING STEPS 256 HIDDEN SIZE 128 ACTIVATION FUNCTION ReLU 
+
+SEQUENCE LENGTH 8OPEN ES POPULATION SIZE 128 NUMBER OF GENERATIONS 2000 NUMBER OF REPETITIONS 16 LEARNING RATE START 0.01 LEARNING RATE DECAY 0.1 STARTING STD 0.05 STD DECAY 0.2 Table 2: List of employed random perturbations for estimating the ECE (see Appendix C.2). ENVIRONMENT α VALUES 
+
+EMPTY {0.1, 0.25 , 0.5, 0.75 , 1, 1, 1, 1}
+
+BLOCKS {1, 1, 1, 1, 1, 1, 1, 1}
+
+MAZE {1, 1, 1, 1, 1, 1, 1, 1}
+
+RAND COLORS {0.0, 0.5, 0.75 , 1, 1, 1, 1, 1}
+
+(a) Empty (b) Blocks (c) Maze (d) RandColors 
+
+Figure 6: Per-cell visitation frequencies of the best exploring agents found by the ES for each 
+
+SmallWorld environment. Lighter colors indicate more visits. 24 Figure 7: Visitation heatmaps of effi-ciently exploring agents in the Empty 
+
+environment. Both runs share all hyper-parameters except the agent’s observa-tion window size, which is 7 × 7 in the left plot and 5 × 5 in the right plot. Red boxes indicate, for each border, the cell with the highest visitation frequency. Furthermore, Figure 7 illustrates that the geometry of this helix is dependent on the agent’s partial observability, i.e., the observation window. Specifically, the distance be-tween the most frequently visited cells and the nearest wall is consistently (n − 1) /2 cells, where n is the size of the observation window. We hypothesize that this behav-ior emerges as the center and the extreme edges lead to highly repetitive, easily predictable observations. Instead, the agent actively targets regions that maximize informa-tiveness. The straight traversals forming the helix corre-spond exactly to paths where the walls fall just outside the agent’s field of view. Navigating these specific paths makes predicting the approaching wall significantly more difficult, providing the data necessary for the world model to learn the environment’s wall-to-wall dimensions. 
+
+Figure 8: World model’s error across the Blocks environment after training on histories sampled from the behavior shown in Figure 6b. The result for the Blocks environment is shown in Fig-ure 6b. Consistent with the Empty results, the agent spends few timesteps in the open spaces between the blocks and the outer boundaries. However, in this case, it concentrates most of its interactions within the region between the lower and middle blocks. Sampling this spe-cific area allows the world model to accurately predict the dynamics of the identical upper gap without requiring direct exploration. The error map in Figure 8 illustrates this generalization, showing that the model achieves low error across the gaps between the blocks while most of the prediction error accumulates in the gaps between the lower and upper blocks and the nearest corners, where the symmetry no longer holds. In the Maze environment, the absence of spatial symme-tries prevents the agent from exploiting structural regu-larities. Consequently, efficient exploration requires comprehensive coverage of the environment, resulting in the approximately uniform visitation distribution shown in Figure 6c. However, this global coverage is far from a random walk, as can be seen in Figure 4 and discussed in Section 5.1 of the main paper. Instead, agents consistently exploit a highly structured trajectory, systematically navigating the entire maze regardless of its starting position. Upon reaching one end of the maze, the agent reverses course and traverses it in the opposite direction, establishing a continuous, cyclic behavior. Finally, in the Random Colors environment, agents predominantly concentrate interaction on the upper region (both rooms), which presents a greater modeling challenge due to its inherent stochas-ticity, see Figure 6d. Moreover, as can be observed in the figure, although agents collect data from both rooms, they spend more total time in the rightmost room. This behavior directly reflects the irreducible error of the different regions of the environment: the best achievable error in the right room ( 0.0125 ) is five times the left room’s ( 0.0025 ). This visiting distribution shows that the agents’ overall time allocation is intrinsically shaped by local modeling difficulty, aligning with our theoret-ical results in Section 4. In conclusion, agents prioritize visiting the most informative and easy to learn regions first (see agent’s trajectory in Figure 4), and schedule the remaining timesteps model-ing more challenging regions of the environment . Refer to Section 5.1 for additional discussion on the topic. 
+
+C.7 Increasingly complex behaviors 
+
+As discussed in Section C.3, we use an ES to optimize a population of agents towards (approxi-mate) efficient exploration. By visualizing the behavior of the best agent found at each generation of the ES optimization process, we observe an evolution toward increasingly structured and complex behaviors. Figure 10 illustrates this phenomenon for the Empty , Blocks , and RandColors environ-ments, showing the per-cell visitation frequencies of the best explorers found over the course of 25 Figure 9: Evolution of the population’s average fitness through ES generations in the Empty envi-ronment with a 5 × 5 observation window. The blue line indicates the mean value across 3 different seeds, where the shadow corresponds the standard deviation. The figure also shows four different per-cell visitation heatmaps of the most efficient explorers found at the corresponding generations, showing how agents converge to increasingly structured behaviors. 
+
+Figure 10: Each row corresponds to one environment, from top to bottom: Empty , Blocks , and 
+
+RandColors . Columns represent the optimization time of the ES (i.e., generations of OpenES), with the leftmost images corresponding to early generations and the rightmost images to later ones. Each image shows the visitation frequency heatmap of the most efficient explorer found up to the corresponding optimization step (lighter colors indicate more visits). 26 optimization (generations of OpenES), from left to right. We omit the Maze environment as in this environment, agents converge to uniform coverage (discussed in Appendix C.6). Starting with Empty , we observe that the earliest best strategy consists of approximately uniform coverage of the environment, resembling standard coverage-based exploration methods. As ES optimization progresses, a cyclic, ring-like pattern emerges. This is consistent with the fact that the middle region of the environment is composed mostly of empty cells and is therefore easier to model, leading the agent to allocate more time to harder to model regions such as the corners and edges. The last two plots show how this ring-like pattern progressively rotates until it approaches the helix-like strategy described in Section 5.1, which achieves higher exploration efficiency than the seemingly more natural circular pattern. This final pattern is discussed more in detail in Appendix C.6. Figure 9 illustrates this progression to more structured behavior as the overall ECE of the ES population improves. The figure shows how progressively structured and complex behaviors arise as the average ECE of the ES population decreases (lower corresponds to better exploration efficiency). A similar progression arises in the Blocks environment. As in Empty , the first strategy discovered by ES is close to uniform coverage. At later stages, however, better strategies invest more time to the more challenging to model edges and corners of the environment, including the boundaries of the blocks, while largely ignoring the empty regions. In the rightmost plot, the best strategy found by ES strongly prioritizes the region between the lower and middle blocks, thereby exploiting the symmetries of the environment. Notably, the preceding behavior already exhibits an early version of this strategy, but focused on the region between the middle and upper blocks. Finally, in RandColors , the earliest strategy differs qualitatively from the later ones: the agent fo-cuses on the upper part of the environment, while largely ignoring the corridor, which is easier to model. In the second and third plots, the best strategies begin to focus more clearly on the left room. Although the right room is harder to model, concentrating on the left room initially yields a larger reduction in model error, as it is easier for the world model to learn this region. However, as ES continues to optimize agents for efficient exploration, the best strategy eventually allocates more time to the right room than to the left one. Further analysis of the agent’s behavior in Section 5.1 shows that the final strategy is also less chaotic: it leaves time to collect data from the right room, but only after efficiently exploring the corridor and then the left room (see Figure 4 and Section 5.1 for details). Thus, in this environment, an efficient explorer spends more time on the hardest to model regions, but only after visiting the easier ones first, yielding the following visitation order: corridor, left room, and right room. In conclusion, across different environments and settings, optimizing for efficient exploration in-duces a sequence of related behaviors of progressively increasing complexity. This leads to a strong empirical evidence connecting optimizing towards exploration efficiency and open-endedness as described by Hughes et al. [2024]. Refer to Appendix D.2 for further discussion. 
+
+# D Extended Discussion 
+
+This section provides an expanded analysis of the practical and conceptual implications of efficient exploration. First, in Appendix D.1 we detail how the sequencing of experience (discussed in Sec-tions 4 and 5.1) naturally frames the efficient explorer as an active curriculum generator. Building on this, Appendix D.2 connects the emergent behaviors produced by efficient exploration at different levels of abstraction (at the interaction and behavioral levels) to the definition of open-endedness by Hughes et al. [2024]. 
+
+D.1 The importance of order in experience and implicit curricula 
+
+As demonstrated in Section 4 and illustrated in Section 5.1, the temporal ordering of experience is crucial for efficient exploration (e.g., the RandColors results in Figure 4 following the corridor, left room, and right room ordering pattern). Even when multiple regions are equally informative for reducing model uncertainty, the paths required to reach them can differ substantially. Transitioning between informative regions can require traversing less informative, or even already-modeled areas. Consequently, scheduling visitations becomes an optimization problem in its own right, as those in classical routing problems in combinatorial optimization [Goldberg, 1985]. The Maze environment perfectly illustrates this dynamic: from its initial position, the agent ignores the equally informative 27 rightmost room to first explore the upper sections. Visiting the rightmost room initially would later force the agent to traverse the starting room a second time to reach the rest of the maze, resulting in redundant and less informative sampling. In settings more complex than SmallWorld , the choice of the world-model hypothesis space F and the learning rule ω would profoundly influence the optimal ordering of experience. The informative-ness of any given interaction is not absolute, but it is conditioned on previously acquired knowledge. For example, presenting a child with a textbook on set theory is unlikely to be informative without sufficient prior mathematical background, whereas the same experience may become highly infor-mative at a later stage. This phenomenon is well documented in natural choices for F and ω—such as NNs optimized via stochastic gradient descent—and has motivated extensive research in curricu-lum learning [Bengio et al., 2009]. From this perspective, an efficient explorer acts as a curriculum generator, constantly sequencing the best possible training data for the specific world model class at hand. This dependence on curricula also limits how abruptly the global loss ℓglobal  
+
+> t
+
+can decrease. Highly informative experiences often require sufficient prior context to be interpretable and therefore useful for learning. This point is well illustrated in Adams [1979]: although a civilization is advanced enough to compute the answer to the meaning of life, the universe, and everything, it lacks the contextual knowledge required to understand the answer, i.e., 42 . Analogously, in learning systems, the informativeness of an experience is inherently relative to prior experience, which constrains the rate at which global model error—and consequently, the ECE—can be reduced. Finally, capacity and plasticity constraints of models in F [Lyle et al., 2023, Dohare et al., 2024, Abel et al., 2025] can further increase the importance of order in experience to achieve efficient exploration. With models with limited capacity, agents may need to strategically revisit, reinforce, or even selectively ignore experiences. In such settings, efficient exploration requires not only selecting which experiences to generate, but also deciding to forget them. 
+
+D.2 Open-endedness 
+
+Hughes et al. [2024] formalize open-endedness as a property of a system that continuously generates a sequence of artifacts, evaluated relative to an external observer. Specifically, an artifact-generating system is considered open-ended if its outputs are both novel and learnable to that observer. Novelty implies that, for an observer frozen at time t, the artifacts become less predictable over time. Con-versely, learnability dictates that conditioning on the historical sequence of artifacts makes future artifacts more predictable. We refer to Hughes et al. [2024] for further details. Viewed through this lens, we identify two distinct processes within our framework that exhibit open-endedness driven by efficient exploration. The first occurs at the agent-environment interface. As proven in Section 4 and empirically validated in Section 5 for more complex settings, an efficiently exploring agent systematically schedules its interactions, sampling the most informative and learn-able regions first before transitioning to areas with higher inherent entropy (i.e., more challenging to model). Here, the agent acts as the system generating artifacts (the stream of interactions), while the world model serves as the observer . Efficient exploration intrinsically forces these interactions to be novel and learnable for the world model—this is the primary mechanism by which the global loss and ECE are minimized. As noted by Hughes et al. [2024], an open-ended process can also be temporally bounded. In our setting, beyond the choice of the horizon t, this bound is dictated by the agent’s and environment’s complexity (which limits artifact novelty) and the world model’s capacity (which limits learnability). The second open-ended process emerges at the meta-level during optimization (Section 5.1 and Appendix C.7). Optimizing for efficient exploration naturally yields a progression of increasingly complex behaviors (Figure 3). In this context, the ES operates as the artifact-generating system (producing agent behaviors), while we, as humans, act as the observers. The sequence of behaviors generated by the ES is both novel and learnable: a behavior such as the highly structured, helix-like trajectory in the Empty environment might appear unpredictable in isolation, but it becomes more interpretable when viewed as a progression from preceding, simpler behaviors like uniform coverage or ring-like shapes (see Figures 9 and 10). This phenomenon is also present in other environments, as shown in Appendix C.7. Without context, understanding the mechanisms driving these advanced behaviors is notoriously difficult. Similar to the first process (described in a lower 28 level of abstraction), this meta-level open-ended process is inherently bounded by the optimization capabilities of the ES (also tied to environment, agent, and world model complexity) and our own capacity to interpret increasingly sophisticated behaviors. Indeed, even in the relatively simple environments of SmallWorld , the highly structured helix pat-tern in the Empty environment already challenges the limits of intuitive human interpretation. As this open-ended process is scaled to richer, more complex domains, we believe that highly sophisticated behaviors might emerge, possibly surpassing our capacity to fully comprehend their underlying mechanisms. 29

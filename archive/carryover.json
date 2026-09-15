@@ -1,6 +1,57 @@
 {
-  "generated_at": "2026-03-06T19:11:18.471356+00:00",
-  "updated_date": "20260306",
+  "generated_at": "2026-09-15T06:16:54.920883+00:00",
+  "updated_date": "20260906-20260915",
   "carryover_days": 9,
-  "items": []
+  "tag_states": {
+    "self-evolve": {
+      "updated_date": "20260906-20260915",
+      "carryover_days": 9,
+      "items": [
+        {
+          "id": "2609.11682v1",
+          "source": "arxiv",
+          "title": "COBRA-Skills: Contextual Bandit-Guided Evolution for Agent Skill Optimization",
+          "abstract": "Large language model (LLM) agents can benefit from reusable skills distilled from prior task experience, yet existing skill optimization methods often rely on costly execution-based evaluation and substantial task data. We introduce \\textbf{COBRA-Skills}, an efficient framework that formulates skill optimization as budgeted sequential optimization over a dynamically evolving candidate space. COBRA-Skills couples contextual-bandit-guided prioritization with evidence-grounded skill evolution, selectively allocating evaluations to promising or informative candidates while continually refining the skill population from execution feedback. Across six heterogeneous agent benchmarks and three target models, COBRA-Skills consistently achieves the strongest average performance among compared methods, while reducing optimization cost by 55--58\\% relative to SkillOpt and using only 50 unique optimization examples per benchmark. Further analyses show that COBRA-Skills remains robust to changes in the agent harness and performs effectively when the target model itself is used for skill generation and refinement.",
+          "authors": [
+            "Pingchen Lu",
+            "Xiangyi Wang",
+            "Xiang Li",
+            "Jie Mao",
+            "Zikun Qu",
+            "Junfeng Luo",
+            "Yao Shu",
+            "Bryan Kian Hsiang Low",
+            "Zhongxiang Dai"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI"
+          ],
+          "published": "2026-09-10T15:12:24+00:00",
+          "link": "https://arxiv.org/pdf/2609.11682v1",
+          "tags": [
+            "keyword:self-evolve",
+            "query:self-evolve"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "contextual bandit-guided evolution of agent skill population from execution feedback",
+          "llm_evidence_cn": "基于执行反馈的上下文老虎机引导智能体技能种群进化",
+          "llm_evidence": "基于执行反馈的上下文老虎机引导智能体技能种群进化",
+          "canonical_evidence": "基于执行反馈的上下文老虎机引导智能体技能种群进化",
+          "llm_tldr_en": "Existing skill optimization for LLM agents needs costly execution evaluation and much task data. COBRA-Skills formulates skill optimization as budgeted sequential optimization over an evolving candidate space, coupling contextual-bandit prioritization with evidence-grounded skill evolution for efficient continual refinement.",
+          "llm_tldr_cn": "LLM智能体可从过往任务经验中提炼可复用技能，但现有技能优化方法依赖昂贵的执行评估与大量任务数据。本文提出COBRA-Skills，将技能优化建模为在动态演化候选空间上的预算化序列优化问题，把上下文老虎机引导的优先级分配与证据驱动的技能进化相结合，选择性评估有前景或有信息量的候选并持续从执行反馈中精炼技能种群。在六个异构智能体基准和三个目标模型上，该方法稳定取得优异表现，为智能体技能的自主进化提供了高效方案。",
+          "llm_tldr": "LLM智能体可从过往任务经验中提炼可复用技能，但现有技能优化方法依赖昂贵的执行评估与大量任务数据。本文提出COBRA-Skills，将技能优化建模为在动态演化候选空间上的预算化序列优化问题，把上下文老虎机引导的优先级分配与证据驱动的技能进化相结合，选择性评估有前景或有信息量的候选并持续从执行反馈中精炼技能种群。在六个异构智能体基准和三个目标模型上，该方法稳定取得优异表现，为智能体技能的自主进化提供了高效方案。",
+          "llm_tags": [
+            "query:self-evolve"
+          ],
+          "matched_query_tag": "query:self-evolve",
+          "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+          "matched_requirement_id": "req-2",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.11682v1",
+          "carry_days": 1
+        }
+      ]
+    }
+  }
 }
