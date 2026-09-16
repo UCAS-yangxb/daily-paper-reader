@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-15</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-16</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 22:33:43 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-16 22:23:20 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,8 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日从17篇中精读6篇、速读11篇，Dream-RSI与RSIAgent两篇满分领跑，主题直指“递归自我改进”。</p>
-<p>最值得看的是递归自我改进/自进化智能体：Dream-RSI用演化世界做递归自提升，RSIAgent在新环境中自主探索；速读可关注持续学习、LLM代理记忆预算优化与医疗多智能体。</p>
+<p>今日速读3篇LLM智能体论文，精读挂零，MOSCOPT与CoMem以7.0分并列领跑。</p>
+<p>最值得看的是“技能组合式集体优化”和“集体-个体记忆协同”两个智能体协作方向，均获7.0分。</p>
+<p>普通读者可先读这两篇建立多智能体协作与记忆的直觉，再用6.0分的Artificial Id补上驱动与持续对齐视角。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -79,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Dream-RSI: Recursive Self-Improvement through Evolving Worlds">Dream-RSI: Recursive Self-Improvement through Evolving Worlds</span></li><li><span class="dpr-home-dashboard-paper-title" title="RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments">RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement">Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>6</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -92,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Homeostatic Continual Learning">Homeostatic Continual Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents">LIMBO: Lifelong Inference-Time Memory and Budget Optimization for LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse">EMR: Self-Evolving Medical Multi-Agent System via Experience Mining and Reuse</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents">MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems">CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems</span></li><li><span class="dpr-home-dashboard-paper-title" title="Artificial Id: Drive and Persistent Alignment in Agentic AI">Artificial Id: Drive and Persistent Alignment in Agentic AI</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>3</strong></span></div>
 </section>
 </div>
 

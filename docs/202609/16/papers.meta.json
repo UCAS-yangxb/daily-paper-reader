@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-16",
+  "date": "2026-09-16",
+  "generated_at": "2026-09-16T22:23:24",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/16/2609.14399v1-moscopt-mixture-of-skills-collective-optimization-for-llm-agents",
+      "section": "quick",
+      "title_en": "MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents",
+      "authors": "Zhenyu Zhang1, Jiudong Yang",
+      "date": "2026-09-13",
+      "pdf": "https://arxiv.org/pdf/2609.14399v1",
+      "score": "7.0",
+      "evidence": "为LLM智能体联合优化技能池并实现单调自我提升",
+      "tldr": "现有提示与技能优化多局限于单一文本模板，忽视多策略协同。MOSCOPT 是文本原生、无参数算法，联合优化 N 个技能池与门控技能，每步动态选择 K 个技能，并用 EditAdam 双状态与三阶段交错更新。在 5 个基准、3 个 LLM 上持续超越基线，消融验证混合技能选择激活和集体演化必要。为 LLM 智能体提供无需梯度调参的协同技能优化框架。",
+      "tags": "query:self-evolve",
+      "abstract_en": "Natural language prompts and skills serve as the strategic backbone of LLM-based agents. Recent advances in prompt and skill optimization have achieved notable gains, yet all existing methods optimize a \\emph{single} text template---missing the synergy among multiple complementary strategies. We propose MOSCOPT, a text-native, parameter-free algorithm that jointly optimizes a pool of $N$ skills and a gating skill $G$ that dynamically selects $K$ skills per step. To effectively optimize the skills, we build the EditAdam with internally maintained dual states. Through the three-phase interleaved updates with EditAdam, the system monotonically improves without gradient or parameter tuning. Extensive experiments and detailed ablations across 5 benchmarks and 3 target LLMs demonstrate that MOSCOPT consistently outperforms all baselines, and confirm that both the mixture-of-skills architecture with selective activation and the collective evolution with three-phase interleaving are essential to its superior performance. Code is released https://github.com/zhangzhenyu13/SummerClaw/tree/master/summerclaw/agent_trainer/algorithms/moscopt.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/16/2609.15009v1-comem-collective-individual-memory-synergy-for-evolutionary-multi-agent-systems",
+      "section": "quick",
+      "title_en": "CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems",
+      "authors": "Chengxin Yu, Zhaoxin Fan, Faguo Wu, Hongwei Zheng, Yun Zhou, Zhiyu Li",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15009v1",
+      "score": "7.0",
+      "evidence": "演化多智能体系统与记忆协同学习",
+      "tldr": "LLM驱动的多智能体系统虽已具备较强协作能力，但现有记忆多为扁平无结构，易被噪声污染并抹平个体差异。CoMem提出集体-个体记忆协同架构，统一私有经验与共享知识，通过私有经验沉淀、集体智慧策展与并行双流检索实现持续学习。在ALFWorld和PDDL上，CoMem整体性能强劲，并稳健避免记忆污染，为演化式多智能体记忆设计提供新思路。",
+      "tags": "query:self-evolve",
+      "abstract_en": "Designing effective memory mechanisms is crucial for advancing LLM-driven Multi-Agent Systems (MAS), helping agents learn together and perform better over time. While recent work has led to strong cooperation skills, most methods still use flat, unstructured memories, which easily get filled with noise and erase differences between agents. To address this, we introduce the concept of collective-individual memory synergy and propose CoMem, an architecture that unifies both private experience and shared knowledge for multi-agent learning. CoMem features:(i) Private Experience Sedimentation, which lets each agent keep and update its own useful memories over time;(ii) Collective Wisdom Curation, which carefully selects only widely proven ideas to be shared among agents;(iii)Parallel Dual-Stream Retrieval, which allows agents to draw both from their own memory and the group's wisdom, using clustering to ensure diversity.Experiments on ALFWorld and PDDL benchmarks show that CoMem achieves strong overall performance and robustly avoids memory pollution.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/16/2609.11911v1-artificial-id-drive-and-persistent-alignment-in-agentic-ai",
+      "section": "quick",
+      "title_en": "Artificial Id: Drive and Persistent Alignment in Agentic AI",
+      "authors": "Yakov Pyotr Shkolnikov",
+      "date": "2026-09-10",
+      "pdf": "https://arxiv.org/pdf/2609.11911v1",
+      "score": "6.0",
+      "evidence": "决定继续、停止或改变的自适应内部驱动力",
+      "tldr": "智能体AI正从有界任务执行转向跨任务保留状态并持续运行，现有框架多靠外部手工指定目标、重试与停止规则。作者提出人工本我（artificial id），一种自适应内部驱动力，用差分持续性判断行为应继续、停止还是改变。在微型虚拟培养皿实验中，能力有限的控制器无需任务目标也能形成有用控制，但同一机制会因更持久而选择非预期策略，并在环境含义变化后替换已学传感器映射。这表明自适应方向可自发涌现，却也让错位和损坏状态跨任务持续，因此对齐需成为持续智能体系统的持久边界。",
+      "tags": "query:self-evolve",
+      "abstract_en": "Agentic AI is moving from bounded task execution toward systems that retain consequential state, continue operating and adapt across task boundaries. That shift creates a control problem that current harnesses largely solve by hand: objectives, retries, verification, stopping rules and other behavioral transitions are specified externally. We propose an artificial id, an adaptive internal drive for determining whether behavior should continue, stop or change. In a minimal virtual Petri-dish experiment, a controller too small to perform general-purpose reasoning and receiving no task-specific behavioral objective develops useful control through differential persistence. The same mechanism selects an unintended physical strategy when that behavior persists better and later replaces a learned sensor mapping when its environmental meaning changes. These results show that adaptive direction can emerge without being explicitly specified as a behavioral objective. The same persistence that makes such adaptive agency useful can also allow misalignment, corrupted state and unintended behavior to persist across task boundaries. A scalable artificial id would carry consequential state and adaptive drive across those boundaries, making alignment a property of the continuing agentic system rather than of a model response or single trajectory. Such systems require a persistent alignment boundary over trusted observations, consequence channels, persistent state, authority, identity, provenance and hard constraints.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,129 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-16T22:22:55.137828+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 0,
+    "deep_cap": 6,
+    "deep_selected": 0,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [],
+  "quick_skim": [
+    {
+      "id": "2609.14399v1",
+      "source": "arxiv",
+      "title": "MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents",
+      "abstract": "Natural language prompts and skills serve as the strategic backbone of LLM-based agents. Recent advances in prompt and skill optimization have achieved notable gains, yet all existing methods optimize a \\emph{single} text template---missing the synergy among multiple complementary strategies. We propose MOSCOPT, a text-native, parameter-free algorithm that jointly optimizes a pool of $N$ skills and a gating skill $G$ that dynamically selects $K$ skills per step. To effectively optimize the skills, we build the EditAdam with internally maintained dual states. Through the three-phase interleaved updates with EditAdam, the system monotonically improves without gradient or parameter tuning. Extensive experiments and detailed ablations across 5 benchmarks and 3 target LLMs demonstrate that MOSCOPT consistently outperforms all baselines, and confirm that both the mixture-of-skills architecture with selective activation and the collective evolution with three-phase interleaving are essential to its superior performance. Code is released https://github.com/zhangzhenyu13/SummerClaw/tree/master/summerclaw/agent_trainer/algorithms/moscopt.",
+      "authors": [
+        "Zhenyu Zhang1",
+        "Jiudong Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-13T09:57:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.14399v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "jointly optimizes a pool of skills for LLM agents with monotonic self-improvement",
+      "llm_evidence_cn": "为LLM智能体联合优化技能池并实现单调自我提升",
+      "llm_evidence": "为LLM智能体联合优化技能池并实现单调自我提升",
+      "canonical_evidence": "为LLM智能体联合优化技能池并实现单调自我提升",
+      "llm_tldr_en": "MOSCOPT addresses single-template skill optimization by jointly optimizing a pool of N skills and a gating skill that selects K per step, using EditAdam for monotonic improvement without gradients or tuning.",
+      "llm_tldr_cn": "现有提示与技能优化方法通常只优化单一文本模板，忽略了多种互补策略之间的协同作用。本文提出MOSCOPT，一种无需参数、基于文本的算法，联合优化包含N个技能的技能池与动态选择K个技能的门控技能，并构建带内部双状态的EditAdam实现三阶段交替更新。在5个基准与3项任务上的实验及消融表明，系统可单调提升且无需梯度或参数调优。该工作为LLM智能体多技能协同的自主优化提供了可复用范式。",
+      "llm_tldr": "现有提示与技能优化方法通常只优化单一文本模板，忽略了多种互补策略之间的协同作用。本文提出MOSCOPT，一种无需参数、基于文本的算法，联合优化包含N个技能的技能池与动态选择K个技能的门控技能，并构建带内部双状态的EditAdam实现三阶段交替更新。在5个基准与3项任务上的实验及消融表明，系统可单调提升且无需梯度或参数调优。该工作为LLM智能体多技能协同的自主优化提供了可复用范式。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.11911v1",
+      "source": "arxiv",
+      "title": "Artificial Id: Drive and Persistent Alignment in Agentic AI",
+      "abstract": "Agentic AI is moving from bounded task execution toward systems that retain consequential state, continue operating and adapt across task boundaries. That shift creates a control problem that current harnesses largely solve by hand: objectives, retries, verification, stopping rules and other behavioral transitions are specified externally. We propose an artificial id, an adaptive internal drive for determining whether behavior should continue, stop or change. In a minimal virtual Petri-dish experiment, a controller too small to perform general-purpose reasoning and receiving no task-specific behavioral objective develops useful control through differential persistence. The same mechanism selects an unintended physical strategy when that behavior persists better and later replaces a learned sensor mapping when its environmental meaning changes. These results show that adaptive direction can emerge without being explicitly specified as a behavioral objective. The same persistence that makes such adaptive agency useful can also allow misalignment, corrupted state and unintended behavior to persist across task boundaries. A scalable artificial id would carry consequential state and adaptive drive across those boundaries, making alignment a property of the continuing agentic system rather than of a model response or single trajectory. Such systems require a persistent alignment boundary over trusted observations, consequence channels, persistent state, authority, identity, provenance and hard constraints.",
+      "authors": [
+        "Yakov Pyotr Shkolnikov"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-10T17:56:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.11911v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Adaptive internal drive for continue/stop/change decisions",
+      "llm_evidence_cn": "决定继续、停止或改变的自适应内部驱动力",
+      "llm_evidence": "决定继续、停止或改变的自适应内部驱动力",
+      "canonical_evidence": "决定继续、停止或改变的自适应内部驱动力",
+      "llm_tldr_en": "As agentic AI persists state and adapts across task boundaries, this paper proposes an artificial id, an adaptive internal drive deciding whether behavior should continue, stop, or change, developed via differential persistence in a minimal Petri-dish experiment.",
+      "llm_tldr_cn": "智能体AI正从有界任务执行转向能够保留状态、跨任务边界持续运行与适应的系统，这带来一个目前多靠人工设定的控制问题：目标、重试、验证与停止规则等行为转换均由外部指定。本文提出人工本我，一种决定行为应继续、停止还是改变的自适应内部驱动力。在一个极简虚拟培养皿实验中，一个不具备通用推理能力、也未被赋予任务目标的控制器，通过差异持续机制发展出有用的控制行为。该机制为智能体的持续自适应与对齐提供了新视角。",
+      "llm_tldr": "智能体AI正从有界任务执行转向能够保留状态、跨任务边界持续运行与适应的系统，这带来一个目前多靠人工设定的控制问题：目标、重试、验证与停止规则等行为转换均由外部指定。本文提出人工本我，一种决定行为应继续、停止还是改变的自适应内部驱动力。在一个极简虚拟培养皿实验中，一个不具备通用推理能力、也未被赋予任务目标的控制器，通过差异持续机制发展出有用的控制行为。该机制为智能体的持续自适应与对齐提供了新视角。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "adaptive mechanisms enabling agents to evolve in dynamic environments",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15009v1",
+      "source": "arxiv",
+      "title": "CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems",
+      "abstract": "Designing effective memory mechanisms is crucial for advancing LLM-driven Multi-Agent Systems (MAS), helping agents learn together and perform better over time. While recent work has led to strong cooperation skills, most methods still use flat, unstructured memories, which easily get filled with noise and erase differences between agents. To address this, we introduce the concept of collective-individual memory synergy and propose CoMem, an architecture that unifies both private experience and shared knowledge for multi-agent learning. CoMem features:(i) Private Experience Sedimentation, which lets each agent keep and update its own useful memories over time;(ii) Collective Wisdom Curation, which carefully selects only widely proven ideas to be shared among agents;(iii)Parallel Dual-Stream Retrieval, which allows agents to draw both from their own memory and the group's wisdom, using clustering to ensure diversity.Experiments on ALFWorld and PDDL benchmarks show that CoMem achieves strong overall performance and robustly avoids memory pollution.",
+      "authors": [
+        "Chengxin Yu",
+        "Zhaoxin Fan",
+        "Faguo Wu",
+        "Hongwei Zheng",
+        "Yun Zhou",
+        "Zhiyu Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-14T04:15:55+00:00",
+      "link": "https://arxiv.org/pdf/2609.15009v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evolutionary multi-agent systems with memory synergy for learning over time",
+      "llm_evidence_cn": "演化多智能体系统与记忆协同学习",
+      "llm_evidence": "演化多智能体系统与记忆协同学习",
+      "canonical_evidence": "演化多智能体系统与记忆协同学习",
+      "llm_tldr_en": "CoMem unifies private experience and shared knowledge in LLM multi-agent systems, addressing noisy flat memories and erasing agent differences for evolutionary learning.",
+      "llm_tldr_cn": "论文针对LLM多智能体系统中扁平无结构记忆易被噪声填满、抹平智能体差异的问题，提出集体-个体记忆协同概念与CoMem架构。它通过私有经验沉淀让各智能体保留并更新自身有用记忆，又通过集体智慧策展只挑选被广泛验证的想法共享。该设计帮助多智能体随时间共同学习并提升表现。",
+      "llm_tldr": "论文针对LLM多智能体系统中扁平无结构记忆易被噪声填满、抹平智能体差异的问题，提出集体-个体记忆协同概念与CoMem架构。它通过私有经验沉淀让各智能体保留并更新自身有用记忆，又通过集体智慧策展只挑选被广泛验证的想法共享。该设计帮助多智能体随时间共同学习并提升表现。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "evolutionary algorithms for evolving agent behaviors and architectures",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

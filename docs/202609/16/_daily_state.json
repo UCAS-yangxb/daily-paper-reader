@@ -1,0 +1,57 @@
+{
+  "date": "20260916",
+  "date_label": "",
+  "generated_at": "2026-09-16 22:23:20 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.14399v1",
+      "route": "202609/16/2609.14399v1-moscopt-mixture-of-skills-collective-optimization-for-llm-agents",
+      "title": "MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "为LLM智能体联合优化技能池并实现单调自我提升",
+      "first_seen_at": "2026-09-16 22:23:20 UTC",
+      "updated_at": "2026-09-16 22:23:20 UTC"
+    },
+    {
+      "paper_id": "2609.15009v1",
+      "route": "202609/16/2609.15009v1-comem-collective-individual-memory-synergy-for-evolutionary-multi-agent-systems",
+      "title": "CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "演化多智能体系统与记忆协同学习",
+      "first_seen_at": "2026-09-16 22:23:20 UTC",
+      "updated_at": "2026-09-16 22:23:20 UTC"
+    },
+    {
+      "paper_id": "2609.11911v1",
+      "route": "202609/16/2609.11911v1-artificial-id-drive-and-persistent-alignment-in-agentic-ai",
+      "title": "Artificial Id: Drive and Persistent Alignment in Agentic AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "决定继续、停止或改变的自适应内部驱动力",
+      "first_seen_at": "2026-09-16 22:23:20 UTC",
+      "updated_at": "2026-09-16 22:23:20 UTC"
+    }
+  ]
+}
