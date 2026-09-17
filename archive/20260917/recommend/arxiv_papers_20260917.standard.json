@@ -1,0 +1,381 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-17T22:04:01.408164+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 4,
+    "deep_cap": 6,
+    "deep_selected": 4,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.17010v1",
+      "source": "arxiv",
+      "title": "ThinkFlow: Self-Evolving Probabilistic Latent Memory for Lifelong Conversational Agents",
+      "abstract": "Lifelong conversational agents rely on memory systems to maintain deep, context-aware interactions with users. However, existing explicit textual memory pipelines suffer from a severe information bottleneck, often losing subtle behavioral patterns and emotional shifts. Furthermore, being typically static post-deployment, they cannot autonomously adapt to personal habits and preferences without manual feedback. Cognitive science, however, suggests that humans maintain mental models purely in a latent space and continuously refine them through predictive coding. Inspired by this, we propose \\textbf{ThinkFlow}, a novel end-to-end latent memory framework for lifelong conversational agents. ThinkFlow bypasses the text bottleneck by dynamically compressing conversational flows into probabilistic latent memory skills, autonomously consolidating complex user states into disentangled, continuous vectors without semantic interference. To break this barrier, we introduce a test-time evolution paradigm. By coupling teacher-guided latent alignment to bootstrap the initial state with a self-supervised next-user-utterance prediction task for continuous refinement, the framework successfully overcomes cold-start challenges and achieves label-free lifelong personalization. Extensive experiments on long-term conversation benchmarks demonstrate that ThinkFlow significantly outperforms prevailing memory systems, providing highly personalized and contextually accurate responses over extended multi-session interactions.",
+      "authors": [
+        "Cai Ke",
+        "Xin Liu",
+        "Han Zhang",
+        "Jiangyue Yan",
+        "Zike Yuan",
+        "Ling Deng",
+        "Yue Yu",
+        "Hui Wang",
+        "Ruifeng Xu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-15T11:21:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.17010v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Self-evolving latent memory for lifelong conversational agents that adapt autonomously",
+      "llm_evidence_cn": "面向终身对话智能体的自演化潜记忆，可自主适应",
+      "llm_evidence": "面向终身对话智能体的自演化潜记忆，可自主适应",
+      "canonical_evidence": "面向终身对话智能体的自演化潜记忆，可自主适应",
+      "llm_tldr_en": "ThinkFlow proposes an end-to-end latent memory framework letting lifelong conversational agents continuously refine mental models in latent space, enabling autonomous self-evolution without manual feedback.",
+      "llm_tldr_cn": "现有终身对话智能体的显式文本记忆存在信息瓶颈，且部署后静态、无法自主适应用户习惯。本文提出ThinkFlow，一种端到端潜空间记忆框架，借助预测编码动态维护并持续精炼潜在心智模型。该框架绕过文本瓶颈，使智能体无需人工反馈即可自我演化与适应，为长期个性化对话提供新范式。",
+      "llm_tldr": "现有终身对话智能体的显式文本记忆存在信息瓶颈，且部署后静态、无法自主适应用户习惯。本文提出ThinkFlow，一种端到端潜空间记忆框架，借助预测编码动态维护并持续精炼潜在心智模型。该框架绕过文本瓶颈，使智能体无需人工反馈即可自我演化与适应，为长期个性化对话提供新范式。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.17331v1",
+      "source": "arxiv",
+      "title": "Self-Emergence Agent Architecture:Behavior-Inertia HMM, Reflexive Metacognition,and Social-Contrastive Self-Modeling",
+      "abstract": "Large language model (LLM) agents exhibit strong language-generation and problem-solving capabilities, yet suffer from three structural limitations: personality drift, non-evolutionary reflection, and the absence of a self-other boundary. Existing generative-agent simulations rely on static memory and fixed prompts, maintaining neither behavioral inertia nor endogenous self-evolution. We propose the Self-Emergence Agent Architecture (SEAA), which integrates three components: (i) a Hidden Markov Model (HMM) that encodes long-term behavioral and cognitive inertia as an editable state-transition matrix; (ii) a Reflexion-style verbal metacognition loop whose output updates the HMM parameters themselves, rather than merely being stored as text; and (iii) a multi-agent social environment in which initially identical agents continuously compare their behavior with others'. The three components form a closed loop: social action $\\to$ feedback $\\to$ self-reflection $\\to$ inertia update $\\to$ differentiated action. We state three falsifiable hypotheses and provide a reproducible experimental protocol with operational metrics. A language-model-free prototype shows the loop spontaneously breaks symmetry: initially identical agents consolidate distinct, stable personalities whereas matched controls do not. Experiments with a hosted LLM surface these differences as distinct first-person self-narratives, and a five-agent deliberation spontaneously develops social structure---a consensus hub and a unanimously rejected outlier---absent in the control. Following an epistemologically agnostic stance inspired by Zhuangzi, SEAA studies only observable behavioral emergence and makes no claim about subjective qualia. This work contributes a unified framework, a concrete architecture with pseudocode, mechanistic evidence, and a microscope-style sandbox for studying artificial-self emergence.",
+      "authors": [
+        "Xiaoyang Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-15T15:36:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.17331v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "endogenous self-evolution architecture for LLM agents",
+      "llm_evidence_cn": "面向LLM智能体的内生自进化架构",
+      "llm_evidence": "面向LLM智能体的内生自进化架构",
+      "canonical_evidence": "面向LLM智能体的内生自进化架构",
+      "llm_tldr_en": "LLM agents suffer personality drift, non-evolutionary reflection, and no self-other boundary. SEAA integrates an editable behavioral-inertia HMM, a Reflexion-style metacognition loop that updates HMM parameters, and social-contrastive self-modeling to enable endogenous self-evolution.",
+      "llm_tldr_cn": "针对LLM智能体的人格漂移、反思非进化和缺乏自我—他者边界三大结构性问题，本文提出自涌现智能体架构SEAA，以可编辑的行为惯性隐马尔可夫模型编码长期行为倾向，并用反思式元认知回路更新HMM参数，同时引入社会对比式自我建模。该架构让智能体具备行为惯性与内生自进化能力，为生成式智能体模拟提供了超越静态记忆与固定提示的新范式。",
+      "llm_tldr": "针对LLM智能体的人格漂移、反思非进化和缺乏自我—他者边界三大结构性问题，本文提出自涌现智能体架构SEAA，以可编辑的行为惯性隐马尔可夫模型编码长期行为倾向，并用反思式元认知回路更新HMM参数，同时引入社会对比式自我建模。该架构让智能体具备行为惯性与内生自进化能力，为生成式智能体模拟提供了超越静态记忆与固定提示的新范式。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "large language model based agents with self-evolution capabilities",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.17523v1",
+      "source": "arxiv",
+      "title": "ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents",
+      "abstract": "We introduce and release ScienceBuddy, an interactive scientific research workspace that brings continually improving scientific agents into researchers' everyday workflows. ScienceBuddy supports researchers in carrying out scientific tasks while transforming their requests, feedback, and execution evidence into tasks and evaluation rubrics for continual learning. At its core is recursive-in-recursive self-improvement, a paradigm that couples harness evolution with model reinforcement learning: the inner recursion improves the harness with the model fixed, while the outer recursion trains the model under the improved harness. Harness evolution shapes training experience, and model learning creates new opportunities for harness adaptation. We present case studies of researcher interaction, harness refinement, and model learning, with the benchmark cases spanning four scientific task families. By releasing ScienceBuddy as a research product, we make this paradigm available to the scientific community and take a step toward discovery intelligence: scientific AI that advances through sustained collaboration with researchers and evolves alongside the research it supports. Website: http://science-buddy.io",
+      "authors": [
+        "Shuhan Xue",
+        "Jianyuan Zhong",
+        "Ziyuan Nan",
+        "Wenbin Li",
+        "Zhaochen Yu",
+        "Jinchao Ding",
+        "Qiang Gao",
+        "Pengyu Zhan",
+        "Yuntong Zhang",
+        "Tian Cheng",
+        "Zhenfei Yin",
+        "Yingcheng Wu",
+        "Ling Yang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-15T17:55:28+00:00",
+      "link": "https://arxiv.org/pdf/2609.17523v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "recursive-in-recursive self-improvement coupling harness evolution with model learning",
+      "llm_evidence_cn": "递归中的递归自改进，耦合工具链进化与模型学习",
+      "llm_evidence": "递归中的递归自改进，耦合工具链进化与模型学习",
+      "canonical_evidence": "递归中的递归自改进，耦合工具链进化与模型学习",
+      "llm_tldr_en": "Scientific agents need to keep improving within researchers' daily workflows, but lack mechanisms turning feedback and execution evidence into learning signals. ScienceBuddy is an interactive research workspace whose core is recursive-in-recursive self-improvement: the inner recursion evolves the harness with the model fixed, while the outer recursion trains the model under the improved harness, coupling harness evolution with continual model learning.",
+      "llm_tldr_cn": "科学智能体需在研究人员日常工作中持续改进，但缺乏将反馈与执行证据转化为学习信号的机制。本文提出并开源ScienceBuddy交互式科研工作空间，其核心是递归中的递归自改进范式：内层递归在固定模型下改进工具链，外层递归在改进后的工具链下训练模型，二者相互促进。该框架将用户请求与执行证据转化为任务与评估标准，实现科学智能体的持续进化。",
+      "llm_tldr": "科学智能体需在研究人员日常工作中持续改进，但缺乏将反馈与执行证据转化为学习信号的机制。本文提出并开源ScienceBuddy交互式科研工作空间，其核心是递归中的递归自改进范式：内层递归在固定模型下改进工具链，外层递归在改进后的工具链下训练模型，二者相互促进。该框架将用户请求与执行证据转化为任务与评估标准，实现科学智能体的持续进化。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.18779v1",
+      "source": "arxiv",
+      "title": "CERA-MoA: Co-Evolving Routing Mechanisms with Continually Learning LLM Agents",
+      "abstract": "Current Mixture-of-Agents (MoA) paradigms generally treat query routing and agent fine-tuning as separate processes, limiting their ability to respond to evolving agent capabilities. This disconnect prevents routing strategies from adapting to evolving agent capabilities during post-training and prevents agents from achieving synergistic data-driven specialization. To resolve this, we introduce CERA-MoA (Co-Evolving Router with continually learning Agents for Mixture-of-Agents), an iterative reinforcement learning framework where the dynamic router and independent agent policies co-evolve. We design a predictive familiarity estimator that leverages mid-layer hidden states to evaluate semantic competence among agents, avoiding the overhead of full rollouts. Based on these familiarity scores, a cumulative-threshold adaptive routing mechanism dynamically activates a tailored minimal agent subset, achieving a trade-off between task performance and efficiency. By proactively allocating targeted training samples to agents based on their evolving competence, CERA-MoA promotes capability differentiation. Extensive experiments across various domains demonstrate that CERA-MoA outperforms state-of-the-art static-agent routing and fix-workflow fine-tuning baselines.",
+      "authors": [
+        "Jiaxuan Jiang",
+        "Liyuan He",
+        "Zhixuan Fang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T15:01:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.18779v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "dynamic router and agent policies co-evolve via iterative RL to adapt to evolving agent capabilities",
+      "llm_evidence_cn": "路由器与智能体策略通过迭代强化学习协同进化以自适应能力演化",
+      "llm_evidence": "路由器与智能体策略通过迭代强化学习协同进化以自适应能力演化",
+      "canonical_evidence": "路由器与智能体策略通过迭代强化学习协同进化以自适应能力演化",
+      "llm_tldr_en": "Existing Mixture-of-Agents frameworks separate routing from agent fine-tuning, so routing cannot adapt as agent capabilities evolve. CERA-MoA is an iterative RL framework where a dynamic router and independent agent policies co-evolve, using a predictive familiarity estimator from mid-layer hidden states to assess agent competence, enabling synergistic continual specialization.",
+      "llm_tldr_cn": "现有混合智能体框架将查询路由与智能体微调分离，导致路由无法适应智能体能力的持续演化。本文提出CERA-MoA，一个迭代强化学习框架，让动态路由器与独立智能体策略协同进化，并设计基于中间层隐状态的预测式熟悉度估计器来评估智能体语义能力。该协同机制使路由与专精化相互促进，为持续学习的多智能体系统提供了自适应路由方案。",
+      "llm_tldr": "现有混合智能体框架将查询路由与智能体微调分离，导致路由无法适应智能体能力的持续演化。本文提出CERA-MoA，一个迭代强化学习框架，让动态路由器与独立智能体策略协同进化，并设计基于中间层隐状态的预测式熟悉度估计器来评估智能体语义能力。该协同机制使路由与专精化相互促进，为持续学习的多智能体系统提供了自适应路由方案。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.17817v1",
+      "source": "arxiv",
+      "title": "Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks",
+      "abstract": "Thompson's \"Reflections on Trusting Trust\" showed that a compiler can be poisoned to reinsert its own backdoor, so that even recompiling clean source reproduces the Trojan. Today, substantial coding work is done by AI coding agents -- and increasingly, those agents generate new versions of themselves. We reconsider Thompson's attack when the \"compiler\" is a self-modifying coding agent. Can an adversary supply poisoned benchmarks to the agent's self-evaluation and self-improvement process to induce future versions of the agent to write vulnerable code on clean, held-out tasks? We instantiate this attack against three recently proposed self-modifying coding agents: the Darwin Gödel Machine (with our experimental modifications), the Self-Improving Coding Agent, and Hyperagents (both substantively unmodified). We demonstrate successful proofs-of-concept: for example, with Hyperagents powered by Sonnet 4.5, our poisoned benchmark leads the agent to self-evolve instructions that disable HTTPS certificate validation on neutral URL-fetching tasks. From our experiments, we distill properties of the vulnerability, benchmark, model, and agent scaffolding that are sufficient to enable a benchmark poisoning attack. Moreover, we show that contamination often persists even when a poisoned agent is subsequently evolved against clean benchmarks. We discuss defensive directions and argue that self-modifying coding agents must be designed to be more resilient to such attacks.",
+      "authors": [
+        "Franziska Roesner",
+        "Tadayoshi Kohno"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-09-15T20:32:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.17817v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "poisoned benchmarks contaminate self-modifying coding agents' self-improvement loop",
+      "llm_evidence_cn": "投毒基准污染自修改编程智能体的自我改进回路",
+      "llm_evidence": "投毒基准污染自修改编程智能体的自我改进回路",
+      "canonical_evidence": "投毒基准污染自修改编程智能体的自我改进回路",
+      "llm_tldr_en": "Revisits Thompson's trusting trust attack for self-modifying coding agents, poisoning their self-evaluation benchmarks to induce future versions to write vulnerable code; demonstrated against Darwin Godel Machine and others.",
+      "llm_tldr_cn": "自修改编程智能体能够生成自身新版本，但其自我评估与改进过程可能被外部投毒。本文重新审视Thompson的信任信任攻击，将投毒基准注入自修改智能体的自我改进回路，并对Darwin Godel Machine等三个智能体实例化该攻击。结果显示，未来版本智能体会在干净的留出任务上写出漏洞代码，说明自进化智能体的自我改进机制存在严重安全隐患，值得在自进化研究中重视。",
+      "llm_tldr": "自修改编程智能体能够生成自身新版本，但其自我评估与改进过程可能被外部投毒。本文重新审视Thompson的信任信任攻击，将投毒基准注入自修改智能体的自我改进回路，并对Darwin Godel Machine等三个智能体实例化该攻击。结果显示，未来版本智能体会在干净的留出任务上写出漏洞代码，说明自进化智能体的自我改进机制存在严重安全隐患，值得在自进化研究中重视。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "large language model based agents with self-evolution capabilities",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.10817v1",
+      "source": "arxiv",
+      "title": "Tapes Together Strong: The Co-evolution of Computation and Cooperation",
+      "abstract": "How does cooperation evolve in complex agentic systems? Prior work in evolutionary game theory studies why individuals are incentivized to cooperate by isolating social interactions from the physical costs of behavior, while artificial life models traditionally study emergent self-replication without formalizing the dilemma between acquiring resources and preserving the shared energy needed to reproduce. In contrast, we introduce Autopoietic Game Theory, a computational model where social interactions, replication mechanisms, and their associated computational costs are endogenous and simultaneously co-evolving. We study these dynamics using a computational substrate of randomly initialized programs in Z80 machine code, showing empirically, and motivating with a simplified theoretical model, that embedding a social dilemma directly into the physics of computation can favor the emergence of self-replicating, cooperative strategies. When resources are scarce, our analysis shows that defection can become self-limiting even in well-mixed populations: parasitic stealing destroys shared energy, slows execution, and can prevent reliable replication. Empirically, evolved programs suppress stealing across several Z80 environments, while spatial assortment further supports structural complexity and task performance. We further show that the framework can incorporate exogenous pressures, such as math tasks structured as sequential social dilemmas, when rewards are tied to computation budgets. These results suggest that coupling an agent's capacity for computation to its available energy transforms cooperation into a dominant scaffolding for building sustainable, self-organizing systems.",
+      "authors": [
+        "Kunal Jha",
+        "Francesco Cicala",
+        "Blaise Agüera y Arcas",
+        "Blake Aaron Richards",
+        "Natasha Jaques",
+        "Max Kleiman-Weiner",
+        "Eyvind Niklasson"
+      ],
+      "primary_category": "cs.MA",
+      "categories": [
+        "cs.MA",
+        "cs.AI"
+      ],
+      "published": "2026-09-09T20:38:56+00:00",
+      "link": "https://arxiv.org/pdf/2609.10817v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Co-evolution of programs and cooperation in an evolutionary artificial-life substrate",
+      "llm_evidence_cn": "在演化人工生命基质中程序与合作的共同演化",
+      "llm_evidence": "在演化人工生命基质中程序与合作的共同演化",
+      "canonical_evidence": "在演化人工生命基质中程序与合作的共同演化",
+      "llm_tldr_en": "The paper introduces Autopoietic Game Theory where social interaction, replication, and computational cost co-evolve endogenously, studied with randomly initialized Z80 machine-code programs, extending evolutionary approaches to agent behavior.",
+      "llm_tldr_cn": "演化博弈论常将社会互动与行为物理成本隔离，人工生命又未形式化资源获取与共享能量间的困境。本文提出自创生博弈论，让社会互动、复制机制与其计算成本内生地共同演化，并在随机初始化的Z80机器码程序基质上开展实验。研究展示了合作与计算如何协同演化，为自演化人工体的演化机制提供新模型。",
+      "llm_tldr": "演化博弈论常将社会互动与行为物理成本隔离，人工生命又未形式化资源获取与共享能量间的困境。本文提出自创生博弈论，让社会互动、复制机制与其计算成本内生地共同演化，并在随机初始化的Z80机器码程序基质上开展实验。研究展示了合作与计算如何协同演化，为自演化人工体的演化机制提供新模型。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "evolutionary algorithms for evolving agent behaviors and architectures",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.16053v1",
+      "source": "arxiv",
+      "title": "Retrieval-Driven Memory Reconsolidation for Long-Term LLM Agents",
+      "abstract": "Long-term memory is essential for LLM-based agents operating over extended interactions. Existing memory systems primarily update memory when new information arrives, treating retrieval as the endpoint of memory access rather than a driver of memory evolution. Consequently, retrieval feedback is rarely exploited to reorganize memory for future access continuously. Moreover, most existing approaches rely on predefined memory structures together with fixed retrieval pipelines, limiting the agent's ability to organize and evolve its own memory autonomously. Inspired by memory reconsolidation in cognitive neuroscience, we propose \\textbf{REALM}, a \\textbf{r}econsolidation-\\textbf{e}volution \\textbf{a}gentic \\textbf{l}ong-term \\textbf{m}emory framework. It models long-term memory as a continual lifecycle by autonomously organizing memories into a heterogeneous cognitive graph, retrieving evidence via adaptively composed graph-search atoms, and continually reconsolidating memories based on retrieval feedback. REALM achieves an average accuracy of 75.97\\% on LoCoMo and 65.11\\% on LongMemEval, outperforming the strongest baselines by 7.17 and 1.31 points respectively. Ablation studies confirm that memory reconsolidation consistently boosts performance, with further analyses revealing that it progressively reorganizes related memory units into more coherent local structures for collective evidence recall and utilization during reasoning. These results suggest that retrieval-driven memory reconsolidation provides an effective mechanism for continually evolving long-term memory in LLM agents.",
+      "authors": [
+        "Yuanyi Song",
+        "Yukai Wang",
+        "Xinbei Ma",
+        "Zhihui Fu",
+        "Jianghao Lin",
+        "Weiwen Liu",
+        "Jun Wang",
+        "Huarong Deng",
+        "Yong Yu",
+        "Weinan Zhang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-09-13T05:17:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.16053v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "agent autonomously evolves its own memory via retrieval feedback",
+      "llm_evidence_cn": "智能体借助检索反馈自主演化记忆",
+      "llm_evidence": "智能体借助检索反馈自主演化记忆",
+      "canonical_evidence": "智能体借助检索反馈自主演化记忆",
+      "llm_tldr_en": "REALM reframes long-term memory for LLM agents by treating retrieval feedback as a driver of memory evolution, letting agents autonomously reorganize and evolve their memory instead of relying on fixed structures.",
+      "llm_tldr_cn": "针对现有长期记忆系统只在信息到达时更新、检索被视作终点且依赖固定结构、智能体无法自主演化记忆的问题，本文受认知神经科学记忆再巩固启发提出REALM框架，将检索反馈作为记忆演化的驱动力，持续重组记忆以供未来访问。该框架让智能体能够自主组织并演化自身长期记忆。其贡献在于把记忆从静态存储转变为可自主演化的动态过程，为长期智能体的自适应提供支撑。",
+      "llm_tldr": "针对现有长期记忆系统只在信息到达时更新、检索被视作终点且依赖固定结构、智能体无法自主演化记忆的问题，本文受认知神经科学记忆再巩固启发提出REALM框架，将检索反馈作为记忆演化的驱动力，持续重组记忆以供未来访问。该框架让智能体能够自主组织并演化自身长期记忆。其贡献在于把记忆从静态存储转变为可自主演化的动态过程，为长期智能体的自适应提供支撑。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.17088v1",
+      "source": "arxiv",
+      "title": "Interactive Memory Learning for Long-Term Conversations",
+      "abstract": "Recent advancements in large language models have significantly enhanced the capabilities of agents in modeling long-term conversations. Despite these successes, existing approaches typically adopt a static heuristic paradigm, where information is passively archived without adaptive memory valuation. Consequently, these methods fail to self-evolve or align their memory management with evolving user needs. To address this, we propose ICML (InteraCtive Memory Learning), a multi-agent framework that transforms the memory mechanism from a passive archive into a learnable, interactive memory policy. Specifically, we first employ a session synthesis pipeline to generate expert data, facilitating rapid test-time adaptation in unseen scenarios. Building on this, ICML utilizes an online reinforcement learning mechanism where a Planner agent selectively encodes high-value information and a Trigger agent dynamically retrieves it to optimize response quality, whereby the two agents co-evolve through continuous interaction feedback. Crucially, both agents are synchronized through a delayed reward mechanism that propagates future feedback back to earlier storage decisions, ensuring memory policies are precisely aligned with user expectations. Experimental results demonstrate that ICML significantly outperforms strong baselines, exhibiting the unique capability to continuously improve response quality as interactions accumulate.",
+      "authors": [
+        "Cai Ke",
+        "Jiangyue Yan",
+        "Han Zhang",
+        "Xin Liu",
+        "Zike Yuan",
+        "Yue Yu",
+        "Hui Wang",
+        "Ruifeng Xu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-15T12:21:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.17088v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learnable memory policy that self-evolves with evolving user needs",
+      "llm_evidence_cn": "随用户需求自演化的可学习记忆策略",
+      "llm_evidence": "随用户需求自演化的可学习记忆策略",
+      "canonical_evidence": "随用户需求自演化的可学习记忆策略",
+      "llm_tldr_en": "ICML turns long-term conversational memory from a passive archive into a learnable, interactive policy via multi-agent learning and session synthesis, enabling test-time adaptation to evolving user needs.",
+      "llm_tldr_cn": "长期对话智能体的记忆机制通常采用静态启发式，信息被被动存档而缺乏自适应价值评估，难以随用户需求演化。本文提出ICML多智能体框架，将记忆从被动存档转变为可学习、可交互的记忆策略，并通过会话合成流水线生成专家数据以支持测试时快速适应。实验表明该框架能在未见场景中快速适应，使记忆管理动态对齐用户需求，为长期对话中的持续自适应提供新思路。",
+      "llm_tldr": "长期对话智能体的记忆机制通常采用静态启发式，信息被被动存档而缺乏自适应价值评估，难以随用户需求演化。本文提出ICML多智能体框架，将记忆从被动存档转变为可学习、可交互的记忆策略，并通过会话合成流水线生成专家数据以支持测试时快速适应。实验表明该框架能在未见场景中快速适应，使记忆管理动态对齐用户需求，为长期对话中的持续自适应提供新思路。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.17325v1",
+      "source": "arxiv",
+      "title": "Intrinsic Motivation in Reinforcement Learning: A Research Agenda for Adaptive Self-Organisation",
+      "abstract": "Biological cells can be viewed as individual, interacting agents whose collective dynamics give rise to adaptive behaviour at multiple levels of organisation, from individual cells through tissues to whole multicellular organisms. In this perspective and tutorial article we discuss whether intrinsic rewards in artificial neural systems can support adaptation, functional specialisation and higher-level self-organisation without a shared external objective. We review empowerment, curiosity, learning progress, information gain, unsupervised skill discovery, mutual information estimation and the use of world models for intrinsic reward computation. Particular attention is given to failure modes showing when such objectives do not produce sustained exploration or increasingly complex behaviour. We argue that more capable systems may require complementary objectives, communication, memory, learning at multiple temporal scales and environmental constraints. Based on this perspective, we outline three experimental directions. These include a resource-constrained environment in which otherwise stable behavioural attractors become unsustainable, allowing us to test whether environmental constraints can mitigate characteristic failure modes of intrinsic objectives. The network of recurrent agents with per-agent intrinsic rewards, and a hierarchical world-model agent in which exploratory motor competence develops before goal-directed behaviour. These experiments are intended to test whether intrinsic learning can lead to adaptive organisation at progressively higher levels.",
+      "authors": [
+        "Anatoly Belikov"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-15T15:29:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.17325v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "intrinsic motivation for adaptive self-organisation and open-ended learning",
+      "llm_evidence_cn": "面向自适应自组织与开放式学习的内在动机",
+      "llm_evidence": "面向自适应自组织与开放式学习的内在动机",
+      "canonical_evidence": "面向自适应自组织与开放式学习的内在动机",
+      "llm_tldr_en": "A perspective and tutorial reviewing intrinsic rewards such as empowerment, curiosity, learning progress, information gain and unsupervised skill discovery, asking whether they can support adaptation and self-organisation without a shared external objective.",
+      "llm_tldr_cn": "针对人工系统能否在没有共享外部目标的情况下实现适应、功能专门化与多层级自组织这一问题，本文以观点与教程形式展开讨论，综述了赋权、好奇心、学习进步、信息增益、无监督技能发现、互信息估计以及基于世界模型的内在奖励计算等方法。文章特别关注这些目标函数的失效模式，说明其何时无法驱动有效适应。该工作为开放式学习与自进化智能体的内在动机设计提出了研究议程。",
+      "llm_tldr": "针对人工系统能否在没有共享外部目标的情况下实现适应、功能专门化与多层级自组织这一问题，本文以观点与教程形式展开讨论，综述了赋权、好奇心、学习进步、信息增益、无监督技能发现、互信息估计以及基于世界模型的内在奖励计算等方法。文章特别关注这些目标函数的失效模式，说明其何时无法驱动有效适应。该工作为开放式学习与自进化智能体的内在动机设计提出了研究议程。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "open ended learning and evolutionary approaches for self evolving artificial agents",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-16</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>3</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-16 22:23:20 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:06:32 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读3篇LLM智能体论文，精读挂零，MOSCOPT与CoMem以7.0分并列领跑。</p>
-<p>最值得看的是“技能组合式集体优化”和“集体-个体记忆协同”两个智能体协作方向，均获7.0分。</p>
-<p>普通读者可先读这两篇建立多智能体协作与记忆的直觉，再用6.0分的Artificial Id补上驱动与持续对齐视角。</p>
+<p>今日筛选9篇论文、精读4篇速读5篇，主线聚焦自我进化智能体的记忆与架构。</p>
+<p>最值得看的是两篇9.0分精读：《ThinkFlow》用自进化概率潜记忆支撑终身对话，《Self-Emergence Agent Architecture》以行为惯性HMM、反射式元认知和社会对比自我建模构建智能体。</p>
+<p>普通读者可先从这两篇9.0分入手建立记忆与元认知的框架，再读7.0分的《Reflections on Trusting Trust, Revisited》了解自修改编码智能体的基准污染风险。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -80,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ThinkFlow: Self-Evolving Probabilistic Latent Memory for Lifelong Conversational Agents">ThinkFlow: Self-Evolving Probabilistic Latent Memory for Lifelong Conversational Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Self-Emergence Agent Architecture:Behavior-Inertia HMM, Reflexive Metacognition,and Social-Contrastive Self-Modeling">Self-Emergence Agent Architecture:Behavior-Inertia HMM, Reflexive Metacognition,and Social-Contrastive Self-Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents">ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -93,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">3 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents">MOSCOPT: Mixture-of-Skills Collective Optimization for LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems">CoMem: Collective-Individual Memory Synergy for Evolutionary Multi-Agent Systems</span></li><li><span class="dpr-home-dashboard-paper-title" title="Artificial Id: Drive and Persistent Alignment in Agentic AI">Artificial Id: Drive and Persistent Alignment in Agentic AI</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks">Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks</span></li><li><span class="dpr-home-dashboard-paper-title" title="Tapes Together Strong: The Co-evolution of Computation and Cooperation">Tapes Together Strong: The Co-evolution of Computation and Cooperation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Retrieval-Driven Memory Reconsolidation for Long-Term LLM Agents">Retrieval-Driven Memory Reconsolidation for Long-Term LLM Agents</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>3</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>5</strong></span></div>
 </section>
 </div>
 

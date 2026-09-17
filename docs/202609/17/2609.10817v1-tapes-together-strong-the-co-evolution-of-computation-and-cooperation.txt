@@ -1,0 +1,1142 @@
+Title: Tapes Together Strong: The Co-evolution of Computation and Cooperation
+
+URL Source: https://arxiv.org/pdf/2609.10817v1
+
+Published Time: Fri, 11 Sep 2026 00:15:27 GMT
+
+Number of Pages: 37
+
+Markdown Content:
+# Tapes Together Strong: The Co-evolution of Computation and Cooperation 
+
+Kunal Jha 1,2† Francesco Cicala 2 Blaise Agüera y Arcas 2
+
+Blake Aaron Richards 2,3 Natasha Jaques 1,4∗ Max Kleiman-Weiner 1,4∗
+
+Eyvind Niklasson 2∗
+
+Abstract 
+
+How does cooperation evolve in complex agentic systems? Prior work in evo-lutionary game theory studies why individuals are incentivized to cooperate by isolating social interactions from the physical costs of behavior, while artificial life models traditionally study emergent self-replication without formalizing the dilemma between acquiring resources and preserving the shared energy needed to reproduce. In contrast, we introduce Autopoietic Game Theory , a computational model where social interactions, replication mechanisms, and their associated com-putational costs are endogenous and simultaneously co-evolving. We study these dynamics using a computational substrate of randomly initialized programs in Z80 machine code, showing empirically, and motivating with a simplified theoretical model, that embedding a social dilemma directly into the physics of computa-tion can favor the emergence of self-replicating, cooperative strategies. When resources are scarce, our analysis shows that defection can become self-limiting even in well-mixed populations : parasitic stealing destroys shared energy, slows execution, and can prevent reliable replication. Empirically, evolved programs suppress stealing across several Z80 environments, while spatial assortment further supports structural complexity and task performance. We further show that the framework can incorporate exogenous pressures, such as math tasks structured as sequential social dilemmas, when rewards are tied to computation budgets. These results suggest that coupling an agent’s capacity for computation to its available energy transforms cooperation into a dominant scaffolding for building sustainable, self-organizing systems. 
+
+1 Introduction 
+
+The transition from individual agents to cooperative collectives is a central puzzle in artificial intelligence, biology, and the study of complex adaptive systems [2, 32, 25]. Historically, the emergence of sociality has been studied through disparate lenses: biological scaling theories [19, 20], ecological models of resource sharing [41, 22, 40], game-theoretic formalizations of reciprocal altruism [5, 8, 46], and cognitive models of multi-agent intent [56, 7, 63, 27, 29–31, 39]. Today, as machine learning scales toward autonomous multi-agent systems that can modify their decision-making logic while completing complex tasks [52, 62, 24], understanding why and how self-interested agents cooperate without centralized control is a pressing engineering challenge [14, 35]. This problem becomes especially difficult when computation, interaction, and reproduction all draw from the same finite resource.     
+
+> †Work done as a student researcher at Google. ∗Equal advising. 1Dept. of Computer Science, University of Washington.
+> 2Google Paradigms of Intelligence. 3School of Computer Science, McGill University; Mila. 4Google DeepMind. Preprint. arXiv:2609.10817v1 [cs.MA] 9 Sep 2026
+
+Consider a simple organism that acquires energy from its environment and spends it to act, interact, and reproduce. Because these behaviors share a common budget, energy spent on one action cannot be spent on another. The organism might acquire more by consuming a neighbor, but doing so also costs energy and recovers only part of what the neighbor held. Its social behavior therefore directly affects whether it retains enough energy to survive and reproduce. Existing approaches often separate such strategic decisions from their physical execution. Evolution-ary Game Theory (EGT), for example, models how populations adopt behaviors in social dilemmas but treats game payoffs and population updates as external mathematical operations [51, 58, 48]. Because EGT assumes that strategy replication occurs independently of interaction, stabilizing co-operation is notoriously difficult in well-mixed populations, where agents are paired at random, or among memoryless agents that cannot recall previous encounters. Overcoming these baseline conditions typically requires endowing agents with specific cognitive capabilities, such as memory for direct reciprocity or intentionality for costly punishment [42]. Conversely, Artificial Life (ALife) frameworks study how replicators evolve while competing for computational resources and physical space [47, 1, 3]. Historically, however, these frameworks have emphasized zero-sum competition, eco-logical niche construction, or extrinsic task landscapes rather than formalizing emergent interactions as endogenous, general-sum social dilemmas [61, 18, 59, 16]. How might cooperation evolve if agents could modify both their social strategies and the mechanisms by which they and others replicate? To answer this, we introduce Autopoietic Game Theory 
+
+(Figure 1). Drawing on the biological principle of autopoiesis—the continuous reproduction and maintenance of a system’s components—our framework treats strategic behavior and replication as simultaneous, co-evolving computational processes. It translates the organism analogy above into a computational setting: every instruction has an energetic cost, execution speed depends on the energy available, and computation, interaction, and reproduction all draw from the same budget [33, 38]. This allows us to test whether changes in replication alter the outcome of a social interaction and whether cooperation gives agents a competitive advantage by supporting more complex computation over time. We instantiate this framework in a Z80 machine-code environment where self-replicating programs emerge from randomly initialized bytes and manage finite energy budgets. Rather than imposing an abstract payoff matrix, we embed a social dilemma in the mechanics of computation by introducing 
+
+STEAL as a computational instruction. When executed, STEAL imperfectly transfers energy from a neighboring agent to the acting program, immediately increasing its computational capacity while reducing the total energy available in the environment. Programs must therefore allocate energy among executing code, interacting with neighbors, and reproducing. By allowing social strategy and replication to co-evolve within a single phase of interaction, our framework lets us study whether cooperation can persist among well-mixed, memoryless computational agents. Concretely, our contributions are: • Autopoietic Game Theory: We introduce a computational framework in which social strategy, replication mechanisms, and computational resource use are endogenous processes that evolve together rather than being specified as separate update rules. • Cooperation Without Memory or Assortment: We show that randomly initialized programs can evolve self-replication while suppressing destructive stealing, even when partners are chosen at random and agents cannot remember previous interactions. Mutation-free invasion assays and parameter sweeps show that this suppression is not simply an artifact of continuous mutation or inefficient stealing. Instead, cooperation is supported by the coupling between social interaction, energy, and the agents’ evolving replication mechanisms. • Spatial Assortment Supports Complexity and Resilience: When energy is uniformly distributed, both well-mixed and spatial populations suppress stealing, but local interactions produce more structurally complex and genetically cohesive replicators. When energy is distributed asymmet-rically, spatial assortment becomes critical: local populations maintain energy and complexity, whereas well-mixed populations collapse into simpler, lower-energy programs. • Cooperation Extends to Multi-Step Computational Tasks: We show that resource scarcity drives evolving programs to solve externally imposed tasks while continuing to replicate. When rewards form a sequential social dilemma, programs suppress both destructive stealing and the safer solo strategy in favor of a collaborative, multi-step solution. Cooperation persists in this more complex setting and is strengthened by local interactions. 22 Related Work 
+
+Digital Self-Replication and Artificial Life. The computational study of self-replication is anchored in Von Neumann et al.’s [57] formalization of the Universal Constructor, which demonstrated that machines could use self-descriptions to build copies of themselves. Emergent digital replicators were pioneered by Tierra [47], demonstrating spontaneous parasitism in a shared memory space, while 
+
+Avida [1] linked computational logic to exogenously defined metabolic rewards [36] (which we discuss further in Appendix A.1). Moving beyond pure machine code, environments like Polyworld [60] embedded neural architectures within spatial, energy-constrained environments, while formalizations of artificial life stressed the necessity of environmental pressures to drive open-ended evolution [15]. More recently, Agüera y Arcas et al. [3] demonstrated that self-replication spontaneously emerges as an attractor state in random instruction sets. However, these foundational models explore how ecological complexity and self-replication emerge under metabolic constraints, rather than on how replicators evolve in general-sum endogenous social dilemmas. We instead embed randomly initialized programs in an energy-limited computational substrate [9], where execution, interaction, and replication all draw from a single, unified budget. In this setting, we find that self-replicating programs spontaneously discover and stabilize non-destructive strategies, even when both replication and cooperation require multi-step computations, and when energy must be earned by solving collaborative downstream tasks. 
+
+Cognitive Evolution, Multi-Agent AI, and Program Equilibria. In cognitive science and anthro-pology, sociality is often understood as an adaptation to metabolic constraints rather than a hardcoded trait. The Cultural Brain Hypothesis [41, 21, 40] and Expensive Tissue Hypothesis [4] propose that energy-intensive neural scaling favored cooperation through shared intentionality and distributed foraging [55, 28]. In contrast, modern AI and standard Evolutionary Game Theory [51, 49, 58] typically treat replication as an external update rather than a resource-constrained action. Classical mechanisms such as assortment, reciprocity, and punishment can stabilize cooperation [43, 42], while Multi-Agent Reinforcement Learning studies sequential social dilemmas with spatial and temporally extended resource constraints [34, 26, 6]. Some evolutionary game-theoretic models examine how replication dynamics affect cooperation [44, 10, 45], but generally restrict social and reproductive behavior to hand-crafted strategy spaces. With executable agents, cooperation, defection, and replication can instead emerge as multi-step computations. This connects to “program equilibria,” in which agents coordinate by inspecting one another’s logic [53, 13, 50]. In open-source game theory, agents design programs that condition on others’ decision-making logic before cooperating. Our model extends this setting: agents continuously edit, overwrite, and evolve one another’s strategies; strategies are endogenous rather than fixed labels; and acting itself requires computation. Related environments study programs that compete by overwriting one another in zero-sum spaces [16], further showing how code-level mechanisms shape strategic behavior. Recent work on open-ended self-improvement and autonomous agent design studies systems that generate and organize increasingly complex behaviors [24, 62, 17, 37], but generally assumes large computational budgets. We instead require agents to evolve social behavior and replication from scratch while spending finite energy to compute, interact, and reproduce. Cooperative outcomes and reproduction dynamics resembling assumed population-update processes, such as the Moran process, are therefore not guaranteed. This coupling lets us study cooperation when strategic choice, computation, and self-maintenance are part of the same evolving process. 
+
+3 Autopoietic Game Theory: Embedding Social Dilemmas in Machine Code 
+
+Here, we formally define the computational environment, where computation consumes limited resources available to each agent (illustrated in Figure 1). We simulate a finite population of 16,384 programs (which we interchangeably refer to as “tapes”) written in a modified Z80 assembly language, initialized as 32-byte sequences of completely random bytes. Tapes from this population are paired with each other during interaction. The population lives either in a well-mixed pool (uniform random pairings) or on a 2D spatial grid (pairings restricted to the four immediate horizontal and vertical neighbors). In Appendix C, we provide a more detailed description of the setup and interactions. 
+
+Epochs, Shared Memory, and Environmental Energy: Time progresses in discrete epochs, with programs persisting in the population across epochs. During each epoch, every program receives a baseline energy injection ( ϵ = 24 ) and is paired with another program. When two 32-byte programs 3Figure 1: Visualization of the computational substrate. Two paired programs share a cyclic memory tape and have finite energy budgets that determine their individual probability of executing the next instruction. This incentivizes tapes to steal the energy of their partner, however, inefficient stealing degrades the computational budget of the entire system. are paired, they are concatenated to form a single 64-byte cyclic shared memory tape. To ensure symmetric interactions, each program is assigned an independent CPU with a completely separate set of registers. Each CPU begins execution at the first byte of its own code and accesses the shared memory relative to that starting position. For example, if Program A is paired with Program B, the CPU for Program A starts at the beginning of A and perceives the cyclic tape as the continuous sequence A → B → A → B . . . . Simultaneously, the CPU for Program B starts at the beginning of B and perceives the cyclic tape as the continuous sequence B → A → B → A . . . .
+
+Asynchronous Execution and Relative Speed: Both programs execute instructions asynchronously. Every operation costs exactly c = 1 unit of energy; if a program attempts an invalid instruction, the emulator safely advances the program counter, but the energy cost is still consumed. Furthermore, a program’s relative execution speed is dictated by its share of the pool: the probability that program 
+
+i executes the next instruction instead of program j is exactly Ei  
+
+> (Ei+Ej)
+
+. Each program can have at most Emax = 255 units of energy at any given time and at least Emin = 0 units of energy. 
+
+Replication and Mutation: Programs lack a built-in replication command; to reproduce, they must evolve code which explicitly overwrites the opponent’s tape segment with their own code. Because an efficient replicator in this substrate can be handcrafted in just L = 11 bytes, the baseline ϵ = 24 
+
+provides sufficient energy for non-stealing tapes to safely replicate and accumulate surplus across epochs ( ϵ > Lc ) assuming a replicator L operations long costing c units each). At the epoch’s conclusion, the joint tape is cleanly cleaved in half, and the resulting programs are placed back in the soup. Before every epoch begins, all programs are subject to a background mutation rate 
+
+μ, representing the probability of mutating a single byte. To track evolutionary dynamics within our environment, we rely on two primary metrics. First, we measure structural complexification using higher-order entropy —the theoretical difference between a sequence’s Shannon entropy and its normalized Kolmogorov complexity (Appendix C.7). By approximating Kolmogorov complexity via the compressed size of the soup, this metric isolates non-trivial structural motifs from the baseline noise of independent random bytes (larger values suggest more complex replicators). Second, we evaluate genetic cohesion using edit distance (the Hamming distance between program tapes). 
+
+The Energy-Based Social Dilemma: To embed a social dilemma directly into the mechanics of replication, we introduce the STEAL instruction. When performed, STEAL attempts to drain δ energy from the partner and absorbs that energy with efficiency α = 0 .8. Since α < 1, stealing is lossy: the stealer gains only αδ , while the partner loses δ, so each successful steal destroys (1 − α)δ energy from the system.                        
+
+> Partner CPartner DCϵ−Lc ϵ−Lc −δDϵ−Lc +αδ ϵ−Lc −(1 −α)δ
+
+Table 1: Energy payoff matrix for the row player’s tape. Each entry gives ∆E after one interaction, including baseline environmental energy ϵ, replication cost Lc , and any energy transferred by STEAL .4For simplicity of analysis, we use a coarse behavioral classification. Programs that do not execute 
+
+STEAL during replication are labeled non-stealing or cooperative (C), while programs that execute 
+
+STEAL are labeled defective or parasitic (D). However, we note in our substrate, even non-stealing programs reproduce by overwriting memory, so cooperation does not mean harmlessness in general. We interpret it as avoiding energy-destructive theft. This is still a meaningful cooperative act because energy left on the partner tape remains available for that partner’s future computation. In particular, if we assume 2ϵ > 2Lc , then two non-stealing tapes accumulate net system energy during an interaction: together they gain 2ϵ − 2Lc > 0 before any stealing occurs. We recognize, however, that this binary is a coarse-graining of a richer gradient; programs might loop over the 
+
+STEAL instruction, vary their stealing magnitudes, or conditionally overwrite different portions of the shared tape. Charting this gradient is difficult in an open-ended environment, but we provide our initial attempts to do so in Appendix A.2. Table 1 makes the dilemma explicit. Against either partner, stealing provides a local advantage by yielding more immediate energy than not stealing. However, mutual stealing degrades the shared energetic substrate, as each successful steal destroys (1 − α)δ energy that could otherwise support future computation. We exclude α = 1 from this study; lossless stealing acts as a zero-sum transfer that eliminates the dilemma, shifting the evolutionary dynamics entirely toward competition [1, 18]. 
+
+4 Results 
+
+In this section, we examine how cooperation changes as social strategy and replication evolve together. We organize the results around five research questions that build from a well-mixed baseline toward increasingly demanding environmental and computational conditions: 1. RQ1: Is stealing suppressed when agents’ social strategy and replication mechanisms must evolve from scratch, assuming uniformly distributed energy? 2. RQ2: Is this suppression driven by high mutation rates or inefficient stealing alone? 3. RQ3: What is the role of the classical game-theoretic notion of “assortment” if cooperation is viable in the well-mixed setting with uniformly distributed energy? 4. RQ4: Do these findings change if the passive background energy agents receive is now asymmetrically distributed? 5. RQ5: What happens if agents must now earn additional energy by maximizing an externally imposed reward, and what if cooperation is now a multi-step computation? When our simulation begins with a computational soup of entirely random bytes, self-replicating programs naturally emerge over time, mirroring prior work in artificial life [3]. What distinguishes our autopoietic environment from these standard models is that this open-ended evolution is natively game-theoretic: replication emerges while simultaneously suppressing defection. 0 10 20 30                               
+
+> Average Stealing Rate ( )
+> 0.0 0.1 0.2
+> Expected  Proportion of  Defectors
+> (a) Theoretical Prediction
+> Theoretical Upper Bound Starvation Limit (=16.8)
+> Stochastic Rollout (Mean ±SE)
+> 24816 32 Dynamic
+> Fixed Stealing Rate ( )
+> 0.0 0.1 0.2
+> Mean  Successful  Steals
+> (b) Z80 Empirical Rollouts
+> Fixed Stealing Rate Dynamic Stealing Rate
+
+Figure 2: The Metabolic Starvation Limit: Theory vs. Practice in Well-Mixed settings with non-zero mutation rate. (a) Theoretical defector survival probability shows a steep drop-off at the starvation limit. (b) Empirical Z80 rollouts mirror this trajectory, remaining well below the theoretical bound. When agents can dynamically decide how much to steal by modifying custom registers, populations naturally converge to these safely suppressed levels. 50 1 2 3 4 5 6                        
+
+> Epochs 1e6 100 150 200
+> Mean  Energy
+> Final Epoch Diff: p<0.001
+> System Metabolic Health
+> 0123456
+> Epochs 1e6 012
+> Higher-Order  Entropy
+> Final Epoch Diff: p<0.001
+> Structural Complexity
+> Interaction Topology
+> Local Spatial Well-Mixed
+
+(a) Overcoming Asymmetric Energy Grids. When subjected to severe, systematic environmental en-ergy inequality, well-mixed populations suffer total metabolic and structural collapse. Conversely, local spatial topologies allow populations to maintain sig-nificantly higher terminal energy ( p < 0.001 , Cohen’s 
+
+d = 8 .98 ) and structural complexity ( p < 0.001 , Co-hen’s d = 3 .54 ; two-sided t-tests). Energy Budgets     
+
+> Epoch 0Epoch 30k Genotypes
+> Epoch 420k
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Normalized  Energy
+
+(b) Visualizing evolution on an uneven energy grid. The top row shows the post-interaction energy budget of each tape, with brighter yellow indicating higher remaining energy. The bottom row visualizes pro-gram genotype: each possible operation is assigned a distinct RGB value, and each program is colored by averaging the RGB values of the operations in its code. Programs with similar colors therefore share similar operational composition. Over time, initially random, non-functioning tapes give way to efficient self-replicators that first emerge in high-energy re-gions and later spread into lower-energy areas. 
+
+Figure 3: Impact of asymmetric environmental energy distribution on population health and complex-ity, visualized through terminal energy budgets and genotype-level program similarity. 
+
+Cooperation emerges in well-mixed settings with continuous mutations (RQ1). We evaluated a well-mixed population where every program receives a uniform baseline energy ( ϵ = 24 ) and is subject to a non-zero background mutation rate ( μ = 1128 ). We tested environments with varying fixed steal magnitudes ( δ) as well as settings where agents dynamically determine the amount to steal by modifying a dedicated register. Across all configurations, the STEAL instruction is heavily suppressed, natively converging to low volumes (Figure 2). As we show in Appendix B, the logic behind this suppression is fundamentally metabolic: because the STEAL operation absorbs energy imperfectly (α = 0 .8), mutual defection rapidly drains the shared energy pool. This energy loss severely slows down the execution speed of the paired system, exposing defectors to a much higher probability of fatal mutational errors. Conversely, cooperators successfully accumulate energy buffers across epochs. This accumulated wealth grants them a relative speed advantage in future interactions. Leveraging this speed, cooperators evolve replication logic that changes the equilibrium of the game; as demonstrated in an execution trace in Appendix D.1, a cooperative tape can utilize its speed advantage to stop a defector mid-execution and overwrite its malicious code entirely. In Appendix A.4, we provide additional evidence suggesting these behaviors emerge from self-interested agents trying to maximize their energy rather than as a feature of our environment. 
+
+The suppression of defection is not explained by high mutation rates alone (RQ2). To test whether this suppression is driven by the coevolutionary process rather than just continuous mutational noise, we conducted a mutation-free ( μ = 0 ) petri-dish invasion assay. We seeded a naive random soup with 1% functioning replicators and independently seeded 1% of the soup with the STEAL opcode. Evaluating the endemic equilibrium reveals a clear starvation dropoff (Figure 12): defectors are a minority of the population across the board, and the decrease in defector success when moving from a steal magnitude of δ = 16 to δ = 32 is highly statistically significant ( p < 0.001 , Cohen’s d = 4 .17 ;two-sided t-test). If a defector attempts to steal too much, it starves the shared energy pool before it can execute the L writes necessary to replicate. Thus, even without mutations, high-stealing parasitic programs can trap themselves in evolutionary dead-ends. 
+
+The suppression of defection is not explained by inefficient stealing alone (RQ2). To rule out whether the limits on the proportion of defectors in the population was driven by stealing being inefficient rather than agents being able to evolve their replication mechanisms simultaneously with their social strategy, we explore the relationship between the α and δ parameters. We simulated 10 seeds of a well-mixed population interacting with every combination of α ∈ { 0.25 , 0.5, 0.75 , 0.95 } × 
+
+6Table 2: Marginal defector proportions by α
+
+(averaged across δ)
+
+α Value Mean SE 0.25 0.210 0.038 0.50 0.169 0.034 0.75 0.213 0.035 0.95 0.204 0.036 Table 3: Marginal defector proportions by δ
+
+(averaged across α)
+
+δ Value Mean SE 4 0.111 0.036 8 0.168 0.046 16 0.313 0.052 24 0.075 0.027 32 0.226 0.045 64 0.300 0.041 
+
+δ ∈ { 4, 8, 16 , 24 , 32 , 64 }. Moreover, to make stealing easier to evolve and more difficult to break via mutation, we re-encoded the STEAL operation into a single byte instruction. In this experiment, if the limits on the ability for the defector population to grow were caused by inefficient stealing, then as α → 1 we should expect a greater proportion of defectors to survive since stealing would become more efficient. Instead, as Tables 2 and 3 show, we find that the number of defectors does not appear to be sensitive to the value of α alone. However, we did find a weak relationship between the amount gained from stealing ( α×δ) and the proportion of defectors (Pearson 
+
+r = 0 .14 , p = 0 .03 ). This suggests other factors in the co-evolutionary process are likely doing the work of stabilizing cooperation. 
+
+Local spatial interactions increase the structural complexity and efficiency of self-replicating programs (RQ3). We next compared well-mixed populations to those restricted to a 2D local spatial grid, keeping uniform energy constant. While both topologies suppress defection under these conditions, local spatial interactions act as a powerful evolutionary catalyst. Spatial assortment significantly boosts higher-order entropy (Cohen’s d = 2 .81 ) and lowers edit distance (Cohen’s 
+
+d = 7 .32 ; both p < 0.001 , two-sided t-tests) compared to well-mixed pools (Figure 14). By allowing non-stealing replicators to reliably cluster with identical kin, spatial assortment appears to support the evolution of more intricate, efficient instruction loops, rather than the more inefficient replicators typically found in well-mixed environments. 
+
+Local interactions are needed for evolving complex replicators when background energy is asymmetrically distributed (RQ4). Our initial experiments assumed every agent receives the exact same baseline energy. To test environmental resilience, we evaluated an asymmetric grid where the background energy ϵ varied significantly depending on an agent’s physical location (Figure 21). Under these systematic inequalities, well-mixed populations remain stuck as basic, low-complexity replicators with lower energy because they cannot rely on a predictable baseline influx. In stark contrast, populations restricted to local spatial interactions successfully overcome the environmental asymmetry to evolve complex, cooperative replicators, maintaining significantly higher terminal energy (Cohen’s d = 8 .98 ) and higher-order entropy (Cohen’s d = 3 .54 ; both p < 0.001 , two-sided t-tests) (Figure 3a). Pockets of successful programs in high-energy zones iteratively build efficient code capable of surviving interactions in lower-energy zones (Figure 3b). Spatial assortment thus acts as an important architectural scaffold to overcome systemic biases. 0.25 0.50 0.75 1.0                              
+
+> Background Energy Threshold
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Individual  Solve  Rate
+> r=-0.267 p=1.7e-02
+> Individual Solve Rate vs. Threshold
+> 0.25 0.50 0.75 1.0
+> Background Energy Threshold
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Joint  Solve  Rate  r=-0.427 p=7.7e-05
+> Joint Solve Rate vs. Threshold Question Mode
+> Solo Mode Joint Mode Mixed Mode
+
+Figure 4: Environmental scarcity drives problem-solving. Solve rates for both individual (Left) and joint (Right) tasks show a significant negative correlation with environmental energy abundance. As free energy increases, the incentive to execute complex math tasks diminishes. 70.0 0.5 1.0                         
+
+> Epoch 1e7 0.0 0.2 0.4
+> Individual Solve Rate
+> 0.0 0.5 1.0
+> Epoch 1e7 0.0 0.2 0.4
+> Joint Solve Rate
+> 0.0 0.5 1.0
+> Epoch 1e7 0.0 0.2 0.4
+> Steals
+> 0.0 0.5 1.0
+> Epoch 1e7 100 200
+> Mean System Energy
+> 0.0 0.5 1.0
+> Epoch 1e7 0246
+> Higher Order Entropy Question Mode
+> Solo Joint Mixed
+
+Figure 5: Evolutionary convergence at severe metabolic scarcity (25% threshold). In Mixed mode, tapes heavily suppress the solo task to optimize for joint task performance. The structural complexification required for joint execution induces a temporary spike in stealing, which is ultimately suppressed, allowing system energy to climb and stabilize. 
+
+Scarcity drives agents to solve externally imposed tasks while simultaneously replicating their strategies (RQ5). In our previous experiments, tapes received a constant amount of background energy from the environment, distributed either uniformly throughout the population or asymmetrical depending on the program’s location on a 2D grid. To evaluate how the dynamics of agents’ behavior changes when their energy influx is conditional on their ability to solve external tasks, we evaluate how well programs can solve math problems while simultaneously managing their energy and trying to replicate onto their partner. At the start of the simulation, each grid location is permanently assigned a mathematical constant b, which offspring inherit upon overwriting a neighbor. Every epoch, agents receive a random input x ∈ [0 , 255] and can access their partner’s input y (which costs more operations to read than b). To complete a task, an agent must compute the correct value and write it to a dedicated register m before execution ends. We defined two tasks: a Solo Task ( x + b) and a Joint Task ( x + y). To force engagement, free baseline energy is only provided if an agent’s reserves fall below a strict threshold (e.g., 25% of capacity). Above this limit, solving tasks is the only way to accumulate the surplus energy needed to safely replicate against wealthy opponents. We found a significant ( p < 0.001 ) negative correlation between the energy threshold and task completion: as free energy becomes plentiful, the incentive to execute external tasks diminishes (Figure 4). 
+
+Cooperation persists in multi-step computational tasks and is strengthened by local interactions (RQ5). We structured the math problems into a social dilemma evaluated by inspecting the custom register m for both tapes after every executed operation. Rewards are granted instantly. For instance, if Tape A solves the Joint task ( x + y) first, both agents immediately receive 2ϵ. If Tape B subsequently solves its Solo task, it receives an additional 5ϵ (safely securing 7ϵ for itself, while the joint solver is left with just 2ϵ). However, if Tape B instead solves the Joint task, both receive an additional 4ϵ
+
+(securing 6ϵ each). If both independently output their Solo answers, they each receive 5ϵ. Despite this sequential social dilemma payoff structure, tapes heavily suppress the safer solo task and aggressively optimize for the collaborative joint task to maximize collective energy (Figure 5). Simultaneously, the 
+
+STEAL instruction remains suppressed. Finally, local spatial interactions reliably produce significantly higher joint solve rates ( p ≤ 0.01 , Cohen’s d = 1 .63 ; two-sided t-test) compared to well-mixed populations (Figure 20), confirming that assortment aids in complex collaborative problem-solving [18]. 
+
+5 How Co-Evolving Replication Stabilizes Cooperation 
+
+The Z80 experiments above are intentionally open-ended: random byte strings discover their own replication loops, may or may not execute STEAL , and can alter both partners’ memory during execution. This makes the system useful as a stress test for emergent cooperation, but it also makes it difficult to isolate the causal mechanism stabilizing cooperation. We therefore use a simplified model, inspired by [44], to ask whether the ordering of interaction and replication can explain our results. Agents inhabit a finite, well-mixed population, always cooperate ( C) or defect ( D), and retain energy across encounters. Accumulated energy determines the probability of controlling a replication event, analogous to the Z80 substrate. The three Prisoner’s Dilemma environments in Table 4 differ only in whether mutual defection drains, preserves, or increases energy. We first fix the replication rule and compare three event orderings in the Drain environment (Figure 6): 8Drain 
+
+C DC 2 −2
+
+D 3.5 −0.5
+
+Stagnate 
+
+C DC 2 −2
+
+D 4 0
+
+Accumulate 
+
+C DC 2 −2
+
+D 5 1
+
+Table 4: Prisoner’s Dilemma payoff environments. Rows indicate the focal agent’s strategy and columns indicate the partner’s strategy; each entry is the focal agent’s energy change. The fixed-timing experiments in Figure 6 use the Drain environment. The co-evolution experiments in Figure 7 compare all three environments. • Interact → decide from post-interaction energy → replicate: Agents interact before replication priority is determined. Defectors can therefore convert the immediate energy gained from exploiting cooperators into control of the replication event, causing defection to take over (Figure 6a). • Decide from pre-interaction energy → interact → replicate: Replication priority is fixed before the interaction, although replication occurs afterward. Because the current payoff cannot affect the already-made decision, defectors lose their immediate reproductive advantage and cooperation takes over (Figure 6b). • Decide from pre-interaction energy → replicate → interact: Replication occurs before the social interaction, making each pair either (C, C ) or (D, D ). Mutual cooperation then yields more energy than mutual defection, so cooperation takes over (Figure 6c). These comparisons show that changing only the timing of replication can reverse the evolutionary outcome. We next allow both social strategy and replication timing to evolve (Figure 7). The population begins with equal proportions of cooperators and defectors, with the three timing rules distributed uniformly and inherited by offspring. Accumulated energy determines which agent controls an encounter, and that agent’s inherited rule determines the ordering of interaction and replication. Cooperation dominates when mutual defection drains or stagnates total energy 1: repeated defec-tion reduces the energy available to control future replication, whereas cooperation preserves it (Figure 7a,b). Even when mutual defection increases energy, co-evolving replication timing allows cooperators to maintain a substantial population share (Figure 7c). Figure 6a shows a simpler model where mutual defection takes over under the “interaction → decide 
+
+→ replicate” propagation rule, even though this involves energy loss. Figures 6bc, and 7 show cooperation succeeding instead within the same environment. Together with the α and δ sweeps (Tables 2 and 3), this shows that energy loss alone is insufficient at sustaining cooperation; it is supported by coupling lossy social behavior to replication mechanisms that agents can evolve. In Appendix B, we detail our initial steps towards formalizing related sufficient conditions.                                      
+
+> 1Appendix B.4 discusses the physical motivation for this assumption. 0100 200 300 400 500
+> Generation
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Defector  Frequency  a. Interact -> Decide -> Replicate
+> 0100 200 300 400 500
+> Generation
+> b. Decide -> Interact -> Replicate
+> 0100 200 300 400 500
+> Generation
+> c. Decide -> Replicate -> Interact
+> Initial Defector Proportion
+> 0.1 0.2 0.4 0.6 0.8 0.9
+
+Figure 6: Population dynamics under three fixed replication-timing rules without mutations, with agents paired uniformly at random and mutual defection draining energy. (a) When replication is decided from post-interaction energy, defectors take over. (b) When replication is decided from pre-interaction energy but occurs after interaction, the immediate reproductive advantage of defection is removed and cooperation takes over. (c) When replication occurs before interaction, pairs become 
+
+(C, C ) or (D, D ) before payoffs are assigned, making cooperation strictly better in this toy setting. 90 100 200 300 400 500                                              
+
+> Generation
+> 0.0 0.2 0.4 0.6 0.8 1.0
+> Population  Proportion  a. Net D-D: Drain (-0.5)
+> 0100 200 300 400 500
+> Generation
+> b. Net D-D: Stagnate (0.0)
+> 0100 200 300 400 500
+> Generation
+> c. Net D-D: Accumulate (+1.0)
+> Evolving Genomes
+> Coop +Repl Before Defect +Repl Before Coop +Repl After (E-Bef) Defect +Repl After (E-Bef) Coop +Repl After (E-Aft) Defect +Repl After (E-Aft)
+
+Figure 7: Co-evolution of social strategy and replication timing without mutation, with agents paired uniformly at random. The three environments vary only the payoff for defecting. When mutual defection drains or stagnates energy, cooperation robustly takes over; even when mutual defection increases energy, co-evolving replication timing allows cooperators to maintain a substantial presence rather than being eliminated. 
+
+6 Discussion 
+
+In this work, we introduced Autopoietic Game Theory, a model that couples an agent’s social strategy, replication mechanism, and available computational energy within a single phase of interaction. In our experiments, we found that defection can be suppressed through the combination of stealing being a lossy operation and the means of replication being capable of evolving. Our contribution is to show how these factors interact and evolve in a complex, open-ended space of programs, where even agents’ means of reproduction must emerge from scratch. Our results also reveal the limits of this mechanism. Cooperation remains robust under uniformly distributed energy, but under highly unequal energy, well-mixed populations collapse and local interactions are needed to maintain energy, complexity, and coordination on external tasks. In Section 3 and 4, we extended existing substrates in ALife [3] by making them game-theoretic through the introduction of energy-based computations and simultaneous action between tapes. In Section 5, we provided a simplified model of the system that tries to develop a causal understanding of the mechanisms stabilizing cooperation in our substrate. While our evidence suggests that the ability to evolve different timings of replication vs social interaction, paired with stealing being inefficient, is driving the emergence of cooperation, our substrate raises several exciting new questions that previous work has not been able to ask: What causes agents to copy all of their code onto their partner vs only part of their strategy? Does the crossover of programs resulting from two tapes partially copying onto each other provide any benefit to agents’ ability to adapt to a changing environment? Why was a cooperative strategy even discoverable from scratch in this substrate, and what environmental constraints lead to agents developing Moran-like “interact →decide →replicate” reproduction processes instead? How does the higher-order complexity of the resulting tapes shape their ability to solve downstream tasks? Nothing in our substrate is designed by hand, and agents are represented as programs with an open-ended space of actions. This creates an entire ecology of behaviors that we have only begun to map. We hope the model introduced in this work can help us build a more nuanced picture of when and why cooperation evolves. 
+
+Limitations: Our simulations are limited to a simplified Prisoner’s Dilemma and a Z80 assembly substrate. Different instruction densities and hardware architectures may change replication costs and starvation thresholds, as well as the reachability of cooperative strategies. We also assume unrestricted read and write access to partner memory. Although this resembles biological horizontal gene transfer or AI agents sharing prompts and problem-solving harnesses, many systems restrict access to an agent’s internal state. Testing the range between shared and private computation will help determine when these dynamics persist. Moreover, our analysis in Appendix B also makes two simplifying assumptions: Conjectures 1 and 2 fix agents’ relative execution speeds at their initial values, while Lemmas 1 and 2, which support Theorem 1, replace the system’s changing total energy with its average. Section 4 tests the full dynamics, updating both after every operation. Extending the analysis to asymmetric energy, continuous mutation, and external tasks remains an open challenge. 10 References 
+
+[1] C. Adami and C. T. Brown. Evolutionary learning in the 2d artificial life system "avida", 1994. URL https://arxiv.org/abs/adap-org/9405003 .[2] B. Agüera y Arcas. What is Intelligence?: Lessons from AI about Evolution, Computing, and Minds . MIT Press, 2025. [3] B. Agüera y Arcas, J. Alakuijala, J. Evans, B. Laurie, A. Mordvintsev, E. Niklasson, E. Randazzo, and L. Versari. Computational life: How well-formed, self-replicating programs emerge from simple interaction, 2024. URL https://arxiv.org/abs/2406.19108 .[4] L. C. Aiello and P. Wheeler. The expensive-tissue hypothesis: the brain and the digestive system in human and primate evolution. Current anthropology , 36(2):199–221, 1995. [5] R. Axelrod and W. D. Hamilton. The evolution of cooperation. science , 211(4489):1390–1396, 1981. [6] B. Baker. Emergent reciprocity and team formation from randomized uncertain social prefer-ences, 2020. URL https://arxiv.org/abs/2011.05373 .[7] C. L. Baker, J. Jara-Ettinger, R. Saxe, and J. B. Tenenbaum. Rational quantitative attribution of beliefs, desires and percepts in human mentalizing. Nature Human Behaviour , 1(4):0064, 2017. [8] A. Bear and D. G. Rand. Intuition, deliberation, and the evolution of cooperation. Proceedings of the National Academy of Sciences , 113(4):936–941, 2016. [9] C. H. Bennett. The thermodynamics of computation—a review. Int. J. Theor. Phys. , 21(12): 905–940, Dec. 1982. [10] A. Cardillo, J. Gómez-Gardeñes, D. Vilone, and A. Sánchez. Co-evolution of strategies and update rules in the prisoner’s dilemma game on complex networks. New Journal of Physics ,12(10):103034, Oct. 2010. ISSN 1367-2630. doi: 10.1088/1367-2630/12/10/103034. URL 
+
+http://dx.doi.org/10.1088/1367-2630/12/10/103034 .[11] A. P. Chandrakasan and R. W. Brodersen. Low Power Digital CMOS Design . Springer, Dordrecht, Netherlands, 1995 edition, June 1995. [12] X. Chen, S. Kwong, and M. Li. A compression algorithm for dna sequences and its applications in genome comparison. In Proceedings of the Fourth Annual International Conference on Computational Molecular Biology , RECOMB ’00, page 107, New York, NY, USA, 2000. Association for Computing Machinery. ISBN 1581131860. doi: 10.1145/332306.332352. URL 
+
+https://doi.org/10.1145/332306.332352 .[13] A. Critch. A parametric, resource-bounded generalization of löb’s theorem, and a robust cooperation criterion for open-source game theory. The Journal of Symbolic Logic , 84(4): 1368–1381, 2019. [14] A. Dafoe, E. Hughes, Y. Bachrach, T. Collins, K. R. McKee, J. Z. Leibo, K. Larson, and T. Graepel. Open problems in cooperative ai, 2020. URL https://arxiv.org/abs/2012. 08630 .[15] Department of EECS (Computer Science Division) University of Central Florida, Orlando, FL 32816, L. Soros, and K. Stanley. Identifying necessary conditions for open-ended evolution through the artificial life world of chromaria. In Artificial Life 14: Proceedings of the Fourteenth International Conference on the Synthesis and Simulation of Living Systems , pages 793–800. The MIT Press, July 2014. [16] A. K. Dewdney. Computer recreations. Scientific American , 252(6):18–29, 1985. ISSN 00368733, 19467087. URL http://www.jstor.org/stable/24967665 .[17] V. Dochkina. Drop the hierarchy and roles: How self-organizing llm agents outperform designed structures, 2026. URL https://arxiv.org/abs/2603.28990 .11 [18] E. L. Dolson, S. G. Pérez, R. S. Olson, and C. Ofria. Spatial resource heterogeneity increases diversity and evolutionary potential. bioRxiv , 2017. doi: 10.1101/148973. URL https: //www.biorxiv.org/content/early/2017/06/12/148973 .[19] R. I. Dunbar. The social brain: mind, language, and society in evolutionary perspective. Annual review of Anthropology , 32(1):163–181, 2003. [20] R. I. Dunbar and S. Shultz. Evolution in the social brain. science , 317(5843):1344–1347, 2007. [21] J. Henrich. The secret of our success: How culture is driving human evolution, domesticating our species, and making us smarter. In The secret of our success . princeton University press, 2015. [22] J. Henrich and N. Henrich. Why Humans Cooperate: A Cultural and Evolutionary Explanation .Evolution and Cognition. Oxford University Press, 2007. ISBN 9780198041177. URL https: //books.google.lu/books?id=qoVxwP0aX4cC .[23] Y. Horibe. A note on kolmogorov complexity and entropy. Appl. Math. Lett. , 16(7):1129–1130, Oct. 2003. [24] S. Hu, C. Lu, and J. Clune. Automated design of agentic systems, 2025. URL https: //arxiv.org/abs/2408.08435 .[25] D. L. Hull. Niche construction: The neglected process in evolution. Perspectives in Biology and Medicine , 47(2):314–316, 2004. [26] N. Jaques, A. Lazaridou, E. Hughes, C. Gulcehre, P. A. Ortega, D. Strouse, J. Z. Leibo, and N. de Freitas. Social influence as intrinsic motivation for multi-agent deep reinforcement learning, 2019. URL https://arxiv.org/abs/1810.08647 .[27] K. Jha, T. A. Le, C. Jin, Y.-L. Kuo, J. B. Tenenbaum, and T. Shu. Neural amortized inference for nested multi-agent reasoning. In Proceedings of the AAAI Conference on Artificial Intelligence ,volume 38, pages 530–537, 2024. [28] H. Kaplan, K. Hill, J. Lancaster, and A. M. Hurtado. A theory of human life history evolution: Diet, intelligence, and longevity. Evolutionary Anthropology: Issues, News, and Reviews: Issues, News, and Reviews , 9(4):156–185, 2000. [29] M. Kleiman-Weiner, M. K. Ho, J. L. Austerweil, M. L. Littman, and J. B. Tenenbaum. Co-ordinate to cooperate or compete: abstract goals and joint intentions in social interaction. In 
+
+Proceedings of the annual meeting of the cognitive science society , volume 38, 2016. [30] M. Kleiman-Weiner, F. Sosa, B. Thompson, B. v. Opheusden, T. L. Griffiths, S. Gershman, and F. Cushman. Downloading culture. zip: Social learning by program induction. In Proceedings of the Annual Meeting of the Cognitive Science Society , volume 42, 2020. [31] M. Kleiman-Weiner, A. Vientós, D. G. Rand, and J. B. Tenenbaum. Evolving general cooper-ation with a bayesian theory of mind. Proc. Natl. Acad. Sci. U. S. A. , 122(25):e2400993122, June 2025. [32] K. N. Laland. Darwin’s unfinished symphony: How culture made the human mind . Princeton University Press, 2017. [33] R. Landauer. Irreversibility and heat generation in the computing process. IBM J. Res. Dev. , 5 (3):183–191, July 1961. [34] J. Z. Leibo, V. Zambaldi, M. Lanctot, J. Marecki, and T. Graepel. Multi-agent reinforcement learning in sequential social dilemmas, 2017. URL https://arxiv.org/abs/1702.03037 .[35] J. Z. Leibo, A. S. Vezhnevets, W. A. Cunningham, and S. M. Bileschi. A pragmatic view of ai personhood, 2025. URL https://arxiv.org/abs/2510.26396 .[36] R. E. Lenski, C. Ofria, R. T. Pennock, and C. Adami. The evolutionary origin of complex features. Nature , 423(6936):139–144, 2003. 12 [37] S. Liu, S. Agarwal, M. Maheswaran, M. Cemri, Z. Li, Q. Mang, A. Naren, E. Boneh, A. Cheng, M. Z. Pan, A. Du, K. Keutzer, A. Cheung, A. G. Dimakis, K. Sen, M. Zaharia, and I. Stoica. Evox: Meta-evolution for automated discovery, 2026. URL https://arxiv.org/abs/2602. 23413 .[38] N. Margolus and L. B. Levitin. The maximum speed of dynamical evolution. Physica D: Nonlinear Phenomena , 120(1–2):188–195, Sept. 1998. ISSN 0167-2789. doi: 10.1016/ s0167-2789(98)00054-2. URL http://dx.doi.org/10.1016/S0167-2789(98)00054-2 .[39] A. Meulemans, R. Nasser, M. Wołczyk, M. A. Weis, S. Kobayashi, B. Richards, G. Lajoie, A. Steger, M. Hutter, J. Manyika, R. A. Saurous, J. Sacramento, and B. Agüera y Arcas. Embedded universal predictive intelligence: a coherent framework for multi-agent learning, 2025. URL https://arxiv.org/abs/2511.22226 .[40] M. Muthukrishna. A theory of everyone: The new science of who we are, how we got here, and where we’re going . MIT Press, 2023. [41] M. Muthukrishna, M. Doebeli, M. Chudek, and J. Henrich. The cultural brain hypothesis: How culture drives brain expansion, sociality, and life history. PLoS computational biology , 14(11): e1006504, 2018. [42] M. A. Nowak. Five rules for the evolution of cooperation. science , 314(5805):1560–1563, 2006. [43] M. A. Nowak and R. M. May. Evolutionary games and spatial chaos. Nature , 359(6398): 826–829, Oct. 1992. [44] H. Ohtsuki and M. A. Nowak. Evolutionary games on cycles. Proc. Biol. Sci. , 273(1598): 2249–2256, Sept. 2006. [45] M. Perc and A. Szolnoki. Coevolutionary games—a mini review. Biosystems , 99(2):109–125, Feb. 2010. ISSN 0303-2647. doi: 10.1016/j.biosystems.2009.10.003. URL http://dx.doi. org/10.1016/j.biosystems.2009.10.003 .[46] D. G. Rand and M. A. Nowak. Human cooperation. Trends in cognitive sciences , 17(8):413–425, 2013. [47] T. S. Ray. Evolution, ecology and optimization of digital organisms. Santa Fe , 1992. [48] C. P. Roca, J. A. Cuesta, and A. Sánchez. Evolutionary game theory: Temporal and spatial effects beyond replicator dynamics. Physics of Life Reviews , 6(4):208–249, Dec. 2009. ISSN 1571-0645. doi: 10.1016/j.plrev.2009.08.001. URL http://dx.doi.org/10.1016/j.plrev. 2009.08.001 .[49] W. H. Sandholm. Population games and evolutionary dynamics . Economic Learning and Social Evolution. MIT Press, London, England, Dec. 2010. [50] S. Sistla and M. Kleiman-Weiner. Evaluating llms in open-source games. arXiv preprint arXiv:2512.00371 , 2025. [51] J. Smith. Evolution and the Theory of Games . Cambridge University Press, 1982. ISBN 9780521288842. URL https://books.google.ch/books?id=Nag2IhmPS3gC .[52] P. Steinberger, V. Koc, A. Zaidi, T. Hoffman, G. M. Santana, Vignesh, Shakker, Shadow, J. Avant, S. Slight, C. Nakazawa, Mariano, T. Yust, N. Gutman, J. Tomlinson, github-actions[bot], scoootscooob, V. Alexander, Sid, J. Lehman, Onur, the sun gif man, H. Hunt, B. Men-donca, M. Castro, A. Rivera, O. Solmaz, Glucksberg, Altay, and max. openclaw/openclaw. https://github.com/openclaw/openclaw, apr 17 2026. URL https://github.com/openclaw/ openclaw .[53] M. Tennenholtz. Program equilibrium. Games and Economic Behavior , 49(2):363–373, 2004. [54] Thomas M. Cover and J. A. Thomas. Elements of Information Theory . John Wiley & Sons, Nashville, TN, 2 edition, June 2006. 13 [55] M. Tomasello and M. Carpenter. Shared intentionality. Developmental science , 10(1):121–125, 2007. [56] T. Ullman, C. Baker, O. Macindoe, O. Evans, N. Goodman, and J. Tenenbaum. Help or hinder: Bayesian models of social goal inference. In Y. Bengio, D. Schuurmans, J. Lafferty, C. Williams, and A. Culotta, editors, Advances in Neural Information Processing Systems , volume 22. Curran Associates, Inc., 2009. URL https://proceedings.neurips.cc/paper_files/paper/ 2009/file/52292e0c763fd027c6eba6b8f494d2eb-Paper.pdf .[57] J. Von Neumann, A. W. Burks, et al. Theory of self-reproducing automata. 1966. [58] J. W. Weibull. Evolutionary game theory . MIT Press, London, England, Oct. 1995. [59] H. T. P. Williams and T. M. Lenton. Environmental regulation in a network of simulated microbial ecosystems. Proceedings of the National Academy of Sciences , 105(30):10432– 10437, 2008. doi: 10.1073/pnas.0800244105. URL https://www.pnas.org/doi/abs/10. 1073/pnas.0800244105 .[60] L. S. Yaeger. Computational genetics, physiology, metabolism, neural systems, learning, vision, and behavior or polyworld: Life in a new context. 1997. URL https://api. semanticscholar.org/CorpusID:14599677 .[61] L. Zaman, J. R. Meyer, S. Devangam, D. M. Bryson, R. E. Lenski, and C. Ofria. Coevolution drives the emergence of complex traits and promotes evolvability. PLOS Biology , 12(12):1–9, 12 2014. doi: 10.1371/journal.pbio.1002023. URL https://doi.org/10.1371/journal. pbio.1002023 .[62] J. Zhang, B. Zhao, W. Yang, J. Foerster, J. Clune, M. Jiang, S. Devlin, and T. Shavrina. Hyperagents, 2026. URL https://arxiv.org/abs/2603.19461 .[63] T. Zhi-Xuan, J. Mann, T. Silver, J. Tenenbaum, and V. Mansinghka. Online bayesian goal inference for boundedly rational planning agents. Advances in neural information processing systems , 33:19238–19250, 2020. 
+
+A Supplementary Results 
+
+A.1 Contextualizing Autopoietic Game Theory within prior work (Avida) 
+
+While deeply inspired by Avida [1], Autopoietic Game Theory shifts the question from how pre-existing digital life complexifies to how sociality co-emerges with replication under strict energetic constraints. In the foundational Avida platform paper (2004), CPU cycles are externally allocated by the scheduler and parasitism is often expressed as competitive reallocation of computational opportunity. In contrast, our agents begin from random bytes on a shared cyclic tape, must evolve replication logic de novo, and interact under a single coupled budget where acting, stealing, and overwriting are all paid from the same local energy pool. This distinction clarifies what we mean by metabolic drag . In classical zero-sum arms-race settings, parasitism can remain adaptive as long as resource capture outpaces counter-adaptation. Here, stealing is intentionally lossy ( α < 1), so parasitic success can destroy enough shared energy to reduce pairwise execution speed and replication reliability for both participants. Thus, unlike pure transfer dynamics, our mechanism introduces a physically grounded negative externality that can make defection self-limiting rather than indefinitely escalatory. We view this as complementary to, rather than a replacement for, prior ALife results on CPU-cycle parasitism and host-parasite coevolution. Our spatial findings should likewise be interpreted as building on established spatial resilience work, not superseding it. Prior studies [61, 18] show that structure and heterogeneous environments can protect diversity and enable innovation. Our contribution is to show that, in an autopoietic game where replication and social interaction are physically coupled, local assortment does two things at once: (i) it buffers populations against metabolic collapse under asymmetric energy fields, and (ii) it scaffolds the evolution of higher-complexity, non-stealing replicators that can sustain exogenous task performance. 14 Finally, our results align with ecosystem-level ALife perspectives such as “The Flask model” [59], which emphasizes that organisms can modify environments in ways that stabilize or destabilize community function. The key difference is that our destabilizing/stabilizing feedback is endogenized at the micro-interaction level through execution kinetics: each social operation immediately perturbs the local thermodynamic budget that determines future compute. This allows us to connect population-level resilience directly to instruction-level energetic accounting. Similar to Avida, we use external tasks to probe capability; unlike Avida’s single-agent logical task structure, we impose tasks as exogenous pressures structured explicitly as a sequential social dilemma under scarcity to test whether cooperative computation can emerge while autopoiesis is maintained. 
+
+A.2 Additional Results Analyzing the Replication Dilemma Local (0.0) Well-Mixed (1.0)                  
+
+> Test Environment (Topology)
+> CPU-Bound Tape-Bound
+> Test  Environment  (Mode)  99.3 ±0.7 95.5 ±1.5 94.8 ±1.7 97.3 ±1.1
+> Historical: CPU-Bound
+> Local (0.0) Well-Mixed (1.0)
+> Test Environment (Topology)
+> 83.7 ±2.9 83.4 ±2.6 79.8 ±3.0 81.6 ±2.9
+> Historical: Tape-Bound
+> 020 40 60 80 100
+> Fixation  Rate  (%)
+
+Figure 8: (Left) Macroscopic fixation rates of representative replicators invading a naive soup. CPU-Bound replicators achieve near-universal fixation, whereas Tape-Bound replicators achieve significantly lower fixation rates if historically evolved in well-mixed settings. (Right) Example of the emergent, interdependent mutualistic replication strategy utilized by Tape-Bound agents. To understand how the agent-environment boundary shapes structural evolution, we first isolate the Replication Dilemma by disabling the STEAL operation ( δ = 0 ). We evaluate two distinct boundary definitions: CPU-as-Agent , where operation costs are deducted from the actively executing program’s budget, and Tape-as-Agent , where costs are deducted from the accessed memory segment, regardless of the executing CPU. Populations were historically evolved under both well-mixed and local spatial topologies across various energy gradients. Shifting this boundary fundamentally alters replication logic. Under Tape-as-Agent , highly interde-pendent, mutualistic strategies emerge: rather than executing standard self-writes, CPU A navigates to Tape B’s segment to execute writes back onto Tape A, forcing B’s budget to absorb the reproductive cost (Figure 8, Right). This synergistic exploitation stabilizes almost exclusively under local spatial topologies, where repeated neighborhood interactions prevent immediate dilution. To assess architectural robustness, we conducted a “petri dish” invasion assay by seeding 1% repre-sentative replicators into a naive random soup ( 10 6 epochs, μ = 0 , ϵ = 24 ), systematically varying the test execution modes and topologies. We measured absolute fixation rates alongside continu-ous metrics like higher-order entropy [3] and edit distance to capture non-trivial structural motifs. Macroscopic fixation (Figure 8, Left) diverges strictly based on evolutionary history. Historically 
+
+CPU-as-Agent lineages universally achieve fixation across all test environments. Conversely, his-torically Tape-as-Agent lineages only invade successfully if previously subjected to local spatial constraints or severely restricted energy. Lineages historically evolved under high energy and well-mixed topologies suffer total architectural collapse (Figure 9), rapidly degrading into structurally unstable 2-byte replicators that garble the shared tape. Continuous metrics reveal significant structural imprinting ( p < 0.001 , two-sided t-test). High replication frequencies correlate with lower terminal steady-state energy and reduced edit distance (Figure 11). Furthermore, test topologies drive distinct evolutionary attractors (Figure 10): well-mixed settings maximize genetic diversity (edit distance), while local spatial settings maximize structural complexity (higher-order entropy). Current execution modes ( CPU vs Tape ) alter replication instruction counts but do not significantly affect final energy or complexity. 15 Ultimately, spatial constraints seem to natively breed resilient architectures with high structural complexity, while well-mixed settings foster diversity. While the historical agent-environment boundary dictates the binary probability of successful invasion, it does not impact the continuous metrics of populations that converge. Combined with spatial constraints, this boundary fundamentally determines whether an agent evolves into a self-contained replicator or an interdependent one. By isolating the Replication Dilemma (disabling the STEAL operation, δ = 0 ), we observe how pure energetic accounting shapes structural evolution in this substrate. Even without the immediate threat of parasitic exploitation, rapid replication incurs a heavy metabolic footprint that drives down the terminal steady-state energy of the population (Figure 11). Furthermore, an agent’s evolutionary history strongly affects its architectural resilience. Lineages that historically evolved under unconstrained, well-mixed settings prove highly fragile; when forced to compete in a naive environment, they suffer architectural collapse, rapidly degrading into trivial, unstructured code (Figure 9). Ultimately, the topological landscape acts as a distinct evolutionary attractor. While well-mixed environments foster genetic diversity in our experiments—evidenced by higher population edit distances—local spatial constraints provide scaffolding that supports structural complexity and higher-order entropy (Figure 10). 0.0 0.2 0.4 0.6 0.8 1.0           
+
+> Epochs 1e6 01234
+> Higher-Order  Entropy
+> Final Epoch Difference (T-Test): p<0.001
+> Architectural Collapse
+> Historical Topology Well-Mixed Local
+
+Figure 9: Timeline of architectural collapse in historical Tape-Bound replicators. Populations originally evolved in well-mixed settings experience lower higher-order entropy, indicating a takeover by trivial, unstructured code. Conversely, those evolved under local spatial constraints maintain structural complexity ( p < 0.001 , two-sided t-test comparing the means of the two groups at the final epoch). 
+
+A.3 Additional Results Analyzing the Replication + Energy Dilemma 
+
+When reintroducing the STEAL operation to form the unified Autopoietic Game, the structural constraints observed in pure replicators translate directly into robust defenses against parasitism. Stripping away the high-variance noise of continuous background mutation reveals a strict metabolic starvation limit: excessive parasitic theft triggers an endogenous drag that systematically starves defectors before they can complete their replication loops (Figure 12). Consequently, rather than succumbing to the tragedy of the commons predicted by classical evolutionary game theory, au-topoietic cooperators aggressively expand to dominate the carrying capacity. They fiercely resist exploitation, permanently trapping malicious actors at a distinct minority frequency (Figure 13). While cooperation remains dynamically stable across both topologies in benign environments, local spatial interactions act as a powerful catalyst for genetic cohesion, significantly lowering edit distance while simultaneously driving higher architectural complexity (Figure 14). Most crucially, when the environment imposes severe, systematic energy inequalities, well-mixed populations entirely collapse. In these harsh conditions, spatial topologies are no longer just catalysts for complexity, but strict prerequisites for survival, providing the necessary scaffolding for populations to overcome environmental bias and sustain autopoietic stability (Figure 3a). 16 0 5 10 15 20 25                    
+
+> Edit Distance
+> 12345
+> Higher-Order  Entropy
+> Global Tradeoff Trend (Dashed Line): Pearson r=-0.80 |p<0.001
+> Complexity vs. Diversity Tradeoff
+> Test Environment Topology Local Well-Mixed
+
+Figure 10: The structural tradeoff between complexity and diversity at the final epoch (no stealing enabled). Current test environments drive distinct evolutionary attractors: well-mixed topologies maximize genetic diversity (edit distance), while local spatial topologies maximize architectural complexity (higher-order entropy) ( p < 0.001 , two-sided t-tests comparing final metrics between well-mixed and local populations). 0 10 20 30 40             
+
+> LDI Instruction Count
+> 50 100 150 200 250
+> Terminal  Energy
+> Statistical Correlation: Pearson r=-0.50 |p<0.001
+> Energetic Footprint
+
+Figure 11: The energetic footprint of rapid replication. A significant inverse relationship exists between a population’s replication frequency (measured via LDI instruction counts) and its terminal steady-state energy ( p < 0.001 , two-sided t-test evaluating the significance of the regression slope). 
+
+A.4 Testing whether social operations are energy-coupled 
+
+In our experiments in the main text, we considered “cooperators” to be programs that did not steal energy while replicating, and “defectors” to be replicators that stole energy. We found that tapes evolved to suppress the steal action even in well-mixed settings, suggesting that non-stealing behavior can be favored when the outcomes of social interactions are directly tied to a tape’s capability to replicate. However, one reasonable question to ask in this setup is: “Is stealing suppressed because social operations affect energy-mediated selection, or is low stealing simply a feature of the environment independent of selection pressure?” 
+
+Since the base setup only includes steals, it is difficult to experimentally decouple low steals shaped by energy-mediated selection from those that are simply inevitable in the environment. As such, we designed a new setup introducing the “share” action, a mechanism for perfectly transferring energy from one agent to another. We place a cap of 128 units of energy, above which tapes are no longer eligible for background energy. The only way an agent can increase its energy if it is above the threshold is by stealing from other tapes, or by sharing energy with another tape to drop its own reserves below the threshold, receiving the background energy injection, and then having the partner return the shared energy. We compare two modes: energy-based selection , where the tape with the highest energy always gets to run first, and random selection , where we randomly decide which tape gets to run first. By “always run first”, we mean pi is fixed at 1 throughout the interaction, which is equivalent to deciding 17 16 32 Dynamic                        
+
+> Average Stealing Rate ( )
+> 0.0 0.1 0.2 0.3
+> Mean  Steals
+> Starvation Drop-off Significance (=16 vs =32): p<0.001
+> Mean Steals at Endemic Equilibrium (Threshold 255)
+> Fixed Stealing Rate Dynamic Stealing Rate
+
+Figure 12: Mean steals at endemic equilibrium in the mutation-free petri dish assay ( μ = 0 ). Removing background mutation reveals a metabolic drop-off: defector success decreases significantly from δ = 16 to δ = 32 (p < 0.001 , Cohen’s d = 4 .17 ; two-sided t-test). The δ = 32 lineages maintain a marginal, non-zero mean of approximately 0.1, while dynamic stealing rates stabilize at levels comparable to δ = 16 .0 1 2 3 4 5 6            
+
+> Epochs 1e6 0.00 0.05 0.10 0.15
+> Steal  Frequency
+> Final Epoch Difference (T-Test): p<0.001
+> Mutation-Free Autopoietic Stability
+> Interaction Topology Local Spatial Well-Mixed
+
+Figure 13: Mutation-Free Invasion Dynamics. Line plots tracking the invasion of 1% defectors into a naive soup. In both well-mixed and local spatial topologies, autopoietic cooperators aggressively expand to dominate the carrying capacity, permanently trapping defectors at a minority frequency (< 20% ). which tape is concatenated first in the experiments from [3]. Energy-based selection is the mode used for all our prior experimental results, although in our previous experiments we dynamically calculated 
+
+pi after every operation. Given the results in Figure 3a, we conduct these experiments using local interactions to ensure tapes can evolve behaviors capable of overcoming potential asymmetries in energy distribution. If social operations were unrelated to energy-mediated selection, we would expect their overall frequency to remain low in both the energy-based and random selection cases. However, as shown for the CPU-based energy accounting mode (Figure 15) and Tape-based energy accounting mode (Figure 16), this is not the case. Tapes evaluated under energy-based selection use significantly more stealing or sharing and exhibit a corresponding increase in mean energy as a result. In contrast, even when random selection utilizes an operation like a steal, there is no corresponding increase in energy or complexity, and the frequency of stealing is not statistically significantly different from not stealing at all. These dynamic results are from a setting where ϵ = 24 and agents dynamically decide δ. If we fix 
+
+δ = 16 , as shown in Figures 17 and 18, we observe a similar trend: all social operations are effectively suppressed in random selection (or fail to meaningfully contribute to an increase in average system energy). Meanwhile, energy-based selection creates conditions where these operations are retained when they elevate the total energy of the system. Interestingly, while stealing emerges across a large portion of the population in CPU mode under energy-based selection with a fixed δ (Figure 17), the resulting higher-order entropy is much lower 18 Local Spatial Well-Mixed 012345               
+
+> Higher-Order  Entropy
+> T-Test: p<0.001
+> (a) Architectural Complexity
+> Local Spatial Well-Mixed 0510 15 20 25 30
+> Edit  Distance
+> T-Test: p<0.001
+> (b) Genetic Diversity (Lower is Cohesive)
+
+Figure 14: Topological Catalysts for Cohesion with stealing enabled. At the final epoch of the petri dish assay, local spatial interactions produce significantly higher architectural complexity (higher-order entropy; p < 0.001 , Cohen’s d = 2 .81 ) and tighter genetic cohesion (lower edit distance; 
+
+p < 0.001 , Cohen’s d = 7 .32 ) than well-mixed interactions (two-sided t-tests). 0 2 4 6                     
+
+> Step 1e6 50 75 100 125
+> Mean  Energy
+> (a)
+> 0246
+> Step 1e6 0123
+> Higher  Order  Entropy  (b)
+> 0246
+> Step 1e6 0.00 0.15 0.30 0.45
+> Steals
+> (c)
+> 0246
+> Step 1e6 0.000 0.001 0.002 0.003
+> Shares
+> (d)
+> Well-Mixed Population (Uniform Energy) Energy Selection: ON Energy Selection: OFF
+
+Figure 15: Population dynamics under CPU-based energy accounting with dynamically determined steal/share magnitudes ( δ). Subfigures show (from left to right): a) mean energy, b) higher order entropy, c) steals, and d) shares. Energy-based selection results in significantly higher utilization of social operations and a corresponding increase in mean energy compared to random selection. than under random selection. Conversely, sharing dominates the population in Tape mode under energy-based selection with a fixed δ (Figure 18), providing a significant boost to the higher-order entropy of the resulting soup compared to random selection. This contrast highlights the importance of how the agent/environment boundary is defined and suggests that this boundary may affect the downstream capabilities of programs to accomplish exogenous tasks. 
+
+A.5 Additional Results Analyzing Exogenous Tasks and Agentic Utility 
+
+In the main text, we introduced tasks to evaluate agentic utility. To support these tasks, special registers were introduced in the emulator: m for the math input/output and c for the task constant (offset). 0 2 4 6                     
+
+> Step 1e6 60 90 120
+> Mean  Energy
+> (a)
+> 0246
+> Step 1e6 0.0 1.5 3.0 4.5
+> Higher  Order  Entropy  (b)
+> 0246
+> Step 1e6 0.0 0.2 0.4 0.6
+> Steals
+> (c)
+> 0246
+> Step 1e6 0.00 0.08 0.16 0.24
+> Shares
+> (d)
+> Well-Mixed Population (Uniform Energy) Energy Selection: ON Energy Selection: OFF
+
+Figure 16: Population dynamics under Tape-based energy accounting with dynamically determined steal/share magnitudes ( δ). Subfigures show (from left to right): a) mean energy, b) higher order entropy, c) steals, and d) shares. Similar to CPU mode, tapes under energy-based selection use social operations more frequently in settings where those operations elevate system energy. 19 0 2 4 6                     
+
+> Step 1e6 50 75 100 125
+> Mean  Energy
+> (a)
+> 0246
+> Step 1e6 0.0 1.5 3.0
+> Higher  Order  Entropy  (b)
+> 0246
+> Step 1e6 0.00 0.15 0.30 0.45
+> Steals
+> (c)
+> 0246
+> Step 1e6 0.0 0.1 0.2 0.3
+> Shares
+> (d)
+> Well-Mixed Population (Uniform Energy) Energy Selection: ON Energy Selection: OFF
+
+Figure 17: Population dynamics under CPU-based energy accounting with a fixed magnitude of 
+
+δ = 16 . Subfigures show (from left to right): a) mean energy, b) higher order entropy, c) steals, and d) shares. Stealing emerges in a large portion of the population under energy-based selection, though it results in much lower higher-order entropy compared to random selection. 0 2 4 6                     
+
+> Step 1e6 50 75 100 125
+> Mean  Energy
+> (a)
+> 0246
+> Step 1e6 0.0 1.5 3.0 4.5
+> Higher  Order  Entropy  (b)
+> 0246
+> Step 1e6 0.00 0.08 0.16 0.24
+> Steals
+> (c)
+> 0246
+> Step 1e6 0.0 0.2 0.4 0.6
+> Shares
+> (d)
+> Well-Mixed Population (Uniform Energy) Energy Selection: ON Energy Selection: OFF
+
+Figure 18: Population dynamics under Tape-based energy accounting with a fixed magnitude of 
+
+δ = 16 . Subfigures show (from left to right): a) mean energy, b) higher order entropy, c) steals, and d) shares. Unlike the CPU mode, sharing dominates the population under energy-based selection, resulting in a significant boost to the higher-order entropy of the system compared to random selection. At the start of the simulation, each agent in the grid was assigned a task constant (math a or math b)sampled uniformly at random from the set {− 3, −2, −1, 1, 2, 3}. At the start of each interaction epoch, inputs x and y were sampled uniformly at random from the range [0 , 255] . The register m was initialized with the input value ( x or y), and the register c was initialized with the assigned constant. Agents were required to compute specific target values. The targets were defined as: • Solo Task A : x + math a.• Solo Task B : y + math b.• Joint Task : x + y.The reward schemes were controlled by a mode parameter: • Solo Mode : Reward is given when an agent solves its own solo task. • Joint Mode : Reward is given when agents solve the joint task ( x + y). • Mixed Mode : Solo and joint solutions instantiate a sequential social dilemma. If both agents solve their solo tasks, each receives 5ϵ. If both solve the joint task, each receives 6ϵ. If one agent solves the solo task while the other solves the joint task, the solo solver receives 7ϵ while the joint solver receives 2ϵ.Success was checked by inspecting the value of the m register after every operation a tape executed against the relevant target value. Rewards were added instantly to the corresponding energy budgets, bounded by the energy cap. Here, we provide additional visual evidence of the dynamics in the math problem setting. In Figure 19, we illustrate the cognitive bottleneck induced by removing shared information; solve rates drop noticeably as agents are forced to allocate computational budget to communication overhead. Further, Figure 20 demonstrates that spatial constraints act as active scaffolding to allow programs to coordinate on finding cooperative tasks in resource-scarce environments, confirming the role of topological assortment in overcoming severe environmental drag previously observed for simpler replicators. 20 0.25 0.5 0.75 1.0 
+
+Background Energy Cap 
+
+0.0 0.2 0.4 0.6 
+
+> Individual  Solve  Rate
+> **
+
+Individual Solve Rate 
+
+> 0.25 0.5 0.75 1.0
+
+Background Energy Cap 
+
+0.0 0.1 0.2 0.3 0.4 
+
+> Joint  Solve  Rate  **
+
+Joint Solve Rate Communication Mode & Significance 
+
+None (Telepathy) Emergent (Protocol) *** p 0.001 
+
+** p 0.01 
+
+* p 0.05 Figure 19: The cognitive bottleneck of emergent communication. When tapes in Mixed mode are forced to discover their own communication protocols to share their private variable y, joint solve rates crash while individual solve rates experience an increase. The feasibility of complex social behaviors is fundamentally bounded by the computational and cognitive limits of the underlying substrate. 
+
+B Sufficient Conditions for Autopoietic Cooperation under Endogenous Time and Uniform, Exogenous Energy 
+
+The results below are sufficient-condition arguments under two simplifying assumptions, intended to motivate the empirical results in Section 4. 
+
+B.1 Formal Model Definition 
+
+We model a population of programs residing in a shared computational memory space. We define global environmental constants: baseline energy ϵ, replication length L, and discrete baseline mutation probability μ. We define strategy-specific evolutionary traits: absorption efficiency α ∈ (0 , 1] and stealing rate δ > 0.While the population is strictly well-mixed regarding the probability of pairing (encounters are purely frequency-dependent), the execution phase itself imposes a temporary, strictly coupled spatial constraint. Replicating requires a program to successfully execute L operations, where each operation is a physical byte-write. We explicitly separate our timescales: micro-operations occur continuously in 0.25 0.5 0.75 1.0                                          
+
+> Background Energy Threshold
+> 0.0 0.1 0.2
+> **
+> Individual Solve Rate
+> 0.25 0.5 0.75 1.0
+> Background Energy Threshold
+> 0.0 0.2 0.4 **
+> Joint Solve Rate
+> 0.25 0.5 0.75 1.0
+> Background Energy Threshold
+> 0100 200 ** **
+> Mean System Energy
+> 0.25 0.5 0.75 1.0
+> Background Energy Threshold
+> 0246*** ****
+> Higher Order Entropy Interaction Topology &Significance
+> Local (Spatial) Well-Mixed *** p0.001
+> ** p0.01
+> *p0.05
+
+Figure 20: Spatial assortment as an architectural scaffold. In Mixed task mode, local spatial interactions produce significantly higher joint solve rates than well-mixed interactions ( p ≤ 0.01 ,Cohen’s d = 1 .63 ; two-sided t-test), along with greater system energy and higher-order entropy. Assortment supports the complexification needed for robust downstream problem-solving. 21 physical time units t, while population turnover and macro-scale interactions occur over discrete, overlapping generations called epochs (denoted by τ ). Execution and mutation occur in separate phases (though, as addressed in Corollary 1, relaxing this constraint can increase the penalty for slower executions). At the start of an epoch’s execution phase, two randomly paired programs, i and j, are concatenated to form a closed, cyclic memory tape. A program perceives the memory space as an infinite wrap-around sequence (e.g., i → j → i → j . . . ). A program can read and write into both its opponent’s memory segment and its own. Each program receives an environmental energy baseline ϵ, supplemented by residual energy retained from prior successful epochs, bounded by a strict maximum physical capacity Emax .Thus, the initial energetic state for the epoch is Ei = min( ϵ + Ei,residual , E max ) and Ej =min( ϵ + Ej,residual , E max ). We assume the baseline environment is viable for baseline replication, meaning 2ϵ > 2L.To prevent infinite halting states, epochs are strictly bounded by a maximum physical time Tmax .An epoch’s execution phase concludes only when one of the following conditions is met: 1) Both programs enter a halt state. 2) The system succumbs to metabolic starvation ( Etot ≤ 0). 3) The system reaches the absolute time boundary Tmax .A program enters a halt state either by successfully completing L targeted write operations into its opponent’s memory segment, or by being completely overwritten by its opponent. A halted program ceases to execute operations. If one program halts while the other remains active, the active program continues to execute operations until it too halts or the system starves. Once both programs halt or starve, the system’s physical time is instantly sped up to the boundary Tmax .At the end of the epoch, the concatenated tape is strictly cleaved in half. If program i successfully targeted and completed L writes into j’s segment, the split yields two intact copies of i. The original half retains its remaining Ei as residual energy, and the newly written half inherits the remaining 
+
+Ej as its residual energy. If starvation occurs before either program completes L targeted opponent-writes, the tape splits into a recombination of both programs, yielding 0 viable copies of either of the originals. Within the execution phase, the absolute execution speed of the paired system is proportional to the total available energy, Etot = Ei + Ej . While execution progress is measured in discrete operation steps, the physical time dt required to compute each step is dynamic. We must track continuous physical time because the ultimate probability of surviving the post-epoch mutation phase depends strictly on the total elapsed physical time T , not the discrete number of operations. The physical time 
+
+dt required to complete a single micro-operation is inversely proportional to the energy pool: 
+
+dt = 1
+
+Ei + Ej
+
+The sequence of operations is modeled as a probabilistic Markov chain. At any step where Etot > 0,the probability that an active program i executes the next operation relative to active program j is its proportion of the energy pool: pi = Ei 
+
+> Ei+Ej
+
+. If Etot ≤ 0, the system starves ( dt → ∞ ) and operations cease. Programs utilize one of two strategies: • Cooperator ( C): Executes a normal write operation targeted at the opponent ( ∆Ei = −1, ∆Ej =0). The system loses 1 unit of total energy. • Defector ( D(α, δ )): Executes write operations interspersed with or coupled to parasitic “steal” mechanics. D(α, δ ) targets and absorbs energy from the opponent at an expected average rate of 
+
+δ > 0 per operation across its L writes, with an average absorption efficiency α ∈ (0 , 1] . Therefore, the expected change in energy per operation executed by D(α, δ ) is ∆Ei = αδ − 1 and ∆Ej = −δ,subject to the boundary Ei ≤ Emax . On average, each operation by D(α, δ ) drains the system of 
+
+1 + (1 − α)δ units of total energy. After the tape splits, both halves enter a discrete mutation phase . The probability of an intact program surviving this background mutation evaluation is P = exp( −μT ), where μ ∈ (0 , 1) acts as a discrete baseline probability, and T is the total physical time required to complete the execution phase, capped at Tmax .22 B.2 Intra-Epoch Dynamics: Kinetic Slowdown and Metabolic Starvation 
+
+To formally evaluate the execution time trajectories of competing programs, we first define the ener-getic boundaries and total system cost of defection. Assume the baseline environmental parameters 
+
+ϵ and L satisfy the viability condition 2ϵ > 2L. Let Etot = Ei + Ej represent the total available energy in a paired system. During any single operation executed by a Defector D(α, δ ), the expected change in total system energy is strictly negative: 
+
+∆Etot = ( αδ − 1) − δ = δ(α − 1) − 1
+
+Because the absorption efficiency is bounded ( α ≤ 1), the net energy drain per operation is ∆Etot ≤−1.To establish a comparative baseline, we define K(ϵ, L ) > 0 as the unique critical inefficiency threshold, implicitly defined by the following equality assuming baseline initial energy ( Eresidual =0): L−1X
+
+> k=0
+
+12ϵ − k(1 + K) =
+
+> 2L−1
+
+X
+
+> k=0
+
+12ϵ − k
+
+This threshold K(ϵ, L ) represents the exact break-even point where the energetic penalty of defection perfectly cancels out the physical time saved by executing fewer operations ( L writes for a Defector versus 2L writes for mutual Cooperators). 
+
+Lemma 1 (Endogenous Metabolic Drag) . Given the critical inefficiency threshold K(ϵ, L ), if a Defector’s inefficiency penalty strictly exceeds this break-even point such that (1 − α)δ > K (ϵ, L ),the rate of energy destruction guarantees that the absolute best-case execution time for a Defector is strictly slower than the execution time of mutual Cooperators ( TD(α,δ )|C > T C|C ). Proof. For a (C, C ) pair, both programs must complete L operations to successfully replicate, after which they explicitly halt. Because every operation by either program reduces Etot by exactly 1 unit, the total system energy decreases from 2ϵ to 2ϵ − 2L. Regardless of the execution order, the total physical time required for mutual halting is exactly: 
+
+TC|C =
+
+> 2L−1
+
+X
+
+> k=0
+
+12ϵ − k
+
+For a (D(α, δ ), C ) pair, the execution sequence is probabilistic. To successfully reproduce, D(α, δ )
+
+must complete L targeted write operations, completely overwriting C and forcing it to halt. Each operation by D(α, δ ) reduces Etot by an expected average of 1 + (1 − α)δ.Because the physical time per operation step, dt = 1 
+
+> Etot
+
+, increases as Etot decreases, any operations performed by C strictly reduce Etot and thereby increase the time delay for subsequent steps. To establish a highly conservative lower bound, we calculate the absolute fastest (best-case) trajectory for 
+
+D(α, δ ), assuming C is entirely starved of execution steps during D(α, δ )’s execution. The absolute minimum time required for D(α, δ ) to overwrite C must be strictly greater than or equal to the time taken for D(α, δ )’s consecutive operations alone: 
+
+TD(α,δ )|C ≥
+
+> L−1
+
+X
+
+> k=0
+
+12ϵ − k(1 + (1 − α)δ)
+
+Provided (1 − α)δ > K (ϵ, L ), this metabolic drag ensures that even in its absolute best-case scenario, the Defector takes longer to halt the epoch than mutual Cooperators ( TD(α,δ )|C > T C|C ). 
+
+Approximation caveat. This result replaces the actual, changing amount of energy in the system at each step with its expected value, using Jensen’s inequality. This is an approximation: the realized total energy can deviate from this expectation because every operation changes the agents’ energy, and the exact trajectory depends on which agent executes and how much stealing occurs. The experiments in Section 4 evaluate the full dynamics, tracking the realized energy after every operation without this substitution. 23 Lemma 2 (Metabolic Starvation Limit) . If the average stealing rate δ is sufficiently large, or the environmental energy ϵ is sufficiently small such that 
+
+2ϵ < L (1 + (1 − α)δ),
+
+a Defector D(α, δ ) will exhaust the total energy pool before completing L write operations, yielding an instant jump to Tmax and 0 viable copies post-split. Proof. During a (D(α, δ ), C ) interaction, the expected energy remaining after D(α, δ ) completes 
+
+k operations (assuming the best-case bound where C executes none) is 2ϵ − k(1 + (1 − α)δ). If 
+
+2ϵ < L (1 + (1 − α)δ), the denominator in the sum for TD(α,δ )|C reaches zero for some k < L . The system starves ( dt → ∞ ), operations cease, and time speeds up to Tmax . Because D(α, δ ) failed to complete L targeted writes, the tape splits into garbled, incomplete code segments. Mutual defection 
+
+(D(α, δ ), D (α, δ )) under the same strict inequality similarly starves before either side completes L
+
+writes, resulting in 0 intact copies. At the boundary 2ϵ = L(1 + (1 − α)δ), starvation occurs at the k = L threshold, so the statement “before completing L writes” is no longer guaranteed without additional tie-breaking assumptions. 
+
+Approximation caveat. This result replaces the actual, changing amount of energy in the system at each step with its expected value, using Jensen’s inequality. This is an approximation: the realized total energy can deviate from this expectation because every operation changes the agents’ energy, and the exact trajectory depends on which agent executes and how much stealing occurs. The experiments in Section 4 evaluate the full dynamics, tracking the realized energy after every operation without this substitution. 
+
+Corollary 1 (Continuous Mutation Penalty) . While the model designates mutation as a discrete post-epoch phase for analytical clarity, applying mutation continuously during the execution phase would penalize slower executions more strongly. Because TD(α,δ )|C > T C|C under the metabolic drag condition, a continuous mutational hazard exp( −μ R dt ) exposes the Defector to a higher probability of mid-execution fatal errors, aborting the overwrite prematurely. Thus, the discrete mutation phase serves as a conservative lower-bound penalty within this regime. 
+
+B.2.1 Continuous Approximation of the Lower Bound Threshold K(ϵ, L )
+
+To establish a computable and strict boundary condition, we evaluate the extreme scenario where 
+
+D(α, δ )’s fastest possible continuous execution (exactly L operations) remains slower than C’s continuous execution (exactly 2L operations). We approximate the discrete harmonic sums of this boundary using definite continuous integrals. Note that this continuous approximation holds best for 
+
+L ≫ 1, as harmonic sums and logarithmic integrals can diverge slightly for small L:
+
+Z L
+
+> 0
+
+12ϵ − x(1 + K) dx ≈
+
+Z 2L
+
+> 0
+
+12ϵ − x dx 
+
+Evaluating and equating both integrals yields a transcendental equation, numerically solvable for any 
+
+ϵ and L, which bounds the minimal inefficiency required to induce a metabolic slowdown: 
+
+ln 
+
+ 2ϵ
+
+2ϵ − L(1 + K)
+
+
+
+= (1 + K) ln 
+
+ ϵϵ − L
+
+
+
+B.3 Macro-Scale Survival and Population Dynamics Conjecture 1 (Asymmetric Recovery Criterion (Expected-State Approximation)) . Consider a 
+
+(C, D (α, δ )) interaction where C enters with EC = Emax and D enters with ED = ϵ, with Emax >ϵ and αδ > 1. Define the positive root of the quadratic q(E) = E2 − E(ϵ + L) − Lϵ (1 + α)δ − 1:
+
+˜E∗ := (ϵ + L) + 
+
+q
+
+(ϵ + L)2 + 4 Lϵ (1 + α)δ − 1
+
+2 .
+
+If Emax > ˜E∗, then the first-order frozen-priority approximation yields 
+
+E
+
+
+
+D
+
+
+
+L, L ϵEmax 
+
+ 
+
+> 0.
+
+24 Dynamic-priority caveat. This conjecture assumes that each agent’s execution probability relative to its partner remains fixed at its initial value. This is the true relative probability when the tapes are first paired, but every operation changes their energy. A defector that steals repeatedly may therefore become faster than this approximation assumes, while an agent that performs many costly operations may become slower relative to its partner. We use the initial probability as a simple approximation to these dynamic execution priorities. The experiments in Section 4 evaluate the full dynamics, updating relative execution probabilities after every operation. 
+
+Supporting calculation under frozen execution priorities. Define the energy differential 
+
+D(nC , n D ) := EC − ED after nC C-writes and nD D-steal operations. From the per-operation energy updates: • Each C-write: ∆EC = −1, ∆ED = 0 , so D decreases by 1.• Each D-steal: ∆EC = −δ, ∆ED = αδ − 1, so D decreases by (1 + α)δ − 1 > 0 (since αδ > 1). Therefore: 
+
+D(nC , n D ) = ( Emax − ϵ) − nC − nD
+
+(1 + α)δ − 1.
+
+Expected D-operation count. At the start of the interaction, C’s execution priority is p(0)  
+
+> C
+
+=
+
+Emax /(Emax + ϵ) and D’s is p(0)  
+
+> D
+
+= ϵ/ (Emax + ϵ). Treating these initial priorities as fixed, the expected number of D-operations by the time C completes L writes is: 
+
+E[nD | nC = L] ≈ L · p(0) 
+
+> D
+
+p(0) 
+
+> C
+
+= L · ϵEmax 
+
+.
+
+Because αδ > 1, D gains net energy per steal, so its priority can grow over time; the initial ratio 
+
+ϵ/E max is therefore a lower bound on the realized ratio. Since D subtracts a positive multiple of 
+
+nD, substituting this lower bound yields an upper estimate on E[D], so positivity of that estimate is interpreted here as an expected-state indicator rather than a formal sufficiency guarantee. 
+
+Expected differential at replication completion. 
+
+E
+
+
+
+D
+
+
+
+L, L ϵEmax 
+
+ 
+
+= ( Emax − ϵ) − L − Lϵ Emax 
+
+(1 + α)δ − 1.
+
+Multiplying through by Emax and requiring positivity yields: 
+
+Emax (Emax − ϵ) − LE max − Lϵ (1 + α)δ − 1 > 0,E2 
+
+> max
+
+− Emax (ϵ + L) − Lϵ (1 + α)δ − 1 > 0,
+
+which holds if and only if Emax > ˜E∗.
+
+Theorem 1 (Local Favorability under Metabolic Starvation) . In a well-mixed, finite population with overlapping generations and uniformly distributed energy, non-stealing replication is locally favored when 
+
+2ϵ < L  1 + (1 − α)δ.
+
+Under this condition, stealing destroys enough shared energy to prevent faithful defector replication, giving defective lineages lower expected reproductive success than non-stealing lineages. Proof. Let τ denote the discrete epoch counter and 
+
+x(τ ) = NC (τ )
+
+NC (τ ) + ND (τ ) .
+
+In this substrate, each pair always splits back into two 32-byte programs, so total population size is fixed. We therefore track strategy-frequency conversion (which strategy occupies slots next epoch), not demographic birth/death. As a lightweight bookkeeping approximation, write one-epoch frequency dynamics as 
+
+ x(τ + 1) 1 − x(τ + 1) 
+
+
+
+≈
+
+pCC (τ ) pDC (τ )
+
+pCD (τ ) pDD (τ )
+
+| {z }  
+
+> P(τ)
+
+ x(τ )1 − x(τ )
+
+
+
+,
+
+25 where pab (τ ) is the expected probability that a slot occupied by strategy b at epoch τ is occupied by strategy a at epoch τ + 1 , after execution, split, and mutation. Local favorability of cooperation corresponds to positive drift in x(τ ), equivalently pDC (τ ) > p CD (τ ) in the relevant regime. 
+
+Regime 1: Metabolic Starvation. Assume 
+
+2ϵ < L (1 + (1 − α)δ).
+
+By Lemma 2, baseline (D, C ) and (D, D ) interactions starve before D completes L writes. Critically, starvation still returns two 32-byte programs after the split, but produces no faithful defector overwrite event in that encounter. Thus pCD (τ ) is strongly suppressed in this regime, while successful (C, C )
+
+interactions keep pDC (τ ) nonzero; this yields positive drift toward cooperation whenever x(τ ) > 0.This establishes local favorability of non-stealing replication under the stated metabolic starvation condition. 
+
+Conjecture 2 (Frequency-Dependent Rebound) . Suppose αδ > 1 and Emax > ˜E∗, where ˜E∗ is defined in Conjecture 1. When defectors are trapped in a low-energy state by repeated destructive interactions, rare cooperative lineages can accumulate residual energy through successful (C, C )
+
+interactions. This accumulated energy may allow cooperation to rebound from low frequency by increasing cooperators’ probability of controlling subsequent replication events. 
+
+Dynamic-priority caveat. This conjecture assumes that each agent’s execution probability relative to its partner remains fixed at its initial value. This is the true relative probability when the tapes are first paired, but every operation changes their energy. A defector that steals repeatedly may therefore become faster than this approximation assumes, while an agent that performs many costly operations may become slower relative to its partner. We use the initial probability as a simple approximation to these dynamic execution priorities. The experiments in Section 4 evaluate the full dynamics, updating relative execution probabilities after every operation. 
+
+Supporting argument. When cooperators are rare, most defectors encounter other defectors. If these interactions starve the system before either defector completes a faithful overwrite, defectors remain near the baseline energy state and exert little conversion pressure. Rare (C, C ) interactions can instead succeed whenever 2ϵ > 2L. Conditional on success, residual energy evolves as 
+
+EC, res (τ + 1) = min  EC, res (τ ) + ϵ, E max 
+
+ − L. 
+
+Because ϵ > L , every successful interaction increases residual energy by ϵ − L. A lineage that realizes 
+
+τ ∗ =
+
+ Emax − ϵϵ − L
+
+
+
+successful (C, C ) interactions therefore reaches the maximum energy state. This is a positive-probability path, not a deterministic trajectory for every cooperative lineage. If a high-energy cooperator subsequently encounters a baseline-energy defector, the frozen-priority calculation in Conjecture 1 predicts that the cooperator can retain an execution advantage long enough to complete its overwrite first. These asymmetric encounters would allow cooperative lineages to recover while defectors remain constrained by destructive interactions. This argument motivates the rebound observed empirically, but it is not a proof for the fully dynamic execution process. 
+
+B.3.1 The Metabolic and Replication Dilemmas 
+
+The mechanics described above implicitly establish a metabolic social dilemma regarding computa-tional budget utilization. An individual program has a strong incentive to increase its personal energy reservoir via defection, as this maximizes its immediate execution speed ( pi) up to the physical limit 
+
+Emax . However, this selfish optimization comes at a systemic cost: it destroys the shared energy pool, increases total physical execution time, and exposes both halves of the cyclic tape to a higher probability of mutational degradation or total starvation. This Metabolic Dilemma couples directly with a secondary Replication Dilemma . In a competitive computational environment where the cyclic tape is split after L operations, a program faces a fundamental trade-off regarding the fidelity, targeting, and completeness of its replication. There is a selfish incentive to replicate only the minimum amount of code necessary for basic survival 26 (i.e., reducing L to L/ 2); doing so requires less energy and guarantees a faster tape split. However, executing a partial overwrite leaves half of the opponent’s tape intact. If that intact code contains a Defector’s steal module, the resulting “offspring” tape is corrupted or vulnerable. Furthermore, because the memory space wraps around ( i → j → i → j . . . ), programs must expend computational effort to correctly calculate the offset of their writes. A program that optimizes purely for speed might accidentally overwrite its own operational code. If we assume that higher-fidelity, accurately targeted overwriting requires more physical writes ( L) and complex instructions, then investing in the Replication Dilemma directly penalizes the program in the Metabolic Dilemma. Consequently, the strategies for managing energetic throughput, targeting accuracy, and memory-overwrite security cannot be treated in isolation; they are deeply coupled, with the constraints of the computational economy dynamically shaping the bounds of the replication dilemma and vice versa. 
+
+B.4 Thermodynamic and Physical Justification for Kinetic Execution Constraints 
+
+A critical foundation of the endogenous metabolic drag established in Lemma 1 is the kinetic execution rule, which posits that the physical time required to execute a computational operation is inversely proportional to the total system energy: dt ∝ 1 
+
+> Etot
+
+. Rather than an arbitrary game-theoretic penalty, this formulation directly models the fundamental thermodynamic and quantum limits of computation. First, the absolute limits of computational speed are governed by the Margolus-Levitin theorem [38]. The theorem establishes that the minimum time ∆t required for a quantum system to evolve from one state to an orthogonal state—the fundamental physical requirement for executing a logical bit flip or computational step—is strictly bounded by its average energy E:
+
+∆t ≥ h
+
+4E
+
+where h is Planck’s constant. By explicitly defining our execution speed as inversely proportional to the available energy pool, our model macroscopically enforces this fundamental quantum speed limit. Furthermore, every write operation in the Autopoietic Game, particularly the targeted overwriting of an opponent’s tape executed by a Defector, constitutes a logically irreversible computation. By Landauer’s principle [33], the destruction of information intrinsically requires the dissipation of energy into the environment (bounded strictly by kB T ln 2 per bit). Thus, the energetic cost c imposed per operation, and the ensuing degradation of the shared energy pool caused by parasitic behavior, are physical inevitabilities of the agents’ structural choices. Finally, this inverse proportionality holds true in applied digital hardware architectures. In traditional CMOS circuits, the relationships governing dynamic voltage and frequency scaling (DVFS) dictate that as available power is constrained or depleted, the operating voltage must drop, which propor-tionally increases the switching delay of logic gates [11]. The localized “brownout” induced by a Defector’s STEAL operation physically starves the local circuit, forcing a dynamic reduction in clock frequency that severely elongates the physical time step dt .By grounding the kinetic execution rule in both quantum mechanics and classical hardware dynamics, the endogenous metabolic drag transitions from a simulated game mechanic to an inescapable physical reality of shared-resource computation. 
+
+C Implementation Details and Experimental Reproduction 
+
+In this section, we provide a comprehensive overview of the implementation of the Autopoietic Game Theory framework in Z80, the representation of the computational soup, the experimental protocols, and the evaluation metrics. 
+
+C.1 Toy Prisoner’s Dilemma Simulations (Figures 6 and 7) 
+
+Section 5 uses simple, mutation-free simulations to isolate how replication timing affects cooperation. Unless otherwise noted, each experiment uses N = 1000 agents, runs for 500 generations, and is repeated across 1000 independent seeds. 27 Interaction and energy. Each agent either cooperates ( C) or defects ( D). The payoff to each agent is 
+
+(C, C ) : 2 , (C, D ) : ( −2, 3 + d), (D, D ) : d − 1,
+
+where d controls the energetic outcome of mutual defection. We use d ∈ { 0.5, 1, 2}, so each defector gains −0.5, 0, or 1 energy in a (D, D ) interaction. The corresponding total change for the pair is −1,
+
+0, or 2, producing the Drain, Stagnate, and Accumulate environments. At each generation, agents are randomly paired and complete one encounter. Payoffs are added to their accumulated energy, clipped to [0 , E max ], and retained across generations. All agents remain in the population and are randomly paired again in the next generation. 
+
+Fixed replication timing. Figure 6 compares three replication rules: 1. Replicate before interaction: replication priority is determined from pre-interaction energy, and the winner overwrites the loser’s strategy before the Prisoner’s Dilemma is played. 2. Decide before, replicate after interaction: replication priority is determined from pre-interaction energy, but the overwrite occurs after the original pair plays the Prisoner’s Dilemma. 3. Replicate from post-interaction energy: the pair first plays the Prisoner’s Dilemma, after which the updated energy levels determine replication priority. Whenever replication priority is evaluated, agent a wins with probability 
+
+Ea
+
+Ea + Eb
+
+,
+
+or with probability 1/2 if both energies are zero. The winner’s strategy then overwrites the loser’s, leaving both positions with the winning strategy. 
+
+Co-evolving replication timing. For Figure 7, each agent inherits both a social strategy and one of the three replication rules above. When two agents meet, their current energies first determine which agent’s replication rule governs the encounter. That rule then determines when energy is evaluated and when one agent’s complete genome—its social strategy and replication rule—overwrites the other. Thus, successful replication spreads both what an agent plays and when it replicates. 
+
+Figure settings. Figure 6 uses the Drain environment ( d = 0 .5), initial energy 10 , Emax = 300 ,and initial defector frequencies {0.1, 0.2, 0.4, 0.6, 0.8, 0.9}. Figure 7 initializes social strategies and replication rules uniformly at random, uses initial energy 10 and Emax = 10 7, and compares the three values of d. Mutation and explicit replication costs are disabled in both experiments. 
+
+C.2 Soup Representation and Pairing Topology 
+
+The environment consists of a population of programs represented as sequences of bytes representing Z80 machine code. Programs are initialized as 32-byte sequences of random instructions. The population is arranged in a grid or pool depending on the interaction topology. We evaluated two primary pairing mechanisms: • Well-Mixed : Programs are paired uniformly at random from the global population for each interaction epoch, isolating frequency-dependent strategic stability. • Local (Spatial) : Programs reside on a 2D grid. For each interaction, a program is paired with a neighbor selected at random from its immediate von Neumann neighborhood (up, down, left, right), allowing localized clustering of strategies. When two programs are paired, they are concatenated to form a 64-byte shared execution space (tape). 
+
+C.3 Z80 Substrate and Instruction Set Extension 
+
+We used a modified Z80 emulator based on the open-source implementation available at https: //github.com/superzazu/z80 . To implement the social dilemmas and track energy, the Z80 architecture was extended with custom registers and opcodes. Specifically, registers were added to represent the agent’s own energy and the partner’s energy. New opcodes were introduced to allow programs to read these energy values. 28 For the main experiments in the paper, the only social operation available was STEAL (Opcode ED 11 ). The SHARE operation (Opcode ED 10 ) was not available in these core experiments and was introduced only in the specific setup used to establish self-interest and sociality (Appendix A.4). • STEAL (Opcode ED 11 ): Transfers energy from the opponent’s pool to the executing agent’s pool with an imperfect absorption efficiency α < 1.• SHARE (Opcode ED 10 ): Transfers energy perfectly ( α = 1 ) from the executing agent to the partner. This was used only in the validation experiments in Section A.4. 
+
+C.4 Execution Kinetics and Fault Tolerance 
+
+The physical time dt required to compute a single micro-operation was defined as inversely pro-portional to the total available energy in the system: dt = 1 /(Ei + Ej ). If a program executes an invalid instruction, the emulator handles it by executing default behaviors or advancing the program counter. If a pair runs out of energy ( Etot ≤ 0), computation halts immediately, leading to starvation. To prevent infinite loops (e.g., non-terminating replicator loops), epochs are strictly bounded by a maximum step count, after which execution is terminated. 
+
+C.5 Experimental Protocols and Hyperparameters 
+
+The simulation durations varied across the research questions to ensure convergence: • Non-math Experiments : The main evolutionary runs were executed for 6 million epochs . The subsequent “petri dish” invasion assays (seeding mutants into naive soups) were run for 1 million epochs .• Math experiments : The task-driven experiments were run for 10 million epochs to account for the increased complexity of learning tasks alongside replication. For all non-math experiments, the background_energy_threshold was set to 255 and the 
+
+background_energy_cap was set to 255 . This ensures that agents were always eligible for back-ground energy hand-outs up to the maximum capacity. All of our simulations used 256 CPU cores for every seed/hyperparameter combination. We summarize the base hyperparameters in Table 5. 
+
+Parameter Value 
+
+# of Seeds 10 Grid side length ( Lpop ) 128 
+
+Program length 32 bytes Shared tape length 64 bytes Initial energy budget 255 
+
+Energy cap ( Emax ) 255 
+
+Background energy threshold 255 (Non-math) Background energy regeneration ( ϵ) 24 
+
+Mutation rarity 1128 
+
+Write cost 1
+
+Absorption efficiency ( α) 0.8
+
+Maximum Step count 512 
+
+Table 5: Base hyperparameters kept fixed across experiments unless specified otherwise. 
+
+C.6 Background Energy Regeneration 
+
+The background energy regeneration amount ( ϵ) determines the influx of energy at the start of an interaction. In our preliminary experiments, we explored values of {12 , 16 , 24 , 32 , 64 }. This parameter is critical as it defines the viability condition 2ϵ > 2L (where L is the number of writes needed for replication). We found if ϵ is too low, agents starve before they can replicate. If ϵ is too high, sociality is no longer necessary since tapes receive all of the compute they need to replicate from the environment. We settled on ϵ = 24 for all of our experiments, as in our substrate it offered the best balance of enabling replication to be viable without overindulging programs. In Figure 21, 29 a. Uniform Injection (+24 per timestep) b. Asymmetric Injection (24 0 left right) Figure 21: Comparison of uniformly distributed energy (a) vs asymmetrically distributed energy based on physical location (b). we illustrate how energy is distributed across the 2D grid for both the uniform energy modes and asymmetric energy modes analyzed in Figure 3a. 
+
+C.7 Continuous Metrics 
+
+We monitored population dynamics using several continuous metrics: • Higher-Order Entropy : This metric measures architectural complexity by capturing structural motifs beyond simple single-instruction frequencies. Theoretically, it is defined as the difference between the sequence’s Shannon entropy (computed over individual tokens) and its normalized Kolmogorov complexity (the Kolmogorov complexity divided by the sequence length n). This difference captures the information that can only be explained by relations between different characters, essentially “factoring out” information that comes from sampling independent and identically distributed (i.i.d.) variables. The metric possesses two key properties: (1) for a sequence of i.i.d. characters, the expected higher-order entropy converges to 0 as length grows; and (2) for a sequence formed by concatenating many copies of the same shorter string (as occurs when a population is dominated by a self-replicator), the metric yields a substantial non-zero value. Since Kolmogorov complexity is uncomputable, we approximate it in practice using the compressed size of the string achieved by a Lempel-Ziv-style compressor, following established practices in algorithmic information theory [54, 12, 23]. This provides a metric that is both theoretically sound and fast to compute. • Edit Distance : Measured the Hamming distance between program tapes to quantify genetic diversity. • Replication Frequency : Tracked via the execution count of replication-specific instructions (e.g., 
+
+LDI ). 
+
+C.8 Trace Embeddings via Multiply-Add-Permute (MAP) Vector Architectures 
+
+To analyze and compare the behavior of programs, we computed fixed-size embeddings for variable-length execution logs. Let a program trace of length T be defined as a sequence of opcodes 
+
+S = ( o1, o 2, . . . , o T ), where each opcode ot ∈ { 1, . . . , 65536 }. The embedding process translates this discrete sequence into a normalized 128 -dimensional continuous vector representation through the following steps: 
+
+1. Base Opcode Embedding. We initialize a global embedding matrix where each possible 16-bit opcode v is mapped to a static, randomly initialized dense vector ev ∈ Rd (with d = 128 ), drawn from a standard normal distribution: 
+
+ev ∼ N (0 , Id)
+
+For a given trace S, the base sequence of vectors is thus (x1, . . . , xT ), where xt = eot .
+
+2. Rotary Position Embeddings (RoPE). To preserve the sequential execution order without expanding the dimensionality of the vectors, we inject positional information using Rotary Position Embeddings (RoPE). We define a base frequency B = 500 .0. For each position t, RoPE applies a block-diagonal rotation matrix RΘ,t to the base embedding xt. The rotated vector rt = RΘ,t xt is 30 computed pairwise for dimensions (2 i − 1, 2i) as: 
+
+rt, 2i−1
+
+rt, 2i
+
+
+
+=
+
+cos( tθ i) − sin( tθ i)sin( tθ i) cos( tθ i)
+
+  xt, 2i−1
+
+xt, 2i
+
+
+
+where the angle frequency for dimension pair i ∈ { 1, . . . , d/ 2} is θi = B−2( i−1) /d .
+
+3. N-Gram Binding via MAP Operations. To capture the contextual execution logic, we calculate the sum of 1-gram, 2-gram, and 3-gram trace combinations using vector binding. We utilize a Multiply-Add-Permute (MAP) operation from Vector Symbolic Architectures, defined by a 1-step circular shift ρ(·) followed by an Hadamard (element-wise) product ⊙. The binding of two vectors is denoted as u ⊛ v = u ⊙ ρ(v).We compute the aggregated n-gram representations for the entire trace as follows: • 1-gram sum: H1 = PTt=1 rt
+
+• 2-gram sum: H2 = PT −1 
+
+> t=1
+
+rt ⊛ rt+1 
+
+• 3-gram sum: H3 = PT −2 
+
+> t=1
+
+rt ⊛ rt+1 ⊛ rt+2 
+
+The total sequence representation is the unnormalized composite vector Hsum = H1 + H2 + H3.
+
+4. L2 Normalization. Finally, to ensure that the trace embeddings are length-invariant and suitable for downstream cosine similarity or clustering comparisons (such as K-Means), the composite vector is L2-normalized to unit length: 
+
+Hf inal = Hsum 
+
+∥Hsum ∥2
+
+This yields the final 128 -dimensional representation of the program’s execution trace. 
+
+C.9 Fixation Computation 
+
+Fixation rates in the petri dish assays were quantified using the MAP embeddings: 1. The final execution traces of all active agents in a population were downloaded. 2. MAP embeddings were computed for these traces in chunks to manage memory. 3. We applied the K-Means clustering algorithm with K = 2 to the resulting embeddings. 4. Fixation was defined as the percentage of the active population belonging to the dominant cluster: Fixation % = Dominant Cluster Size Total Active Programs × 100 
+
+This metric looks to capture the convergence of populations toward unified strategies. 
+
+D Traces of Program Behavior 
+
+In this section, we show examples of different evolved behaviors in our Z80 substrate. 
+
+D.1 Defection vs Cooperation 
+
+In this example, we illustrate how having a unified phase between replication and social interactions enables cooperation to overcome defection. Here, a cooperative tape (Tape A), has a slightly higher energy budget than the defective one using the STEAL operation (byte sequence 237, 17; represented as ed 11 ). The defector tries to employ a strategy of “loop the steal operation to drain my partner.” However, because execution is probabilistic and proportional to energy, even after the cooperator’s energy drops below the defector, it is able to overwrite the malicious steal operation, at first with code that forces the defector to jump to a HALT operation, and then with its functioning, replicator code. 
+
+> === EXECUTION LOGS === --- TRACE START (Swapped: NO, Lockstep: YES) ---STEP: 0 | CPU_B PC: 0x0000 (Addr: 0x0) | Slot: K REGS: AF:4400 BC:40ff DE:3115 HL:3a10 IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:1 Y:1 H:1 X:1 P:1 N:1 C:1 | Energy J:200 K:157 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+31 TAPE K: [ed] 11 ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 4c ,→
+
+------------------------------------------------------------------STEP: 1 | CPU_A PC: 0x0000 (Addr: 0x0) | Slot: J REGS: AF:6600 BC:b35c DE:0e6a HL:47bc IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:1 Y:1 H:1 X:1 P:1 N:1 C:1 | Energy J:184 K:168 TAPE J: [ed] 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: [ed] 11 ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0xf1a0 [Tape B + 0x0] <- 0xff (SUCCESS) >> WRITE: 0xf1a1 [Tape B + 0x1] <- 0xff (SUCCESS) ------------------------------------------------------------------STEP: 2 | CPU_A PC: 0x0004 (Addr: 0x4) | Slot: J REGS: AF:6600 BC:b35c DE:0e6a HL:47bc IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:1 Y:1 H:1 X:1 P:1 N:1 C:1 | Energy J:183 K:168 TAPE J: ed 73 a0 f1 [27] bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: [ff] [ff] ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 3 | CPU_A PC: 0x0005 (Addr: 0x5) | Slot: J REGS: AF:0000 BC:b35c DE:0e6a HL:47bc IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:1 C:1 | Energy J:182 K:168 TAPE J: ed 73 a0 f1 27 [bf] 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: [ff] ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 4 | CPU_B PC: 0x0002 (Addr: 0x2) | Slot: K REGS: AF:4400 BC:40ff DE:3115 HL:3a10 IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:0 Y:1 H:1 X:1 P:1 N:0 C:1 | Energy J:181 K:168 TAPE J: ed 73 a0 f1 27 [bf] 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff [ed] 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 5 | CPU_B PC: 0x0004 (Addr: 0x4) | Slot: K REGS: AF:4400 BC:40ff DE:3115 HL:3a10 IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:0 Y:1 H:1 X:1 P:1 N:0 C:1 | Energy J:165 K:179 TAPE J: ed 73 a0 f1 27 [bf] 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff ed 11 [20] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 6 | CPU_A PC: 0x0006 (Addr: 0x6) | Slot: J REGS: AF:0000 BC:b35c DE:0e6a HL:47bc IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:0 N:1 C:0 | Energy J:165 K:178 TAPE J: ed 73 a0 f1 27 bf [23] d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff ed 11 [20] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 7 | CPU_A PC: 0x0007 (Addr: 0x7) | Slot: J REGS: AF:0000 BC:b35c DE:0e6a HL:47bd IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:0 N:1 C:0 | Energy J:164 K:178 TAPE J: ed 73 a0 f1 27 bf 23 [d9] 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff ed 11 [20] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 8 | CPU_A PC: 0x0008 (Addr: 0x8) | Slot: J REGS: AF:0000 BC:0000 DE:0000 HL:0000 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:0 N:1 C:0 | Energy J:163 K:178 TAPE J: ed 73 a0 f1 27 bf 23 d9 [2f] 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff ed 11 [20] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 9 | CPU_A PC: 0x0009 (Addr: 0x9) | Slot: J REGS: AF:ff00 BC:0000 DE:0000 HL:0000 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:1 X:1 P:0 N:1 C:0 | Energy J:162 K:178 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f [11] e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: ff ff ed 11 [20] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 10 | CPU_B PC: 0x0000 (Addr: 0x0) | Slot: K REGS: AF:4400 BC:40ff DE:3115 HL:3a10 IX:0000 IY:0000 SP:ffff FLGS: S:1 Z:0 Y:1 H:1 X:1 P:1 N:0 C:1 | Energy J:161 K:178 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f [11] e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+32 TAPE K: [ff] ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0xfffd [Tape A + 0x1d] <- 0x01 (SUCCESS) >> WRITE: 0xfffe [Tape A + 0x1e] <- 0x00 (SUCCESS) ------------------------------------------------------------------STEP: 11 | CPU_A PC: 0x000c (Addr: 0xc) | Slot: J REGS: AF:ff00 BC:0000 DE:75e0 HL:0000 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:1 X:1 P:0 N:1 C:0 | Energy J:161 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 [40] ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: [ff] ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c [00] [4c] ,→
+
+------------------------------------------------------------------STEP: 12 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:0000 DE:75e0 HL:0000 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:1 X:1 P:0 N:1 C:0 | Energy J:160 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+TAPE K: [ff] ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e0 [Tape B + 0x0] <- 0xed (SUCCESS) ------------------------------------------------------------------STEP: 13 | CPU_B PC: 0x0038 (Addr: 0x38) | Slot: J REGS: AF:4400 BC:40ff DE:3115 HL:3a10 IX:0000 IY:0000 SP:fffd FLGS: S:1 Z:0 Y:1 H:1 X:1 P:1 N:0 C:1 | Energy J:159 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: [ed] ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c [d2] 4c ed 3f 85 0c 00 [4c] ,→
+
+------------------------------------------------------------------STEP: 14 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffff DE:75e1 HL:0001 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:158 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed ff ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e1 [Tape B + 0x1] <- 0x73 (SUCCESS) ------------------------------------------------------------------STEP: 15 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fffe DE:75e2 HL:0002 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:157 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed [73] ed 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e2 [Tape B + 0x2] <- 0xa0 (SUCCESS) ------------------------------------------------------------------STEP: 16 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fffd DE:75e3 HL:0003 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:156 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 [a0] 11 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e3 [Tape B + 0x3] <- 0xf1 (SUCCESS) ------------------------------------------------------------------STEP: 17 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fffc DE:75e4 HL:0004 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:155 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 [f1] 20 fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e4 [Tape B + 0x4] <- 0x27 (SUCCESS) ------------------------------------------------------------------STEP: 18 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fffb DE:75e5 HL:0005 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:154 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 [27] fa 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e5 [Tape B + 0x5] <- 0xbf (SUCCESS) ------------------------------------------------------------------STEP: 19 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fffa DE:75e6 HL:0006 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:1 P:1 N:0 C:0 | Energy J:153 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 [bf] 11 ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e6 [Tape B + 0x6] <- 0x23 (SUCCESS) 
+
+33 ------------------------------------------------------------------STEP: 20 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff9 DE:75e7 HL:0007 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:152 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf [23] ec 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e7 [Tape B + 0x7] <- 0xd9 (SUCCESS) ------------------------------------------------------------------STEP: 21 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff8 DE:75e8 HL:0008 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:151 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 [d9] 2e cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e8 [Tape B + 0x8] <- 0x2f (SUCCESS) ------------------------------------------------------------------STEP: 22 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff7 DE:75e9 HL:0009 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:1 P:1 N:0 C:0 | Energy J:150 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 [2f] cc 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75e9 [Tape B + 0x9] <- 0x11 (SUCCESS) ------------------------------------------------------------------STEP: 23 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff6 DE:75ea HL:000a IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:149 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f [11] 48 ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75ea [Tape B + 0xa] <- 0xe0 (SUCCESS) ------------------------------------------------------------------STEP: 24 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff5 DE:75eb HL:000b IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:148 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 [e0] ed b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75eb [Tape B + 0xb] <- 0x75 (SUCCESS) ------------------------------------------------------------------STEP: 25 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff4 DE:75ec HL:000c IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:147 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 [75] b8 b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75ec [Tape B + 0xc] <- 0x40 (SUCCESS) ------------------------------------------------------------------STEP: 26 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff3 DE:75ed HL:000d IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:146 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 [40] b5 ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75ed [Tape B + 0xd] <- 0xed (SUCCESS) ------------------------------------------------------------------STEP: 27 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff2 DE:75ee HL:000e IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:145 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] ed b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75ee [Tape B + 0xe] <- 0xb0 (SUCCESS) ------------------------------------------------------------------STEP: 28 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:fff1 DE:75ef HL:000f IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:144 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed [b0] b0 ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75ef [Tape B + 0xf] <- 0x76 (SUCCESS) ------------------------------------------------------------------STEP: 29 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J 
+
+34 REGS: AF:0000 BC:fff0 DE:75f0 HL:0010 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:143 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 [76] ed b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f0 [Tape B + 0x10] <- 0x76 (SUCCESS) ------------------------------------------------------------------STEP: 30 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffef DE:75f1 HL:0011 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:142 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 [76] b8 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f1 [Tape B + 0x11] <- 0x0d (SUCCESS) ------------------------------------------------------------------STEP: 31 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffee DE:75f2 HL:0012 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:141 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 [0d] 75 d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f2 [Tape B + 0x12] <- 0x64 (SUCCESS) ------------------------------------------------------------------STEP: 32 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffed DE:75f3 HL:0013 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:140 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d [64] d6 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f3 [Tape B + 0x13] <- 0x6d (SUCCESS) ------------------------------------------------------------------STEP: 33 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffec DE:75f4 HL:0014 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:139 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 [6d] 07 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f4 [Tape B + 0x14] <- 0x81 (SUCCESS) ------------------------------------------------------------------STEP: 34 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffeb DE:75f5 HL:0015 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:138 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d [81] 39 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f5 [Tape B + 0x15] <- 0x4d (SUCCESS) ------------------------------------------------------------------STEP: 35 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffea DE:75f6 HL:0016 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:137 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 [4d] 11 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f6 [Tape B + 0x16] <- 0x59 (SUCCESS) ------------------------------------------------------------------STEP: 36 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe9 DE:75f7 HL:0017 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:136 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d [59] 9c d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f7 [Tape B + 0x17] <- 0x4a (SUCCESS) ------------------------------------------------------------------STEP: 37 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe8 DE:75f8 HL:0018 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:1 P:1 N:0 C:0 | Energy J:135 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 [4a] d2 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f8 [Tape B + 0x18] <- 0x76 (SUCCESS) ------------------------------------------------------------------STEP: 38 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe7 DE:75f9 HL:0019 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:134 K:177 
+
+35 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75f9 [Tape B + 0x19] <- 0x4c (SUCCESS) ------------------------------------------------------------------STEP: 39 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe6 DE:75fa HL:001a IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:133 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 [4c] ed 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75fa [Tape B + 0x1a] <- 0x41 (SUCCESS) ------------------------------------------------------------------STEP: 40 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe5 DE:75fb HL:001b IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:132 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c [41] 3f 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75fb [Tape B + 0x1b] <- 0xf7 (SUCCESS) ------------------------------------------------------------------STEP: 41 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe4 DE:75fc HL:001c IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:131 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 [f7] 85 0c 00 [4c] ,→
+
+>> WRITE: 0x75fc [Tape B + 0x1c] <- 0xec (SUCCESS) ------------------------------------------------------------------STEP: 42 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe3 DE:75fd HL:001d IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:130 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 [ec] 0c 00 [4c] ,→
+
+>> WRITE: 0x75fd [Tape B + 0x1d] <- 0x01 (SUCCESS) ------------------------------------------------------------------STEP: 43 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe2 DE:75fe HL:001e IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:129 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec [01] 00 [4c] ,→
+
+>> WRITE: 0x75fe [Tape B + 0x1e] <- 0x00 (SUCCESS) ------------------------------------------------------------------STEP: 44 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe1 DE:75ff HL:001f IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:128 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 [00] [4c] ,→
+
+>> WRITE: 0x75ff [Tape B + 0x1f] <- 0xff (SUCCESS) ------------------------------------------------------------------STEP: 45 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffe0 DE:7600 HL:0020 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:1 P:1 N:0 C:0 | Energy J:127 K:177 TAPE J: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+>> WRITE: 0x7600 [Tape A + 0x0] <- 0xed (SUCCESS) ------------------------------------------------------------------STEP: 46 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffdf DE:7601 HL:0021 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:1 P:1 N:0 C:0 | Energy J:126 K:177 TAPE J: [ed] 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+>> WRITE: 0x7601 [Tape A + 0x1] <- 0x73 (SUCCESS) ------------------------------------------------------------------STEP: 47 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffde DE:7602 HL:0022 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:1 H:0 X:0 P:1 N:0 C:0 | Energy J:125 K:177 TAPE J: ed [73] a0 f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+36 TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+>> WRITE: 0x7602 [Tape A + 0x2] <- 0xa0 (SUCCESS) ------------------------------------------------------------------STEP: 48 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffdd DE:7603 HL:0023 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:124 K:177 TAPE J: ed 73 [a0] f1 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+>> WRITE: 0x7603 [Tape A + 0x3] <- 0xf1 (SUCCESS) ------------------------------------------------------------------STEP: 49 | CPU_A PC: 0x000d (Addr: 0xd) | Slot: J REGS: AF:0000 BC:ffdc DE:7604 HL:0024 IX:0000 IY:0000 SP:ffff FLGS: S:0 Z:1 Y:0 H:0 X:0 P:1 N:0 C:0 | Energy J:123 K:177 TAPE J: ed 73 a0 [f1] 27 bf 23 d9 2f 11 e0 75 40 [ed] b0 76 76 0d 64 6d 81 4d 59 4a [76] 4c 41 f7 ec [01] 00 ff ,→
+
+TAPE K: ed 73 a0 f1 27 bf 23 d9 2f 11 e0 75 40 ed b0 76 76 0d 64 6d 81 4d 59 4a 76 4c 41 f7 ec 01 00 [ff] ,→
+
+>> WRITE: 0x7604 [Tape A + 0x4] <- 0x27 (SUCCESS) ------------------------------------------------------------------
+
+37
