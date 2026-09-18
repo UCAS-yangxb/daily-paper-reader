@@ -1,0 +1,201 @@
+{
+  "date": "20260918",
+  "date_label": "",
+  "generated_at": "2026-09-18 22:09:27 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.17632v1",
+      "route": "202609/18/2609.17632v1-evolvetrade-experience-driven-policy-refinement-for-self-evolving-llm-trading-agents",
+      "title": "EvolveTrade: Experience-Driven Policy Refinement for Self-Evolving LLM Trading Agents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "自进化LLM交易智能体依据反馈优化提示策略",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.19680v1",
+      "route": "202609/18/2609.19680v1-finskillops-a-self-evolving-multi-agent-system-for-sec-filing-qa",
+      "title": "FINSKILLOPS: A Self-Evolving Multi-Agent System for SEC Filing QA",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "自进化多智能体系统将失败转化为受控技能补丁",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.15938v1",
+      "route": "202609/18/2609.15938v1-hypoevolve-genetic-algorithms-enable-multi-agent-llms-to-discover-scientific-hypotheses",
+      "title": "HypoEvolve: Genetic Algorithms Enable Multi-Agent LLMs to Discover Scientific Hypotheses",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用遗传算法进化假设种群并组织多智能体LLM协作",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.19664v1",
+      "route": "202609/18/2609.19664v1-videoresearcher-self-improving-tool-design-for-long-video-understanding",
+      "title": "VideoResearcher: Self-Improving Tool Design for Long-Video Understanding",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "免训练多智能体框架自主设计测试与改进工具",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.20089v1",
+      "route": "202609/18/2609.20089v1-unifiedplayers-enhance-tool-integrated-reasoning-in-agentic-reinforcement-learning",
+      "title": "UnifiedPlayers: Enhance Tool-Integrated Reasoning in Agentic Reinforcement Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "让工具智能体自行生成训练数据的自进化方法",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.11660v1",
+      "route": "202609/18/2609.11660v1-autonomy-social-norms-and-alignment-towards-a-developmental-framework-for-autonomous-artificial-agents",
+      "title": "Autonomy, Social Norms, and Alignment: Towards a Developmental Framework for Autonomous Artificial Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向自主智能体通过交互自主获取知识的发展式框架",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.14260v1",
+      "route": "202609/18/2609.14260v1-recursive-self-improvement-llm-agents-for-inverter-dynamic-model-identification",
+      "title": "Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "递归自我改进LLM智能体作为搜索器",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.17141v1",
+      "route": "202609/18/2609.17141v1-continual-learning-for-traversability-prediction-with-uncertainty-aware-adaptation",
+      "title": "Continual Learning for Traversability Prediction with Uncertainty-Aware Adaptation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "持续学习框架增量适应新地形并缓解灾难性遗忘",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.18366v1",
+      "route": "202609/18/2609.18366v1-bad-genius-counterfactual-guided-harness-evolution-beyond-task-specific-shortcuts",
+      "title": "Bad Genius: Counterfactual-Guided Harness Evolution Beyond Task-Specific Shortcuts",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "反事实引导的智能体框架演化",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.18598v1",
+      "route": "202609/18/2609.18598v1-hypothesis-driven-autonomous-materials-synthesis-with-multimodal-llm-agents",
+      "title": "Hypothesis-Driven Autonomous Materials Synthesis with Multimodal LLM Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "LLM智能体自适应生成分析技能并演化理解",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.19128v1",
+      "route": "202609/18/2609.19128v1-cognitive-extensions-for-dual-process-language-agents-memory-and-self-reflection-in-interactive-environments",
+      "title": "Cognitive Extensions for Dual-Process Language Agents: Memory and Self-Reflection in Interactive Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "为语言智能体加入自我反思模块实现执行期纠错",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    },
+    {
+      "paper_id": "2609.19519v1",
+      "route": "202609/18/2609.19519v1-an-architecture-for-long-horizon-agents-levels-ticks-and-cascaded-intelligence",
+      "title": "An Architecture for Long-Horizon Agents: Levels, Ticks and Cascaded Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "长时程智能体须先持续运行不遗忘才能持续学习",
+      "first_seen_at": "2026-09-18 22:09:27 UTC",
+      "updated_at": "2026-09-18 22:09:27 UTC"
+    }
+  ]
+}

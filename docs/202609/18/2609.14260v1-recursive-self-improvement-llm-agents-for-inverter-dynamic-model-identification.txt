@@ -1,0 +1,1053 @@
+Title: Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification
+
+URL Source: https://arxiv.org/pdf/2609.14260v1
+
+Published Time: Tue, 15 Sep 2026 01:06:09 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> 1
+
+# Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification 
+
+Jie Feng, Xiaoyang Wang, Xin Chen, and Yuanyuan Shi 
+
+Abstract —This is a position paper. We demonstrate that recur-sive self-improvement (RSI) large language model (LLM) agents are a natural search engine for dynamic model identification of inverter-based resources (IBRs) whose internal controls are often proprietary and hidden from the grid operators. White-box models provide physical transparency but require vendor disclo-sure; black-box models avoid this requirement but sacrifice inter-pretability; and existing grey-box approaches, including sparse and symbolic regression, are poorly suited to discovering feed-back control architectures or incorporating control-engineering priors. Our position is that this gap can be alleviated by (i) restricting the search space to a typed vocabulary of standard control modules, including PI controllers, phase-locked loops (PLLs), low-pass filters, etc., composed under block-diagram grammar rules, and (ii) using an RSI LLM agent to perform program search over candidate block-diagram models, guided by measured frequency-domain admittance data at the point of common coupling (PCC), while fitting the free parameters of each candidate by nonlinear least squares. We instantiate this position by adapting T HETA EVOLVE , an open-source program-evolution framework supporting in-context evolution and test-time learning, to inverter model discovery. In a proof-of-concept study on a grid-following (GFL) inverter benchmark, the RSI loop reduces the normalized root mean square error (NRMSE) of a naive open-loop model from 0.470 to 0.0435 and identifies a 15-module closed-loop structure that closely resembles the hidden ground-truth GFL controller. 
+
+Index Terms —Inverter-based resources, grid-following invert-ers, system identification, grey-box modeling, large language models, recursive self-improvement LLM agents. 
+
+I. I NTRODUCTION 
+
+# POWER systems are undergoing a fundamental shift to-ward inverter-interfaced generation. Solar photovoltaics (PV), wind turbines, battery energy storage systems, and grid-supporting devices, collectively referred to as inverter-based resources (IBRs), connect to the grid through power-electronic converters, whose dynamic behavior is largely determined by their control software. Two dominant control paradigms have emerged: grid-following (GFL) inverters, which regulate injected current and rely on a phase-locked loop (PLL) to synchronize with an external grid, and grid-forming (GFM) inverters, which regulate their terminal voltage and establish their own frequency reference [1], [2]. Recent developments have further blurred this distinction through multi-mode and 
+
+J. Feng and Y. Shi are with the Department of Electrical and Computer Engineering, University of California San Diego, La Jolla, CA, USA (e-mail: {jif005, yyshi}@ucsd.edu). X. Wang and X. Chen are with the Department of Electrical and Computer Engineering, Texas A&M University, College Station, TX, USA (e-mail: {wangxy, xin_chen}@tamu.edu). This is a position paper reporting preliminary results without peer review. 
+
+hybrid GFM/GFL controllers that transition continuously be-tween these behaviors [3], [4]. The dynamic behavior of IBR-rich power systems can be reliably assessed only when system operators have access to accurate dynamic models of the connected inverters. This requirement poses a growing challenge: because inverter con-trol designs are typically proprietary, vendors rarely disclose the internal control structures of commercial devices. As a result, operators can observe inverter behavior only through measurements at the point of common coupling (PCC), while the control mechanisms producing those measurements remain 
+
+unknown to the system operators. This creates a critical modeling gap: small-signal stability assessment, oscillation diagnosis, and interconnection studies must often rely on models that may not accurately represent the equipment de-ployed in the field. This gap is not hypothetical. In the 2021 Odessa disturbance, a single transformer fault in West Texas triggered the loss of more than 1,100 MW of solar PV output at facilities up to 200 miles away, with PLL loss of synchronism among the leading causes; the joint North American Electric Reliability Corporation and Texas Reliability Entity analysis further found that inverter control settings installed in the field did not always match what had been studied at interconnection [5]. Measurement-based model validation at the PCC is thus becoming an operational necessity, not a research convenience. Existing approaches span white-box, black-box, and grey-box model identification. White-box methods derive analytical impedance or state-space models from known control struc-tures [6]. While physically transparent, they require precisely the internal information that vendors often withhold. Black-box methods instead identify input-output behavior directly from measurements, in either the time or frequency domain. In the frequency domain, small-signal impedance or admittance responses can be obtained through terminal perturbation injec-tion [7], and rational transfer-matrix models can be fitted using vector fitting [8]. Time-domain measurements can likewise be used to identify dynamic input-output models directly from transient trajectories. More recently, machine learning and neural network approaches have been developed to handle noisy data and multiple unknown control modes [9]. Although black-box methods avoid the need for controller disclosure, the resulting pole-zero models or neural network parameters pro-vide limited physical insight for interpretation, extrapolation, or certification. 
+
+Grey-box identification seeks to retain physical struc-ture while learning unknown dynamics from data. Physics-informed sparse regression, for example, can recover unknown inverter dynamics from libraries of candidate terms [10], arXiv:2609.14260v1 [eess.SY] 13 Sep 2026 2
+
+following the broader paradigm of sparse identification of nonlinear dynamics [11]. However, classical symbolic regres-sion and sparse-dictionary approaches face two key limitations in inverter modeling. First, expression trees and predefined term libraries do not naturally represent the feedback inter-connections that characterize inverter control systems. Second, their search mechanisms provide limited means to incorporate control-engineering knowledge, such as the strong prior that a GFL inverter contains a PLL, into the generation of candidate models. These limitations are increasingly important as grid-level stability analysis and coordinated controller design de-pend on accurate and interpretable inverter models [12], [13]. Meanwhile, a separate body of work has established large language models (LLMs) as increasingly capable tools for both power system engineering and scientific discovery. In power systems, recent studies have assessed the capabilities and limitations of LLMs in the electric energy sector [14], proposed foundation-model architectures for grid data [15], and developed agentic frameworks that combine foundation models with tools and structured workflows for grid analysis and operation [16], [17], [18]. In parallel, a family of systems has shown that LLMs can generate novel scientific and algorithmic artifacts when placed in iterative propose-evaluate loops that feed their own results back into later proposals. We refer to this class collectively as recursive self-improvement (RSI) LLM agents ; Section II-A makes the structure precise. FunSearch paired an LLM with a program evaluator to discover new mathematical construc-tions [19], while AlphaEvolve extended this paradigm to evolutionary program discovery [20], followed by open-source and more sample-efficient variants [21], [22]. Other systems have automated broader portions of the research process [23], [24]. More recent approaches incorporate test-time learning ,allowing the model to adapt from its own search experience on a target problem, as demonstrated by ThetaEvolve [25] and TTT-Discover [26]. In parallel, lightweight frameworks such as autoresearch have popularized iterative agent–evaluation loops, alongside broader work on autonomous research work-flows and harness design [27], [28]. Closest to our setting, LLM-SR [29] represents equations as executable programs and uses LLM agents to guide the search, outperforming symbolic regression methods on equation dis-covery tasks. However, inverter identification requires a richer hypothesis class than standalone equations: inverter dynamics arise from interconnected feedback loops, internal states, and control blocks. Extending RSI LLM agents from equation programs to such feedback-interconnected control structures 
+
+remains largely unexplored and is the focus of this work. 
+
+Our position. We argue that LLM-based reasoning is partic-ularly well suited to identifying feedback control architectures in power systems, with inverter-model identification serving as a representative demonstration. LLMs provide a knowledge-rich search mechanism : they can reason across physical and mathematical representations, encode substantial power and control engineering knowledge, and generate executable pro-grams. Inverter model identification is especially well suited to these capabilities because it requires mapping physical behav-ior to mathematical models, using domain knowledge to search a large space of plausible control architectures, and generating executable models for direct evaluation against measurements. We therefore propose an RSI LLM agent that builds candidate inverter models by proposing and connecting standard control components into a physically meaningful block diagram, then evaluating each candidate against measured PCC admittance data. This keeps the identified model interpretable while allowing the LLM to use engineering knowledge to revise its structure, for example, adding a missing outer power-control loop when the model captures fast dynamics well but consistently fails to match the low-frequency system response. 
+
+Contributions. This paper makes three main contributions:  
+
+> •
+
+We formulate inverter model discovery as a structured search problem and develop an RSI LLM framework that iteratively proposes control structures, checks their physical validity, fits them to the PCC measurement data, and uses the resulting error to guide subsequent model refinement, as summarized in Fig. 1.  
+
+> •
+
+We instantiate this framework with ThetaEvolve [25], tailoring it to inverter identification with an LLM-based structural proposer drawing from a library of 23 common inverter control modules, a control structure validator, and a physics-based frequency-domain performance evalua-tor. We study both test-time reinforcement learning of the proposal policy and training-free search using a large off-the-shelf LLM as the agent backbone.  
+
+> •
+
+We provide preliminary results on a simulated GFL inverter, showing that the RSI LLM agent can recover a physically meaningful closed-loop model. The identified model recovers the key synchronization, power control, and current control modules and achieves a normalized root-mean-square error (NRMSE) of 0.0435 , comparable to the 0.047 obtained by white-box parameter fitting with the known ground-truth structure, while substantially improving over the initial NRMSE of 0.470 .We emphasize that this is a position paper with preliminary proof-of-concept results , where we evaluate the proposed RSI algorithm on a simulated GFL inverter model introduced in Section II. Our goal is to establish RSI LLM agents as a promising direction for inverter model identification, demon-strate their initial feasibility, and identify the key technical questions that remain open, as discussed in Section VII. II. P RELIMINARIES AND SYSTEM DESCRIPTION 
+
+A. Recursive Self-Improvement LLM Agents 
+
+By an LLM agent , we mean a language model operating in a closed-loop with an external environment: the model proposes an action, the environment returns an observation, and subsequent actions are conditioned on the interaction history [30]. Such agentic frameworks have recently been applied to power system analysis and operation, where the environment is typically a power-system tool chain [16], [17], [18]. In our setting, the action is an edit to a program defining a candidate inverter model, while the environment is a deter-ministic evaluator that compares the candidate against PCC measurement data, and returns structured feedback and scores (e.g., fitting error) guiding subsequent model refinement. 3
+
+Domain knowledge 
+
+23 inverter-control modules       
+
+> LCL PI LPF Integrator SRF-PLL PQ calc · · ·
+
+textbook priors on inverter control structure 
+
+Measured PCC admittance 
+
+terminal measurements only 
+
+• measured candidate 
+
+bY (jω k ) ∈ C2×2
+
+5 Hz– 5 kHz 
+
+2 operating points 
+
+Prompt 
+
+domain knowledge parent program evaluation record 
+
+LLM proposer πψ
+
+propose candidate G
+
+through a code edit   
+
+> -g.add("Gain") +g.add("SRF_PLL")
+
+Structure validator 
+
+valid block diagram? 
+
+Performance evaluator 
+
+1) assemble Y (jω ; G, θ )
+
+2) fit parameters θ
+
+3) compute reward 
+
+R = − log NRMSE     
+
+> prompt candidate Gvalid G
+
+Program database 
+
+evaluated programs and scores            
+
+> sample the next parent reward invalid: not fitted, never a parent parent + evaluation record prior fitting target (optional) test-time RL update of ψ
+> Fig. 1. The RSI loop for grey-box inverter identification. The agent is given domain knowledge and its own previous trials; the hidden controller is never disclosed. At each iteration, the prompt contains the domain knowledge, a sampled parent program, and its evaluation record. The LLM edits the parent to propose a new candidate structure, which is first checked for structural validity. A valid candidate is assembled, its unknown parameters are fitted to the measured PCC admittance, and the resulting fitting error is converted to the reward R=−log NRMSE , where NRMSE denotes the mean over the M
+> operating points. Evaluated programs are stored in the database and subsequently sampled as parents. Optionally, evaluator rewards are also used for test-time RL updates of the proposer parameters ψ.
+
+Such a loop, by itself, is not self-improving: if every attempt is drawn from the same fixed distribution, the agent explores but does not learn. It becomes recursively self-improving (RSI) when the record generated by earlier attempts changes the distribution from which later attempts are drawn, so that the loop’s own output becomes the input that shapes its next output. The literature has explored two main mechanisms for improving an LLM agent during search. In the first approach, improvement is carried in the context . The agent’s previous programs, their scores, and its own written critiques are fed back into the prompt to guide subsequent proposals. This mechanism underlies self-refinement and verbal-feedback agents [31], [32], program-evolution systems that maintain populations of scored candidates [19], [20], and self-referential code-generation schemes [33], [34]. In the second approach, improvement is carried in the model weights . The same re-wards used to evaluate candidate models are used to update the proposal policy during search, without requiring an external training set [25], [26]. In this work, we study both mechanisms for inverter model identification. Context-space recursion arises as the LLM agent evolves candidate programs using the accumulated search history, while weight-space recursion is introduced through test-time reinforcement learning that updates the proposal pol-icy from evaluator rewards. Our current implementation uses DeepSeek-R1-0528-Qwen3-8B for weight-space adaptation; pure context-based search with a larger off-the-shelf LLM, such as Claude Opus 5, is left for future work. 
+
+B. Grid-Following Inverter Model 
+
+We ground our discussion in a standard three-phase grid-following (GFL) inverter with an inductor-capacitor-inductor (LCL) filter, illustrated in Fig. 2. The model comprises the LCL filter dynamics and three principal control layers: a phase-locked loop (PLL) for synchronization, an outer power controller that generates current references, and an inner current controller that regulates the inverter current [1], [6]. Their interconnection forms the layered feedback architecture that serves as a representative structure for the identification problem considered in this work. Throughout, idq  
+
+> i
+
+and idq  
+
+> g
+
+denote the inverter- and grid-side currents, edq the filter-capacitor voltage, vdq the PCC voltage, and udq  
+
+> r
+
+the converter voltage command. Superscripts dq and 
+
+DQ denote quantities expressed in the inverter-local and grid-synchronous rotating frames, respectively. We define 
+
+J =
+
+0 −11 0
+
+
+
+, R(δ) = 
+
+ cos δ sin δ
+
+− sin δ cos δ
+
+
+
+, (1) where J represents a 90 ◦ rotation and δ is the angular displacement of the inverter-local frame relative to the grid-synchronous frame. Thus, for any two-dimensional electrical quantity z,
+
+zdq = R(δ)zDQ , zDQ = R(−δ)zdq . (2) 
+
+Physical layer: The LCL filter dynamics are written com-pactly as 
+
+˙idq  
+
+> i
+
+= −( ω0
+
+LF
+
+RF + ωJ )idq  
+
+> i
+
++ ω0
+
+LF
+
+udq  
+
+> r
+
+− ω0
+
+LF
+
+edq (3a) 
+
+˙edq = −ωJ edq + ω0
+
+CF
+
+idq  
+
+> i
+
+− ω0
+
+CF
+
+idq  
+
+> g
+
+(3b) 
+
+˙idq  
+
+> g
+
+= −(ωJ + ω0
+
+Lg
+
+Rg)idq  
+
+> g
+
++ ω0
+
+Lg
+
+edq − ω0
+
+Lg
+
+vdq (3c) where LF, R F, C F, L g, R g collects the filter parameters and ω
+
+denotes the angular frequency of the inverter-local PLL frame. We assume an LCL filter topology for the physical interface 4
+
+and focus on the structural identification of the internal control architecture; the filter parameters themselves need not be known a priori. 
+
+Synchronization: A synchronous-reference-frame PLL syn-chronizes the inverter to the grid by regulating the q-axis capacitor voltage eq toward zero. Let ϕPLL denote the PLL integrator state, ω the estimated angular frequency, and ω0 the nominal grid frequency. A standard PI realization is 
+
+˙ϕPLL = eq , (4a) 
+
+ω − ω0 = kP,PLL eq + kI,PLL ϕPLL , (4b) 
+
+˙δ = ω − ω0, (4c) where kP,PLL and kI,PLL are the proportional and integral PLL gains. The resulting angle δ determines the frame trans-formations in (5), while ω presents in the physical and current-control dynamics (3). 
+
+iDQ  
+
+> g
+
+= R(−δ)idq  
+
+> g
+
+, vDQ = R(−δ)vdq  
+
+> g
+
+(5) 
+
+Outer power control: The instantaneous active and reactive powers in per unit value are: 
+
+p = ( edq )⊤idq  
+
+> g
+
+, q = ( edq )⊤J idq  
+
+> g
+
+. (6) Given active- and reactive-power references p∗ and q∗, the outer PI controller maps power-tracking errors to the current reference idq  
+
+> r
+
+:
+
+˙ϕp = p∗ − p, id 
+
+> r
+
+= kP,PC (p∗ − p) + kI,PC ϕp, (7a) 
+
+˙ϕq = q∗ − q, iq 
+
+> r
+
+= −kP,PC (q∗ − q) − kI,PC ϕq , (7b) where ϕp and ϕq are the controller integrator states and kP,PC 
+
+and kI,PC are the corresponding PI gains. 
+
+Inner current control: The inner current controller tracks idq 
+
+> r
+
+using measurements of the inverter-side current and capacitor voltage. A standard PI realization with voltage feedforward and dq cross-coupling compensation is 
+
+˙γdq = ω0
+
+ idq  
+
+> r
+
+− idq 
+
+> i
+
+, (8a) 
+
+udq = kP,i
+
+ idq  
+
+> r
+
+− idq 
+
+> i
+
+ + kI,iγdq + edq + ωω0
+
+LFJ idq  
+
+> i
+
+, (8b) where γdq is the current-controller integrator state, kP,i and kI,i
+
+are the PI gains, and LF is the inverter-side filter inductance. Together, the physical and control layers define a structured nonlinear dynamical system 
+
+˙x = f (x, v DQ , r ; θ), r = p∗ q∗⊤ , (9a) 
+
+iDQ  
+
+> g
+
+= g(x). (9b) where x collects the physical states and the internal states of the PLL, power controller, and current controller, while θ
+
+collects the corresponding physical and control parameters. Importantly, f is generated by an interconnection of recogniz-able physical and control modules rather than by an arbitrary nonlinear mapping. g(x) is the observe equation given by (5).      
+
+> Fig. 2. Canonical GFL inverter architecture considered in this work. The terminal small-signal relationship between vDQ and iDQ gis observable at the grid.
+
+Small-signal PCC admittance: Although the internal con-troller states and interconnections are generally unavailable to the system operator, their aggregate effect is observable through the inverter’s terminal response. Consider an equilib-rium corresponding to a fixed operating point r = [ p∗, q ∗]⊤.Linearizing (9) and the corresponding output equation in the grid-synchronous DQ frame gives 
+
+∆ ˙ x = A∆x + B∆vDQ , (10a) 
+
+∆iDQ  
+
+> g
+
+= C∆x. (10b) The resulting frequency-domain transfer matrix from the input ∆vDQ to the output ∆iDQ  
+
+> g
+
+is: 
+
+∆iDQ  
+
+> g
+
+(s) = Y (s)∆ vDQ (s), (11a) 
+
+Y (s) = C(sI − A)−1B ∈ C2×2. (11b) This is later referred to as admittance because its input and output are voltage and current, respectively, analogous to the conventional notion of electrical admittance. The frequency response Y (jω ) can be obtained experimen-tally by injecting small voltage perturbations at the grid side resulting current response [6], [7]. It therefore provides an ex-ternally measurable signature of the hidden inverter dynamics. Synchronization and outer-control dynamics predominantly shape the lower-frequency response, while the inner current controller and filter dynamics become increasingly important at higher frequencies. This paper considers the identification problem of recovering the feedback-interconnected control structure that reproduces the measured terminal admittance. III. P ROBLEM STATEMENT 
+
+We consider the problem of identifying the internal feed-back control architecture of an inverter from measurements available only at its grid interface. The challenge is that many different internal control structures can produce similar terminal behavior, while the controller states, signals, and 5
+
+interconnections are not directly observable. Our goal is there-fore to recover an interpretable small-signal control model that is consistent with measured PCC admittance data. At M known operating points, let rm = [ p∗
+
+> m
+
+, q ∗
+
+> m
+
+]⊤ denote the active and reactive power setpoints of the m-th operating point. At each rm, the operator measures the small-signal admittance (11b) over frequencies {ωk}Kk=1 , obtaining 
+
+bYm(jω k) ∈ C2×2 , k = 1 , . . . , K. (12) In this work, measurements span 5 Hz –5 kHz with K = 16 .Let M denote a library of standard control components, introduced in Section IV, including PI controllers, filters, PLLs, and power-control blocks, and let G denote the set of all valid control structures formed by selecting components from M and interconnecting them according to the prescribed block-diagram rules. A candidate inverter model is represented by a structure G ∈ G .For a given structure G, let θm ∈ Θ( G) denote its con-tinuous model parameters at operating point rm, where Θ( G)
+
+denotes the feasible parameter set determined by the parameter ranges of the modules in G. Given G and θm, the predicted PCC admittance is 
+
+Ym(jω k; G, θ m) ∈ C2×2, k = 1 , . . . , K. (13) We then define the discrepancy between the predicted and measured admittances using the normalized root-mean-square error (NRMSE), defined as 
+
+NRMSE m(G, θ m) = 
+
+vuuuuuuuut
+
+> K
+
+X
+
+> k=1
+
+Ym(jω k; G, θ m) − bYm(jω k) 2
+
+> FK
+
+X
+
+> k=1
+
+bYm(jω k) 2
+
+> F
+
+.
+
+(14) Here, ∥ · ∥ F denotes the matrix Frobenius norm. The objective is to identify a single control structure G that explains the measured PCC admittance across all operating points. For each candidate structure, the continuous parameters are fitted separately at each operating point by nonlinear least squares. This gives the bilevel identification problem 
+
+min 
+
+> G∈G
+
+1
+
+M
+
+> M
+
+X
+
+> m=1
+
+NRMSE m (G, θ ⋆m(G)) , (15a) 
+
+s.t. θ⋆m(G) = arg min  
+
+> θm∈Θ( G)
+
+NRMSE m (G, θ m) ,m = 1 , . . . , M, (15b) 
+
+n ≤ n(G) ≤ n. (15c) Here, n(G) denotes the dynamic order of the candidate model, and n and n are prescribed complexity bounds. The structure 
+
+G is shared across all operating points, while the fitted parameters θ⋆m(G) may vary with the operating condition rm.At each operating point, a single parameter vector θ⋆m(G) is fitted jointly over all sampled frequencies {ωk}Kk=1 .The RSI LLM agent addresses the outer structural search in (15a) by proposing and refining candidate structures G. For each proposed structure, a parameter-identification subroutine                                 
+
+> TABLE I MODULE VOCABULARY M
+> Class Module kinds Order Physical plant LCL ,LFilter 6,2
+> Dynamic control PI ,PI_dq ,LPF1 ,LPF1_dq ,Integrator 1–2
+> Synchronization SRF_PLL 2
+> Operating point Rot_v ,Rot_i ,PQ_calc 0
+> Static algebra Gain ,Gain_dq ,Negate ,Negate_dq ,PackDQ ,
+> SliceD ,SliceQ ,JMul ,ConstZero
+> 0
+> Residual Pade1 ,Pade1_dq ,Notch 1–2
+
+solves the inner nonlinear least-squares problem in (15b) to obtain θ⋆m(G) at each operating point. The average of the resulting fitting error is used to score the candidate and construct the reward returned to the search algorithm. Acandidate is favored only if it can reproduce the measured admittance over all sampled frequencies {ωk}Kk=1 and across all operating points {rm}Mm=1 . The solution model provides a shared structural description of the measured inverter, while its continuous parameters remain operating-point specific and must be refitted when applied to a new operating point. IV. I NVERTER MODEL SEARCH SPACE AND EVALUATION 
+
+The bilevel formulation in Section III separates inverter identification into a discrete structural search over G ∈ G and continuous parameter fitting for each candidate structure. This section defines the structured search space G and the evaluator used to solve the inner problem (15b). The recursive search over G is described in Section V. 
+
+A. Module Vocabulary and Interconnection Grammar 
+
+The module library M consists of the 23 module kinds listed in Table I. Each module kind specifies its input and output ports and associated signal types, its free parameters and their admissible ranges, its contribution to model order, and its small-signal frequency-domain realization. For exam-ple, the transfer function of PI and LPF are defined as follows, 
+
+MPI (s) = kP + kI
+
+s , MLPF (s) = ωc
+
+s + ωc
+
+, (16) where kP and kI are PI gains and ωc is the cutoff frequency. The SRF-PLL module implements the linearization of (4), while the rotation modules implement (1) linearized about the fitted equilibrium angle. Ports use three signal types: scalar, 
+
+dq vector, and power pair. Complete definitions of all modules are provided in Appendix A. The admissible set G is defined by the module library M
+
+together with an interconnection grammar. Candidate struc-tures are formed by connecting module outputs to module inputs. For example, the PCC voltage vDQ can be connected to the input of Rot_v , which transforms the voltage from the global DQ frame to the local dq frame; its signal type remains a dq vector. Connections are allowed only between compatible signal types, so a dq -vector output can only be connected to an input that accepts a dq vector. Each input port is driven by exactly one source. When several signals need to be combined, the combination is represented explicitly and realized as a summation during model assembly. 6
+
+Additional structural requirements are imposed at the graph level. Each candidate must define the terminal-current output and include a physical filter module that represents the inter-face between the inverter and the AC grid. The dynamic order must also satisfy the bound in (15c). 
+
+B. Frequency-Domain Evaluation and Structured Feedback 
+
+For each grammar-valid candidate structure G ∈ G , the evaluator assembles the linear equations defined by the module transfer functions and their interconnections. At operating point rm and frequency s = jω k, the resulting model yields the predicted PCC admittance 
+
+Ym(jω k; G, θ m) ∈ C2×2, (17) where θm denotes the continuous model parameters to be fitted at operating point rm.
+
+1) Parameter Fitting: For each operating point rm, the evaluator solves the inner regression problem in (15b), 
+
+θ⋆m(G) = arg min  
+
+> θm∈Θ( G)
+
+NRMSE m(G, θ m). (18) The structure G is fixed during this optimization, and θ⋆m(G)
+
+is fitted jointly over all frequencies {ωk}Kk=1 .Although several individual modules are affine in their parameters, the assembled admittance is generally a nonlinear rational function of θm because the modules interact through feedback interconnections and parameter-dependent transfer functions. The resulting least-squares problem is therefore generally nonconvex and may contain multiple local minima. Reliable fitting is important because a poor local solution can cause a plausible structure to receive a large error. We use three measures to reduce this sensitivity. First, each parameter is optimized within the admissible range associated with its module type, as encoded by Θ( G). Second, each fit is initialized using a vector-fitting seed obtained from the measured response and is repeated with five additional restarts in this work. Third, when the fit at one operating point achieves an error below a prescribed threshold, the resulting parameter estimate is used to initialize the optimization at the next operating point as a warm start. 
+
+2) Reward: After solving (18) at all M operating points, the evaluator uses the average fitting error in the outer objective (15a) to define the scalar reward 
+
+R(G) = − log 1
+
+M
+
+> M
+
+X
+
+> m=1
+
+NRMSE m(G, θ ⋆m(G)) + 10 −8
+
+!
+
+.
+
+(19) Thus, structures with lower average NRMSE receive higher reward. The logarithmic transformation increases resolution among candidates in the low-error regime, where differences in raw NRMSE become small. Invalid, non-executing, or timed-out candidates receive fixed negative rewards below those assigned to valid candidates. Structural complexity is not included directly in (19); it is controlled through the hard model-order constraint (15c). This avoids introducing an additional scalar tradeoff between fitting accuracy and model complexity. 
+
+3) Structured Feedback: The scalar reward indicates the overall quality of a candidate but provides limited information about the source of its modeling error. The evaluator therefore also returns a structured residual record, denoted by ρ(G). The record resolves the fitting error along three axes: frequency band, admittance entry, and operating point. Specifically, the frequency-domain error is reported over 5–50 Hz, 50 –500 Hz, 
+
+0.5–2 kHz, and 2–5 kHz; entry-wise errors are reported for 
+
+Ydd , Ydq , Yqd , and Yqq ; and separate errors are reported for each operating point rm.The record also reports the number of instantiated modules, the dynamic order n(G), the number of residual modules, and the number of free parameters. Together with the resolved fitting errors, these quantities provide structured feedback for subsequent proposals. V. R ECURSIVE SEARCH AND SELF -I MPROVEMENT 
+
+With the structured model space and evaluator of Section IV fixed, the remaining task is to solve the outer structural search in (15a). We address this problem using an RSI LLM agent based on the evolutionary program-search framework of ThetaEvolve [25]. Each candidate structure G is encoded as a program that instantiates modules from M and connects their ports. Recursive improvement occurs through two coupled chan-nels. Evaluated structures and their evaluation records ac-cumulate in the search archive, changing the information available to subsequent proposals. When the proposal model has accessible weights, evaluator rewards can additionally update the proposal policy during search. We refer to these mechanisms as recursion in context space and recursion in 
+
+weight space , respectively. 
+
+A. Search State and Evolutionary Archive 
+
+At iteration t, the search state is 
+
+st = ( At, ψ t), (20) where At is the archive of previously evaluated candidate structures, their rewards, and their evaluator records, and ψt
+
+denotes the weights of the proposal policy πψt .The archive maintains both high-performing candidates and diversity. In this work, it contains a capped population of P =10 ,000 candidates divided among I = 10 islands arranged in a ring, together with a global elite set containing the 200 highest-reward structures found so far. Search advances through the islands in round-robin order. For each proposal, the parent is sampled with probability 0.6 from the elite set, 0.2 from the active island, and 0.2 from the full population. After approximately 1,000 admitted structures, correspond-ing to one complete sweep of the 10 -island ring, each island shares its top 10% of candidates with its two neighboring islands [20]. Once the population cap is reached, low-reward candidates are evicted. The archive therefore balances ex-ploitation of high-performing structures with exploration of structurally different alternatives. 7
+
+B. Proposal Context and Control-Engineering Priors 
+
+At iteration t, a parent structure Gpar  
+
+> t
+
+is sampled from At
+
+according to the mechanism in Section V-A. The proposal policy receives a context ct containing four components: the identification objective and evaluation metric; the graph-construction API, module library M, and interconnection grammar; the parent program and its structured residual record; and control-engineering priors that guide interpretation of the residual records. A central prior is the relation between frequency scale and control layer. Grid-following inverters typically contain synchronization, outer power regulation, and inner current-control loops with distinct bandwidths. Residuals concentrated at low frequencies can therefore indicate missing or inaccurate synchronization or outer-loop dynamics, while high-frequency residuals more often point to the inner current loop or physical filter. These cues help translate the frequency-resolved evalu-ator output into plausible structural modifications. The control-engineering priors are specified independently of measurements from the target device. They encode generic knowledge available before identification, including standard GFL control components, typical control-loop hierarchy, and the relative ordering of loop bandwidths. To balance local refinement with broader structural explo-ration, the search varies the scope of the requested edit. At each iteration, one of three edit scales is selected: a local edit that modifies parameter sharing or signal routing, a module-level edit that substitutes a single control component, or a larger structural edit that replaces a plant component or an entire control sub-loop. Their sampling probabilities are 0.3,
+
+0.4, and 0.3, respectively. In this paper, ct contains only the sampled parent and its evaluator record rather than several candidate programs simultaneously. This design matches the context capacity of the open-weight proposal model used in our experiments. Models with larger context windows can instead expose a longer search history directly to the proposer. A shortened excerpt of the proposal context used in our experiments is shown below.                   
+
+> Context excerpt Task. Evolve build_gfl_skeleton() to recover an interpretable small-signal GFL inverter model from measured PCC admittance Y(jω ).
+> Search space. Construct the model using only the provided typed control modules and graph API. All connections must satisfy the interconnection grammar; module parameters remain symbolic during structure generation and are fitted by the evaluator.
+> Evaluation. The evaluator fits the continuous parameters at each operating point and returns the NRMSE averaged across operating points, together with errors resolved by frequency band, admittance entry, and operating point. Lower average NRMSE corresponds to higher reward.
+> Domain cues. A GFL inverter typically contains synchronization, outer power control, and inner current control loops with separated bandwidths. Use the frequency distribution of the residual to identify which control layer may be missing or incorrectly represented before proposing an edit. If adding an expected control layer degrades the fit, examine its feedback sign, measurement filtering, and injection point before removing it.
+
+C. Recursive Search Procedure 
+
+At iteration t, a parent structure Gpar  
+
+> t
+
+is sampled from the archive and used to construct the proposal context ct as described in Sections V-A and V-B. The proposal policy then generates a structural edit 
+
+dt ∼ πψt (· | ct), (21) which is applied to the parent program to produce a candidate structure Gt. In this work, proposals are represented as local-ized program edits rather than regenerating the entire program. The candidate is first checked against the module vocabulary and interconnection grammar. Invalid candidates receive a fixed negative reward without parameter fitting. Each valid candidate Gt is evaluated according to Section IV-B, yielding the scalar reward Rt = R(Gt) and the structured evaluator record ρt = ρ(Gt). These outputs update the two components of the search state according to 
+
+At+1 = H(At, G t, Rt, ρ t) ,ψt+1 = U(ψt, Dt) , (22) where H denotes the archive update defined by the admission, eviction, and migration rules of Section V-A, and Dt denotes the proposal and reward data accumulated for policy adapta-tion. The operator U is either a reinforcement-learning update or the identity map, depending on whether the proposal model is adapted during search. Equation (22) therefore captures the two forms of recursive improvement considered in this work: the search experience can alter the proposal policy itself, the information supplied to future proposals, or both. 
+
+D. Recursion in Weight Space: Test-Time Reinforcement Learning 
+
+When the proposal model has accessible weights, evaluator rewards are used to update πψt during the identification process. The resulting weight-space recursion changes the distribution of future structural edits, allowing the proposer to learn from the outcomes of previous candidates rather than relying on a fixed proposal policy. We use the group-relative policy-gradient (GRPO) mech-anism of ThetaEvolve [35], [25] for weights update. For each sampled context ct, the policy generates a group of 
+
+Np independent proposals with rewards R(1)  
+
+> t
+
+, . . . , R(Np) 
+
+> t
+
+. The advantage of each proposal is normalized relative to the other proposals generated from the same context: 
+
+bA(i) = R(i) 
+
+> t
+
+− μc
+
+σc + ϵ ,μc = 1
+
+Np
+
+> Np
+
+X
+
+> j=1
+
+R(j) 
+
+> t
+
+.
+
+(23) Here, μc and σc are the mean and standard deviation of the proposal rewards within the group, and ϵ = 10 −6 is a small constant for numerical stability. Let a(i)1 , . . . , a (i) 
+
+> Li
+
+denote the token sequence generated for proposal G(i) 
+
+> t
+
+, and let πψold denote the policy used to generate the proposal batch. For each token, we define the policy ratio 
+
+ri,ℓ (ψ) = 
+
+πψ
+
+
+
+a(i) 
+
+> ℓ
+
+| c, a (i)
+
+> <ℓ
+
+
+
+πψold 
+
+
+
+a(i) 
+
+> ℓ
+
+| c, a (i)
+
+> <ℓ
+
+ . (24) 8
+
+Proposal generation and policy optimization use separate serving and training backends, which may assign slightly different probabilities to the same generated token. We account for this mismatch using the truncated importance weight 
+
+wi,ℓ = min 
+
+
+
+πtrain 
+
+
+
+a(i) 
+
+> ℓ
+
+| c, a (i)
+
+> <ℓ
+
+
+
+πserve 
+
+
+
+a(i) 
+
+> ℓ
+
+| c, a (i)
+
+> <ℓ
+
+ , w max 
+
+ . (25) The policy is then updated using the clipped surrogate objective 
+
+JGRPO (ψ) = 1
+
+Np
+
+> Np
+
+X
+
+> i=1
+
+1
+
+LiLiX
+
+> ℓ=1
+
+wi,ℓ min ri,ℓ (ψ) bA(i),
+
+clip( ri,ℓ (ψ), 1 − ϵpg , 1 + ϵpg ) bA(i)
+
+!
+
+.
+
+(26) The clipping parameter ϵpg limits the change in token probabil-ity during each policy update, while wmax limits the influence of large probability discrepancies between the serving and training backends. Because proposals within a group share the same parent and proposal context, the update directly compares alternative modifications of the same candidate structure. Evaluator penal-ties discourage invalid or ineffective edits, while higher-reward structural changes become more likely under subsequent ver-sions of the proposal policy. 
+
+E. Recursion in Context Space: Training-Free Search 
+
+Recursive improvement can also occur without changing the proposal-model weights. Setting U = id in (22) leaves ψt
+
+fixed, while the archive At continues to evolve as new can-didates are evaluated. Consequently, parent selection changes over time, and future proposal contexts contain structures and evaluator records produced by earlier search iterations. In the implementation considered here, this recursion is archive-mediated: each proposal receives one sampled parent together with its structured evaluator record, while population-level search history influences the proposal indirectly through parent selection. This provides a training-free search mode that can also be used with off-the-shelf API models whose weights are unavailable. A richer form of context-space recursion can place a capable coding agent directly in a closed loop with the evaluator. Compared with the proposal model used in our current im-plementation, such agents typically provide larger context windows, stronger tool-use capabilities, and broader exposure to domain knowledge. They can therefore retain a longer history of previous hypotheses and reason over this history when diagnosing residual errors. Within each interaction, the agent can modify a candidate program, execute the evaluator, inspect the resulting diagnostics, repair coding or implemen-tation errors, and reflect before generating the next proposal. This loop closely follows the workflow of recent autonomous-research systems [27], [28], [36] and provides a natural future extension.  
+
+> Fig. 3. Naïve initialization of the evolutionary search. The initial model contains only a static gain and an L-filter plant, without synchronization or closed-loop inverter control.
+
+F. Experimental Search Configuration 
+
+The reported experiments use DeepSeek-R1-0528-Qwen3-8B as the proposal policy. Both recursion channels are active: the evolutionary archive determines the parents encountered by the proposer, while test-time reinforcement learning updates the proposal policy from evaluator rewards. For each policy update, 32 proposal contexts are sampled and Np = 16 proposals are generated per context, yielding 512 
+
+evaluated candidates. Each batch is followed by one policy update with learning rate 10 −6. An edit that leaves the parent program unchanged is assigned a fixed reward of −0.3 to prevent exact parent reproduction from receiving the parent’s evaluation score. The admissible dynamic-order range in (15c) is 
+
+[n, n ] = [0 , 30] . (27) The search continues until the prescribed budget is exhausted. VI. R ESULTS 
+
+A. Setup 
+
+We evaluate the proposed RSI algorithm on the GFL inverter model of Section II. The hidden ground truth contains an LCL filter, SRF-PLL, outer power control, inner current control, frame transformations, and cross-coupling compensation. The measured labels bY (jω k) are generated by frequency sweeps of the underlying DAE over 5 Hz –5 kHz at p∗ = 1 p.u. and two reactive-power operating points, q∗ ∈ { +0 .3, −0.3} p.u. The search is deliberately initialized from the simple model in Fig. 3: a static dq gain feeding an L-filter plant, with the frequency-deviation input fixed at zero. This initialization contains none of the synchronization, outer-power, or inner current-control loops of the hidden inverter and yields an NRMSE of 0.470 .
+
+B. Recovered Control Structure 
+
+Despite the deliberately weak initialization, the RSI algo-rithm reconstructs nearly all major components of the hidden GFL architecture. Figure 4 compares the ground-truth and recovered block diagrams. Both contain Park transformations at the PCC interfaces, an LCL plant, an LPF-conditioned PLL synchronization loop, PQ calculation with separate active-and reactive-power PI controllers, a packed dq inner current controller, and J -based cross-coupling compensation. The 9
+
+Fig. 4. Comparison of the hidden ground-truth structure (a) and the best struc-ture discovered by the proposed search (b). The recovered model reproduces the main synchronization, outer-power, inner-current, frame-transformation, and cross-coupling components. Its principal discrepancy is an additional gain–Padé feedforward branch and a gain branch for the voltage feedforward in the inner loop (the gray box). 
+
+principal structural discrepancy is localized to the inner-loop feedforward path: the recovered model introduces an additional gain and Padé-delay branch that is absent from the ground truth, as shown in the gray box in Fig. 4 (b). The emergence of this structure is accompanied by a sub-stantial reduction in frequency-domain error. Table II summa-rizes representative accepted structures along the search tra-jectory, while Fig. 5 shows the evolution of the best NRMSE. Starting from the naïve open-loop model with NRMSE 0.470 ,the largest early improvement occurs when synchronization and outer power-control structure is introduced. Subsequent edits recover additional frame-handling, current-control, and high-frequency dynamics, progressively reducing the error into the sub-0.05 regime. The best recovered model contains 15 modules with de-clared dynamic order 15 and achieves an NRMSE of 0.0435 .For reference, nonlinear least-squares fitting of the known ground-truth block structure yields an NRMSE of 0.047 . Thus, the final model achieves essentially the same terminal behavior as the ground-truth architecture while being recovered from PCC admittance measurements alone. The slightly lower error of the discovered model should not be interpreted as evidence of more accurate structural recovery. As Fig. 4 shows, the discovered structure contains an additional gain–Padé branch that is absent from the true con-troller. Because the model parameters are fitted independently at each operating point, this additional flexibility can absorb residual modeling mismatch and reduce the frequency-domain error without corresponding to the true physical structure. The result therefore highlights a limitation of the current RSI evaluation setup: per-operating-point fitting can favor more flexible structures, and excellent agreement with the measured admittance does not by itself guarantee structural uniqueness. 
+
+C. Frequency-Domain Validation 
+
+Figure 6 compares the frequency responses of the recovered model with the measured DAE sweeps and the fitted ground-truth structure. Across both operating points and all four 
+
+TABLE II MILESTONES ALONG THE EVOLUTION TRAJECTORY                                          
+
+> Step Module(s) added NRMSE Layer / band fixed 0LCL plant +open-loop gain 0.470 physical filter only 4SRF-PLL +PQ calc +power PI 0.150 sync +outer loop (5–500 Hz) 8LPF ( +JMul decoupling) 0.085 meas. filter, decoupling 9Park rotations 0.074 frame linearization 12 inner-loop parameter refit 0.050 target band ( <0.05 ) reached 34 Padé delay 0.046 delay residual (2–5 kHz) 66 JMul (final decoupling) 0.0435 best; order 15, 15 modules
+> 010 20 30 40 50 60 70 10 −1
+> 10 −0.5
+> open loop +PLL, power loop +Padé ground-truth fit (0.047) best 0.0435
+> evolution step (accepted improvements) NRMSE
+
+Fig. 5. Evolution trajectory of the best program. Each accepted structural edit removes a mismatch in a predictable frequency band; the final model slightly outperforms a parameter fit of the ground-truth structure itself. 
+
+Fig. 6. Frequency-domain validation at q∗ = +0 .3 and q∗ = −0.3 p.u. Red markers denote the measured DAE sweeps, the black curves the full linearized model, the dashed blue curves the fitted ground-truth structure, and the dash-dotted green curves the best discovered structure. The recovered model closely matches the measured magnitude and phase across both operating points and all admittance channels. 
+
+entries of the 2 × 2 admittance matrix, the recovered model closely tracks the measured magnitude and phase over the full frequency range. This agreement is significant because the search observes only the PCC admittance and never receives the hidden control interconnections. Together with Fig. 4, the result shows that the search recovers both a physically recognizable controller architecture and its corresponding terminal dynamics. 10 
+
+VII. C ONCLUSION AND DISCUSSION 
+
+This paper argues that LLM-driven evolutionary search over a typed vocabulary of control modules provides a promising framework for grey-box identification of black-box inverters. In our proof-of-concept GFL benchmark, a ThetaEvolve-based search starts from a deliberately naïve model and recovers the main synchronization, outer-power, and inner-current control structure from PCC admittance measurements alone. The resulting model reduces NRMSE from 0.470 to 0.0435 and closely reproduces the measured frequency response across both operating points. 
+
+A. Limitations 
+
+The present results are preliminary. We consider a single simulated GFL inverter whose underlying components are representable by the module vocabulary, use clean frequency-domain measurements, and evaluate only two operating points. Robustness to measurement noise, model mismatch, unseen inverter architectures, and hardware measurements remains to be established. The current implementation also fits the continuous param-eters independently at each operating point. The experiment therefore primarily evaluates recovery of a shared control structure rather than identification of a single globally param-eterized inverter model. This per-operating-point fitting can also favor more flexible structures. In the reported example, the discovered model contains an additional gain–Padé branch that is absent from the true controller yet slightly reduces the fitting error. The additional flexibility allows the model to absorb residual mismatch separately at each operating point without corresponding to the true physical structure. More fundamentally, terminal measurements may not uniquely determine the internal controller. A finite set of PCC frequency responses can leave some internal dynamics weakly observable or unidentifiable, and distinct control structures may produce nearly indistinguishable admittances. The current search also does not impose properties such as passivity, stability margins, or robustness constraints, which provide additional directions for constraining the identified models. 
+
+B. RSI Beyond the Present Configuration 
+
+The two recursion channels suggest natural extensions of the present setup. In context space, a stronger variant could place a large coding agent in a closed loop with the evaluator as described in Section V-E. For industrial deployment, how-ever, API-based agents introduce trade-offs in data locality, reproducibility, and inference cost. In weight space, ThetaEvolve enables test-time reinforce-ment learning from evaluator feedback [25], and this mech-anism is active in our experiments. We do not isolate its contribution from archive-based context recursion here. A controlled comparison between frozen-policy search and test-time adaptation is therefore an important next step, particularly for search efficiency and structural recovery. The two channels are complementary: context recursion can operate alone or alongside weight updates, making the same framework ap-plicable to both open-weight and API-based models. 
+
+C. Outlook 
+
+Several extensions are especially important. Future identifi-cation should share physical and controller parameters across operating points while allowing equilibrium-dependent quan-tities to vary, and should use additional operating conditions and held-out measurements to strengthen tests of structural and parametric identifiability. The search space should also be extended beyond a single GFL family to GFM controllers, hybrid architectures, and multiple devices behind a common PCC [4], [3]. Selected nonlinear modules, such as saturation, current limiting, and protection logic, could further extend structural discovery beyond the small-signal regime. Finally, the evaluator should incorporate criteria beyond frequency-response fit. The recovered modular architecture could then serve as a scaffold for state-space or nonlinear mod-els suitable for simulation and stability analysis. Establishing when such models are identifiable, transferable, and reliable on field data is the key step toward practical, measurement-driven discovery of interpretable inverter models. REFERENCES [1] J. Rocabert, A. Luna, F. Blaabjerg, and P. Rodríguez, “Control of power converters in AC microgrids,” IEEE Transactions on Power Electronics ,vol. 27, no. 11, pp. 4734–4749, Nov. 2012. [2] X. Wang and X. Chen, “Distributed coordination of grid-forming and grid-following inverters for optimal frequency control in power systems,”                         
+
+> IEEE Transactions on Power Systems , 2026, early Access. [3] A. Askarian, J. Park, and S. Salapaka, “Multi-mode inverters: A unified control design for grid-forming, grid-following, and beyond,” Oct. 2024, arXiv:2410.08433. [4] X. Wang and X. Chen, “A unified framework for hybrid grid-forming and grid-following inverter control,” Jul. 2026, arXiv:2607.01616. [5] North American Electric Reliability Corporation and Texas Reliability Entity, “Odessa disturbance: Texas events: May 9, 2021 and June 26, 2021—joint NERC and Texas RE staff report,” North American Electric Reliability Corporation, Atlanta, GA, USA, Tech. Rep., Sep. 2021. [Online]. Available: https://www.nerc.com/pa/rrm/ea/Documents/ Odessa_Disturbance_Report.pdf [6] X. Wang, L. Harnefors, and F. Blaabjerg, “Unified impedance model of grid-connected voltage-source converters,” IEEE Transactions on Power Electronics , vol. 33, no. 2, pp. 1775–1787, Feb. 2018. [7] J. Huang, K. A. Corzine, and M. Belkhayat, “Small-signal impedance measurement of power-electronics-based AC power systems using line-to-line current injection,” IEEE Transactions on Power Electronics ,vol. 24, no. 2, pp. 445–455, Feb. 2009. [8] B. Gustavsen and A. Semlyen, “Rational approximation of frequency domain responses by vector fitting,” IEEE Transactions on Power Delivery , vol. 14, no. 3, pp. 1052–1061, Jul. 1999. [9] H. Huang and Y. Lin, “Learning to model the dynamics of black-box inverter-based resources with multiple unknown control modes from noisy measurement data,” IEEE Transactions on Smart Grid , vol. 17, no. 3, pp. 2530–2543, May 2026. [10] J. Zheng, R. Batta, Z. Liu, and X. Lu, “Discovering unknown inverter governing equations via physics-informed sparse machine learning,” 2026, arXiv:2602.16166. [11] S. L. Brunton, J. L. Proctor, and J. N. Kutz, “Discovering governing equations from data by sparse identification of nonlinear dynamical systems,” Proceedings of the National Academy of Sciences of the United States of America , vol. 113, no. 15, pp. 3932–3937, 2016. [12] T. Ochoa, B. Chaudhuri, and M. O’Malley, “Optimal control for ro-bust dynamic performance in inverter-dominated power systems,” IEEE Transactions on Power Systems , pp. 1–14, 2026. [13] H. Xu and X. Chen, “Model-free coordinated optimization of IBR controllers for enhanced grid-level transient dynamic performance,” Mar. 2026, arXiv:2603.29995. 11
+
+[14] S. Majumder, L. Dong, F. Doudi, Y. Cai, C. Tian, D. Kalathil, K. Ding, A. A. Thatte, N. Li, and L. Xie, “Exploring the capabilities and limitations of large language models in the electric energy sector,” Joule ,vol. 8, no. 6, pp. 1544–1549, Jun. 2024. [15] H. F. Hamann, B. Gjorgiev, T. Brunschwiler, L. S. Martins, A. Puech, A. Varbella, J. Weiss, J. Bernabe-Moreno, A. B. Massé, S. L. Choi, I. Foster, B.-M. Hodge, R. Jain, K. Kim, V. Mai, F. Mirallès, M. De Montigny, O. Ramos-Leaños, H. Suprême, L. Xie, E.-N. S. Youssef, A. Zinflou, A. Belyi, R. J. Bessa, B. P. Bhattarai, J. Schmude, and S. Sobolevsky, “Foundation models for the electric power grid,” Joule ,vol. 8, no. 12, pp. 3245–3258, 2024. [16] Q. Zhang and L. Xie, “PowerAgent: A road map toward agentic intel-ligence in power systems: Foundation model, model context protocol, and workflow,” IEEE Power & Energy Magazine , vol. 23, no. 5, pp. 93–101, Sep.–Oct. 2025. [17] Y. Wen and X. Chen, “X-GridAgent: An LLM-powered agentic AI system for assisting power grid analysis,” Dec. 2025, arXiv:2512.20789. [18] D. Rojas, A. Albassam, A. G. Leung, J. Ngo, R. Luo, P. R. Quawas, J. Kim, K. Liang, M. Nanavati, J. Mai, M.-C. Tsai, Y.-T. Tsai, Y. Chen, and Y. Shi, “Llms and agentic ai systems for smart grids: A tutorial on architectures and applications,” 2026, arXiv:2607.18147. [19] B. Romera-Paredes, M. Barekatain, A. Novikov, M. Balog, M. P. Kumar, E. Dupont, F. J. Ruiz, J. S. Ellenberg, P. Wang, O. Fawzi et al. ,“Mathematical discoveries from program search with large language models,” Nature , vol. 625, no. 7995, pp. 468–475, 2024. [20] A. Novikov, N. V˜ u, M. Eisenberger, E. Dupont, P.-S. Huang, A. Z. Wagner, S. Shirobokov, B. Kozlovskii, F. J. R. Ruiz, A. Mehrabian, M. P. Kumar, A. See, S. Chaudhuri, G. Holland, A. Davies, S. Nowozin, P. Kohli, and M. Balog, “Alphaevolve: A coding agent for scientific and algorithmic discovery,” 2025, arXiv:2506.13131. [21] A. Sharma, “OpenEvolve: An open-source evolutionary coding agent,” https://github.com/algorithmicsuperintelligence/openevolve, 2025, ac-cessed: 2026-07-29. [22] R. T. Lange, Y. Imajuku, and E. Cetin, “ShinkaEvolve: Towards open-ended and sample-efficient program evolution,” Sep. 2025, arXiv:2509.19349. [23] C. Lu, C. Lu, R. T. Lange, J. Foerster, J. Clune, and D. Ha, “The AI Scientist: Towards fully automated open-ended scientific discovery,” Aug. 2024, arXiv:2408.06292. [24] E. Aygün, A. Belyaeva, G. Comanici, M. Coram, H. Cui, J. Garrison, R. Johnston, A. Kast, C. Y. McLean, P. Norgaard et al. , “An ai system to help scientists write expert-level empirical software,” Nature , pp. 1–3, 2026. [25] Y. Wang, S.-R. Su, Z. Zeng, E. Xu, L. Ren, X. Yang, Z. Huang, X. He, L. Ma, B. Peng, H. Cheng, P. He, W. Chen, S. Wang, S. S. Du, and yelong shen, “Thetaevolve: Test-time learning on open problems,” in 
+
+Forty-third International Conference on Machine Learning , 2026. [26] M. Yuksekgonul, D. Koceja, X. Li, F. Bianchi, J. McCaleb, X. Wang, J. Kautz, Y. Choi, J. Zou, C. Guestrin, and Y. Sun, “Learning to dis-cover at test time,” in Forty-third International Conference on Machine Learning , 2026. [27] A. Karpathy, “autoresearch: AI agents running research on single-GPU nanochat training automatically,” https://github.com/karpathy/ autoresearch, 2026, accessed: 2026-07-29. [28] B. R. Hogan, X. Chen, J. T. Wilson, K. Rasul, A. Boyarsky, T. Kamei, A. Schneider, and Y. Nevmyvaka, “AlphaLab: Autonomous multi-agent research across optimization domains with frontier LLMs,” Apr. 2026, arXiv:2604.08590. [29] P. Shojaee, K. Meidani, S. Gupta, A. B. Farimani, and C. K. Reddy, “LLM-SR: Scientific equation discovery via programming with large language models,” in Proceedings of the International Conference on Learning Representations (ICLR) , 2025. [30] S. Yao, J. Zhao, D. Yu, N. Du, I. Shafran, K. Narasimhan, and Y. Cao, “ReAct: Synergizing reasoning and acting in language models,” in Pro-ceedings of the International Conference on Learning Representations (ICLR) , 2023. [31] A. Madaan, N. Tandon, P. Gupta, S. Hallinan, L. Gao, S. Wiegreffe, U. Alon, N. Dziri, S. Prabhumoye, Y. Yang et al. , “Self-refine: Iter-ative refinement with self-feedback,” Advances in neural information processing systems , vol. 36, pp. 46 534–46 594, 2023. [32] N. Shinn, F. Cassano, E. Berman, A. Gopinath, K. Narasimhan, and S. Yao, “Reflexion: Language agents with verbal reinforcement learn-ing,” in Advances in Neural Information Processing Systems (NeurIPS) ,2023. [33] E. Zelikman, E. Lorch, L. Mackey, and A. T. Kalai, “Self-taught optimizer (STOP): Recursively self-improving code generation,” in 
+
+Proceedings of the Conference on Language Modeling (COLM) , 2024. [34] J. Zhang, S. Hu, C. Lu, R. Lange, and J. Clune, “Darwin Gödel Machine: Open-ended evolution of self-improving agents,” May 2025, arXiv:2505.22954. [35] Z. Shao, P. Wang, Q. Zhu, R. Xu, J. Song, X. Bi, H. Zhang, M. Zhang, Y. K. Li, Y. Wu, and D. Guo, “DeepSeekMath: Pushing the lim-its of mathematical reasoning in open language models,” Feb. 2024, arXiv:2402.03300. [36] Y. Ishibashi, T. Yano, and M. Oyamada, “Effective harness engi-neering for algorithm discovery with coding agents,” May 2026, arXiv:2605.15221. 
+
+APPENDIX AMODULE VOCABULARY 
+
+This appendix specifies every module kind in the vocabulary 
+
+M used in Table I. All quantities are small-signal perturba-tions in per unit, s = jω , and ω0 = 2 π ·60 rad/s is the nominal angular frequency. Throughout, 
+
+I2 =
+
+1 00 1
+
+
+
+, J =
+
+0 −11 0
+
+
+
+. (28) 
+
+A. Signals, ports, and composition 
+
+Every port carries one of three signal kinds, and a connec-tion is admissible only between two ports of the same kind: Kind Meaning Width 
+
+scalar one signal 1
+
+dq_vec direct- and quadrature-axis pair 2
+
+power_pair active- and reactive-power pair 2
+
+A module of kind κ with parameters p contributes the linear relation 
+
+yκ = Mκ(p, s ) uκ, (29) where uκ and yκ stack its input and output ports in the order listed below. Each connection imposes the constraint that the destination port equals the sum of its source ports, which is how summing junctions and negative feedback are expressed: subtraction is a Negate in series with a sum. At each frequency the module relations (29) and the connection constraints form one complex linear system; exciting the external port voltage along the direct and then the quadrature axis and reading the external grid current gives the 2 × 2
+
+admittance YG(jω ; θ).Two structural quantities are attached to each kind. Its order 
+
+is the number of dynamic states it declares, and the sum of these over a candidate is the model order n(G) bounded in (15). Its parameter box is the admissible range of each parameter. Parameters are referred to by name, so a candidate may bind the same fitted scalar to several modules; when it does, the effective box is the intersection of the individual boxes. This is how the steady-state quantities E0d, I0d, and 
+
+δeq are kept consistent between the plant, the rotations, and the power calculation. 
+
+B. Physical plant 1) LCL (order 6): The inductor–capacitor–inductor output filter in the controller frame, with states x = [ idq ti , e dq , i dq g ]⊤:converter-side current, capacitor voltage, and grid-side current. Inputs are the converter voltage command u_r (dq_vec ), the 12 
+
+terminal voltage v_in (dq_vec ), and the frame frequency perturbation delta_omega (scalar ). Outputs are i_ti ,
+
+e, i_g (dq_vec ), e_q (scalar , the quadrature component of the capacitor voltage), and i_C (dq_vec , the capacitor current iti − ig ). Its response is MLCL = C(sI 6 − A)−1B
+
+with 
+
+A =
+
+
+
+− ω0RF 
+
+> LF
+
+I2 − ω0J − ω0 
+
+> LF
+
+I2 0 
+
+> ω0
+> CF
+
+I2 −ω0J − ω0 
+
+> CF
+
+I2
+
+0 ω0 
+
+> Lg
+
+I2 − ω0Rg 
+
+> Lg
+
+I2 − ω0J
+
+ ,
+
+(30) 
+
+B =
+
+ 
+
+> ω0
+> LF
+
+I2 0 −J i eq 
+
+> ti
+
+0 0 −J e eq 
+
+0 − ω0 
+
+> Lg
+
+I2 −J i eq 
+
+> g
+
+ . (31) The third column of B is the frame-rotation coupling: the con-troller frame turns at ω0 +∆ ω, and linearizing the term −ωJx 
+
+leaves −Jx eq ∆ω. Under the unity-power-factor approxima-tion the equilibrium vectors are taken as ieq  
+
+> ti
+
+= ieq  
+
+> g
+
+= [ I0d, 0] ⊤
+
+and eeq = [E0d, 0] ⊤, so each such column is [0 , −I0d]⊤
+
+or [0 , −E0d]⊤. Parameters and ranges: LF , L C ∈ [10 −4, 1] ,
+
+RF , R C ∈ [10 −5, 1] , CF ∈ [10 −5, 1] , E0d, I 0d ∈ [0 .5, 1.5] .
+
+2) L Filter (order 2): The reduced inductor-only filter, with state idq g and the same three inputs. Outputs are i_g 
+
+(dq_vec ), e (dq_vec ), and e_q (scalar ); since there is no capacitor, e and e_q are the terminal voltage v_in and its quadrature component fed straight through. With 
+
+A = − ω0RF 
+
+> LF
+
+I2−ω0J, B =  ω0 
+
+> LF
+
+I2 − ω0 
+
+> LF
+
+I2 −J [I0d, 0] ⊤ ,
+
+(32) the current response is (sI 2 − A)−1B and the voltage out-puts are the corresponding feedthrough. Parameters: LF ∈
+
+[10 −4, 1] , RF ∈ [10 −5, 1] , I0d ∈ [0 .5, 1.5] .Every candidate must contain exactly one plant module, either LCL or LFilter ; this is enforced by the structure validator. 
+
+C. Dynamic control 
+
+These are the textbook single-input single-output blocks and their axis-decoupled two-axis counterparts. A two-axis block applies the same scalar response independently on both axes, that is M = g(s)I2, and declares twice the order for that reason. Kind Ports Order Response 
+
+PI scalar → scalar 1 kP + kI /s 
+
+PI_dq dq → dq 2 (kP + kI /s )I2
+
+LPF1 scalar → scalar 1 ωc/(s + ωc)
+
+LPF1_dq dq → dq 2  ωc/(s + ωc)I2
+
+Integrator scalar → scalar 1 1/s 
+
+Ranges are kP ∈ [10 −6, 10 5], kI ∈ [10 −6, 10 7], and ωc ∈
+
+[2 π ·0.1, 2π ·5×10 4] rad/s; Integrator has no parameters. The input port is named in_ and the output port out in all five cases. 
+
+D. Synchronization 1) SRF_PLL (order 2): The type-2 synchronous-reference-frame phase-locked loop, consisting of a proportional-integral stage followed by an integrator. Its input is the quadrature voltage error e_q (scalar ) and it has two scalar outputs, the frequency perturbation delta_omega and the angle perturbation delta :
+
+∆ωδ
+
+
+
+=
+
+" kpll  
+
+> P
+
++ kpll  
+
+> I
+
+/s 
+
+ kpll  
+
+> P
+
++ kpll  
+
+> I
+
+/s /s 
+
+#
+
+∆eq . (33) Any pre-filter on the error, such as LPF1 or Notch , is not built in and must be chained externally by the candidate, which is one of the structural choices the search can make. The gains are named kpll  
+
+> P
+
+and kpll  
+
+> I
+
+, distinct from the control-loop gains so that a candidate cannot bind them to the same fitted value by accident; ranges match those of PI .
+
+E. Operating-point modules 
+
+These carry the dependence on the steady-state operating condition. They are memoryless, so their order is zero, but their entries are functions of the fitted equilibrium quantities 
+
+δeq ∈ [−0.5, 0.5] rad, E0d ∈ [0 .5, 1.5] , and I0d ∈ [0 .5, 1.5] .The port voltage in the global frame is V DQ  
+
+> 0
+
+= [1 , 0] ⊤ by convention, and the phase-locked loop drives the quadrature components of the equilibrium to zero. 
+
+1) Rot_v (order 0): Rotation of the terminal voltage from the global frame into the controller frame, linearized at δeq .Inputs v_DQ (dq_vec ) and delta (scalar ), output v_dq 
+
+(dq_vec ): 
+
+MRot_v =
+
+ cos δeq sin δeq − sin δeq 
+
+− sin δeq cos δeq − cos δeq 
+
+
+
+. (34) The third column is the sensitivity of the rotation to the angle perturbation supplied by the phase-locked loop. 
+
+2) Rot_i (order 0): The inverse rotation applied to the grid current. Inputs i_dq (dq_vec ) and delta (scalar ), output i_DQ (dq_vec ): 
+
+MRot_i =
+
+cos δeq − sin δeq −I0d sin δeq 
+
+sin δeq cos δeq I0d cos δeq 
+
+
+
+. (35) 
+
+3) PQ_calc (order 0): Instantaneous power, linearized at the fitted equilibrium. Inputs e and i (both dq_vec , stacked as [∆ ed, ∆eq , ∆id, ∆iq ]⊤), outputs p and q (both scalar ): 
+
+∆p
+
+∆q
+
+
+
+=
+
+I0d 0 E0d 00 I0d 0 −E0d
+
+
+
+∆ed
+
+∆eq
+
+∆id
+
+∆iq
+
+ . (36) 
+
+F. Static algebra 
+
+Memoryless blocks that carry no dynamics; all have order 
+
+0. They exist so that wiring choices such as sign inversion, axis selection, and cross-axis decoupling are explicit parts of the structure rather than hidden conventions. 13 
+
+Kind Ports Response Parameters 
+
+Gain scalar → scalar k k ∈ [−100 , 100] 
+
+Gain_dq dq → dq kI 2 k ∈ [−100 , 100] 
+
+Negate scalar → scalar −1 —
+
+Negate_dq dq → dq −I2 —
+
+SliceD dq → scalar [1 0] —
+
+SliceQ dq → scalar [0 1] —
+
+PackDQ 2 scalars → dq I2 —
+
+JMul dq → dq ω0L J L ∈ [10 −5, 5] 
+
+ConstZero — → scalar 0 —
+
+PackDQ takes its two scalar inputs as in_d and in_q 
+
+and emits them as the two components of one two-axis signal; 
+
+SliceD and SliceQ are its inverses. JMul is the standard cross-axis decoupling term ω0L J , which maps the direct-axis current onto the quadrature-axis voltage command and vice versa. ConstZero is a source with no input, used to tie a reference or an unused summing input to zero, which the validator requires to be driven exactly once like any other input. 
+
+G. Residual modules 
+
+These three do not correspond to a controller block a designer would draw. They absorb effects such as computation and modulation delay or an unmodeled resonance, and they are flagged separately so that a candidate relying on them can be recognized as leaning on unstructured correction rather than on identified control structure. Kind Ports Order Response 
+
+Pade1 scalar → scalar 1 1 − Tds/ 21 + Tds/ 2
+
+Pade1_dq dq → dq 2 1 − Tds/ 21 + Tds/ 2 I2
+
+Notch scalar → scalar 2 s2 + ω2
+
+> n
+
+s2 + ( ωn/Q )s + ω2
+
+> n
+
+The first two are the first-order Padé approximation of a delay Td, with Td ∈ [10 −6, 5 × 10 −3] s. The notch has ωn ∈
+
+[2 π · 5, 2π · 10 4] rad/s and Q ∈ [0 .5, 100] .

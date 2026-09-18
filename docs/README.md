@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-18</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 9 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 12 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>7</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:06:32 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-18 22:09:27 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日筛选9篇论文、精读4篇速读5篇，主线聚焦自我进化智能体的记忆与架构。</p>
-<p>最值得看的是两篇9.0分精读：《ThinkFlow》用自进化概率潜记忆支撑终身对话，《Self-Emergence Agent Architecture》以行为惯性HMM、反射式元认知和社会对比自我建模构建智能体。</p>
-<p>普通读者可先从这两篇9.0分入手建立记忆与元认知的框架，再读7.0分的《Reflections on Trusting Trust, Revisited》了解自修改编码智能体的基准污染风险。</p>
+<p>今日精读5篇、速读7篇共12篇，重点聚焦自演化LLM交易智能体与SEC文件问答系统。最值得看的是《EvolveTrade》（10.0/10）用经验驱动策略精炼让交易智能体自我进化，以及《FINSKILLOPS》（9.0/10）的多智能体自演化金融问答框架。普通读者可先读这两篇精读，再按需浏览速读中的智能体对齐与递归自改进方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -80,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ThinkFlow: Self-Evolving Probabilistic Latent Memory for Lifelong Conversational Agents">ThinkFlow: Self-Evolving Probabilistic Latent Memory for Lifelong Conversational Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Self-Emergence Agent Architecture:Behavior-Inertia HMM, Reflexive Metacognition,and Social-Contrastive Self-Modeling">Self-Emergence Agent Architecture:Behavior-Inertia HMM, Reflexive Metacognition,and Social-Contrastive Self-Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents">ScienceBuddy: Recursive-in-Recursive Self-Improvement for Interactive Scientific Agents</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="EvolveTrade: Experience-Driven Policy Refinement for Self-Evolving LLM Trading Agents">EvolveTrade: Experience-Driven Policy Refinement for Self-Evolving LLM Trading Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="FINSKILLOPS: A Self-Evolving Multi-Agent System for SEC Filing QA">FINSKILLOPS: A Self-Evolving Multi-Agent System for SEC Filing QA</span></li><li><span class="dpr-home-dashboard-paper-title" title="HypoEvolve: Genetic Algorithms Enable Multi-Agent LLMs to Discover Scientific Hypotheses">HypoEvolve: Genetic Algorithms Enable Multi-Agent LLMs to Discover Scientific Hypotheses</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>5</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -93,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks">Reflections on Trusting Trust, Revisited: Contaminating Self-Modifying AI Coding Agents with Poisoned Benchmarks</span></li><li><span class="dpr-home-dashboard-paper-title" title="Tapes Together Strong: The Co-evolution of Computation and Cooperation">Tapes Together Strong: The Co-evolution of Computation and Cooperation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Retrieval-Driven Memory Reconsolidation for Long-Term LLM Agents">Retrieval-Driven Memory Reconsolidation for Long-Term LLM Agents</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Autonomy, Social Norms, and Alignment: Towards a Developmental Framework for Autonomous Artificial Agents">Autonomy, Social Norms, and Alignment: Towards a Developmental Framework for Autonomous Artificial Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification">Recursive Self-Improvement LLM Agents for Inverter Dynamic Model Identification</span></li><li><span class="dpr-home-dashboard-paper-title" title="Continual Learning for Traversability Prediction with Uncertainty-Aware Adaptation">Continual Learning for Traversability Prediction with Uncertainty-Aware Adaptation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>7</strong></span></div>
 </section>
 </div>
 

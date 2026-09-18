@@ -1,0 +1,907 @@
+Title: FINSKILLOPS: A Self-Evolving Multi-Agent System for SEC Filing QA
+
+URL Source: https://arxiv.org/pdf/2609.19680v1
+
+Published Time: Fri, 18 Sep 2026 00:35:27 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# FIN SKILL OPS : A Self-Evolving Multi-Agent System for SEC Filing QA 
+
+Yanzhang Ma 1, Zhenghan Tai 1,3 , Hanwei Wu 1,9 , Sizhe Guan 1,9 , Jianliang Lei 1, Hailin He 1,Chaolong Jiang 1, Jijun Chi 3, Tung Sum Thomas Kwok 1,4 , Bohuai Xiao 1, Jingrui Tian 2, Xinlu Wu 1,Xingao Zhan 11 , Peng Lu 7, Muzhi Li 5, Yihong Wu 7, Liheng Ma 1,2,8 , Sicheng Lyu 1,2,8 , Tianshuo Yan 12 ,Junhao Zhu 10 , Yaqian Xu 3, Lei Ding 1,6 , Yufei Cui 2, Ziquan Liu 14 , Boyu Han 1,13 ,Hengli Liu 15 , Ling Zhou 16 , Xinyu Wang 1,2 *            
+
+> 1SimpleWay.AI 2McGill University 3University of Toronto 4University of California, Los Angeles
+> 5The Chinese University of Hong Kong 6University of Manitoba 7Université de Montréal 8Mila – Quebec AI Institute
+> 9McMaster University 10 Harvard University 11 Monash University 12 The University of Hong Kong
+> 13 Stanford University 14 Queen Mary University of London 15 UE Capital Ltd. 16 CG Matrix Technology Ltd.
+
+Abstract 
+
+Financial QA systems are typically improved before deployment through better retrieval, prompting, or agent coordination, leaving their reliability behavior fixed thereafter. In prac-tice, new SEC-filing questions repeatedly ex-pose heterogeneous errors in period, entity, evidence use, and calculation. Existing self-improvement methods can turn failures into new behaviors, but offer limited control over where a correction should apply or which pre-viously correct answers it may break. We there-fore frame post-deployment improvement as controlled behavioral maintenance: recurring failures should become scoped skill patches, and each patch should earn deployment with-out introducing regressions. We instantiate this view in F IN SKILL OPS , a multi-agent sys-tem for SEC filing QA. F IN SKILL OPS derives reusable skills from evidence-grounded, typed failure diagnoses and governs them through targeted validation, protected-case regression checks, negative controls, and versioned re-placement or retirement. Across six financial QA benchmarks, a single frozen skill registry achieves the highest verdict-weighted correct-ness and reference consistency among the eval-uated systems. Evolved skills raise correct-ness from 3.70 to 4.55 on our enhanced bench-mark. In a separate 12-round operational study, only six of 33 proposed skills are promoted, while the monitoring non-correct rate falls from 20.0% to 12.5%. These results establish con-trolled skill scope, admission, and lifecycle management as the foundation for reliable self-improvement. 
+
+1 Introduction 
+
+An analyst asking how a company’s export-control exposure changed in fiscal 2025 needs an answer grounded in evidence for the correct fiscal year and reporting entity. Retrieval-augmented generation supports this by conditioning answers on retrieved  
+
+> *Contact: xinyu.wang5@mail.mcgill.ca
+
+passages (Lewis et al., 2020). Even with relevant evidence, a system can mix reporting periods, com-bine figures from different entities, or compute a share inconsistent with the cited amounts. When these errors recur across filings and query styles, analysts must repeatedly check the answers against their sources. Financial QA systems combine components such as domain-tuned models, structured index-ing, reranking, multi-agent aggregation, and de-bate (Tian et al., 2024; Cai et al., 2025; Wang et al., 2024b; Zhang et al., 2025), along with do-main prompts that specify period anchoring, ex-plicit denominators, and formulas for derived fig-ures. Self-improving agents update reusable behav-iors from trajectories, reflection, or execution feed-back (Shinn et al., 2023; Wang et al., 2023; Yang et al., 2026a; Pu et al., 2026). For SEC filing QA, period, entity, evidence, and arithmetic errors re-quire different corrections, even when the retrieved context is relevant. We study how diagnosed fail-ures can be converted into reusable instructions. Each update needs a clear scope of application, an injection point in the answering pipeline, and checks for regressions on a protected set. FIN SKILL OPS combines role-specialized SEC filing QA with an offline skill-update loop. Filings are curated into modality-tagged retrieval units; an orchestrator activates role-specialized analyst agents that decompose the question, retrieve ev-idence along complementary paths, and produce grounded drafts for synthesis. The system main-tains a registry of skills for managing reusable natural-language instructions with explicit appli-cability conditions. Offline, failed answers are di-agnosed against filing evidence. The system then drafts or revises a skill and evaluates it through tar-geted validation, protected-suite regression checks, and negative-control tests. Accepted updates are arXiv:2609.19680v1 [cs.AI] 17 Sep 2026 recorded in the registry with their originating fail-ures and validation results. At serving time, ap-plicable skills from a frozen snapshot guide query decomposition and final synthesis. Our contribu-tions are: • We formulate post-deployment reliability in SEC filing QA as controlled skill maintenance: recur-ring failures become scoped behavioral updates whose benefits, regressions, and false activations are assessed before deployment. • We introduce F IN SKILL OPS , which derives evidence-grounded skills and manages their pro-motion, revision, replacement, and retirement through frozen registry snapshots. • Experiments on six benchmarks show improved correctness and reference consistency. In a twelve-round study, lifecycle management re-duces the non-correct rate from 20.0% to 12.5%, admitting six of 33 proposed skills. 
+
+2 Related Work 
+
+Financial question answering over filings. Fi-nancial QA benchmarks have long targeted numer-ical and tabular reasoning over disclosures (Chen et al., 2021; Zhu et al., 2021; Chen et al., 2022), and recent systems improve filing-scale answering through domain-specific models (Tian et al., 2024), multi-agent debate (Cai et al., 2025), agent aggre-gation (Wang et al., 2024b), structured document indexing (Zhang et al., 2025), and end-to-end fi-nancial RAG pipelines (Wang et al., 2025). These systems fix their reliability behavior at build time. When deployment exposes a repeated failure mode, the behavior that would prevent it has to be written into a prompt or a component by hand. 
+
+Self-evolving agents and skill management. 
+
+Agents can update reusable behaviors without re-training, through textual skill editing (Yang et al., 2026a,b; Ni et al., 2026; Liu et al., 2026), exe-cutable skill generation (Wang et al., 2023; Lin et al., 2026; Zhang et al., 2026), and reflective mem-ory (Shinn et al., 2023; He et al., 2025); recent sur-veys organize this space by how skills are acquired, stored, and governed (Xu and Yan, 2026). Their update signal is typically a trajectory outcome or a scalar reward. SEC filing QA needs attribution at the level of the claim that went wrong, because period, entity, evidence, and calculation errors co-exist under the same failed answer, and it needs an admission decision that accounts for the answers a new behavior might break. F IN SKILL OPS supplies both: typed diagnosis grounded in retrieved filing text, and promotion gated on targeted, protected, and negative-control evidence. 
+
+3 FIN SKILL OPS 
+
+3.1 Task and System Overview 
+
+Let D be a corpus of SEC filings and q a natural-language question over D. The system retrieves an evidence set E from D and produces an answer a
+
+conditioned on (q, E ); the reference answer is a∗.A response succeeds when it covers the key points annotated for a∗ without contradicting them. Di-agnosis identifies root-cause modes in M, such as period mismatch, entity confusion, an unsupported claim, or a calculation error. Judge error categories provide answer-level feedback; diagnosis uses this feedback and inspected evidence to assign modes for clustering and skill proposal. Appendix H dis-tinguishes the label schemes and lists the eight diagnosis modes in the twelve-round record. A skill s is a natural-language reliability instruc-tion paired with applicability conditions, false-trigger guards, a version, and a status. S =
+
+{s1, . . . , s n} is the active skill set stored in the registry, and AS denotes the system using this set. For a fixed serving configuration, it differs from the base system A∅ only in the injected skill instructions. The objective is to derive updates 
+
+S(t) → S (t+1) from failure feedback that improve targeted validation performance and pass protected-suite and applicability checks. 
+
+Serving pipeline. Filings are parsed into narra-tive blocks, rendered tables, and section summaries. Each retrieval unit retains its modality, section path, reporting period, and filing entity as metadata. An orchestrator activates a subset of five analyst roles (general, quantitative, market, legal, and company) drawn from the principal disclosure categories of SEC filings. Each activated agent reads the sec-tion summaries and rewrites q into role-specific sub-queries using the filing’s terminology. It then retrieves evidence through sparse, dense, and sum-mary paths. The orchestrator synthesizes the agent drafts into a. Selected skill instructions are injected at two points: query decomposition to constrain ev-idence retrieval, and final synthesis to constrain answer claims. Answers that fail evaluation are recorded with their evidence and judge feedback and enter the offline update path. Serving, diagno-sis, and skill proposal use DeepSeek-V3.2; answer Database Processing    
+
+> (offline)
+> Grep  Evidence  Probe
+> Skill
+> Promotion
+> Gate
+> Database Processing (offline)
+> Candidate Review
+> Skill Candidate Proposal
+> Reviewer
+> Agent
+> SEC Filings Filing
+> Database
+> Sparse
+> Dense
+> BM25
+> Index
+> Text
+> Table
+> Summary
+> Graph
+> Indexing Chunking
+> &
+> Transformation
+
+Serving Pipeline  Role-Specialized Agents      
+
+> General Agent
+> Market Agent
+> Company Agent
+> Quant Agent Legal Agent
+> Agent Selection
+> Per-Agent Multi-path Retrieval & Re-ranking Answer Synthesis
+> C3C3C3
+> Evidence of sub-
+> queries
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Evidence
+> Top-K Re-
+> ranked evidence
+> re-ranking
+> Agent 1answer
+> Agent nanswer
+> Final System
+> Answer
+> Feedback
+> [incorrect, partial]
+> Per-Agent Answer
+
+Skill  Self-evolving Pipeline       
+
+> Re-ranked Evidence
+> Failure Cases
+> Diagnosis Modes
+> Failure Explainer
+> Backbone
+> Model
+> How does NVIDIA describe the
+> impact of export controls on its
+> Data Center business in China?
+> Partially correct
+> -confuses the policy timing
+> -Mentions export controls,
+> but misses the China Data
+> Center impact
+> -Does not clearly separate
+> prior restrictions from later
+> policy changes
+> - .........
+> Qn
+> Query
+> Decomposition
+> Q1
+> Export Control Skill 1:
+> trigger:
+> - mentions export control
+> - answer cites policy impact
+> - ....
+> behavior :
+> - match requested period
+> - ...
+> gate-policy:
+> - protected regression does
+> not degrade
+> Export Control Skill 2:
+> - ...
+> Always Selected
+> Not Selected
+> Data Flow
+> Skill Feedback
+> Selected
+> Skill Injection
+> Retrieval
+> period_alignment_v1
+> ans_coverage_gate_v1
+> numeric_unit_guard_v1
+> CCI_export_align_v1
+> scope_guard _v1
+> Root Cause:
+> -period-specific policy
+> -......
+> Signals:
+> diagnosis:
+> - Period Mismatch
+> - ......
+> Next action:
+> propose xx skill
+> Skill Injection
+> Skill Registry
+
+Figure 1: F IN SKILL OPS : the serving pipeline (top) draws on curated filing indexes (middle), while the evolution loop (bottom) turns failed answers into gated registry updates that re-enter serving at the two marked injection points. The Reviewer Agent reviews candidate skills. 
+
+evaluation on benchmarks uses Qwen3-Max. Pars-ing, indexing, role prompts, and retrieval parame-ters are given in Appendices A and B. 
+
+3.2 Failure-Driven Skill Evolution 
+
+Each round evaluates the current system on a batch 
+
+Bt from the evolution pool and collects failed in-stances as Ft. Recurring failures in this subset guide candidate skill updates (Algorithm 1). 
+
+Failure diagnosis. Diagnosis uses two LLM stages. The first reads the question, failed answer, judge feedback, and retrieved context. It proposes explanations for the failure and a search plan for checking them against the filing corpus. Deter-ministic grep executes this plan. The second stage reads the returned snippets and produces the diag-nosis, supporting evidence, and a propose / park / do-not-fix recommendation. Prompt inputs and out-puts for both stages are in Appendix H. Inspecting the filing text helps distinguish errors that need dif-ferent repairs, such as choosing the wrong period and miscalculating with the correct operands. Fail-ures are grouped by mode; modes whose frequency reaches a threshold τ proceed to skill proposal. 
+
+Skill proposal. For each mode that clears the threshold, an LLM drafts a skill from the repre-sentative failures and their supporting evidence. A candidate specifies its applicability conditions, the behavior to apply, excluded cases, and the serving step where its instruction is injected. The proposer may revise a skill instead of adding one, keeping the registry small and avoids conflicts. Section 5.4 illustrates a skill that aligns periods and recomputes category shares from table evidence. 
+
+Runtime application. Diagnosis and proposal are offline and use reference-derived feedback. At each injection point, the router selects active skills from the frozen registry by checking their applica-bility conditions and false-trigger guards against the query, corpus metadata, and available evidence features. Before query decomposition, the evidence view consists of section summaries. At final syn-thesis, retrieved passages are also available. The selected behavior text is inserted into the corre-sponding prompt. Reference answers, key-point labels, and judge feedback are not serving inputs. 
+
+3.3 Gated Promotion and Skill Lifecycle 
+
+Each candidate is checked against the current ac-tive skill set bS, including any updates accepted earlier in the round. Let S′ be the set after inserting or revising candidate s′. Targeted validation com-pares the two sets on Vm, a subset of instances with mode m drawn from the evolution pool. The pro-tected suite P contains previously correct instances and high-risk cases covering period alignment, nu-merical reasoning, entity resolution, and evidence conflicts. Every Correct verdict on P under bS must remain Correct under S′. Negative controls test for unwanted activation on no-op, multi-period, and cross-company queries outside the skill’s scope. Promotion requires 
+
+Acc Vm(S′) > Acc Vm( bS)
+
+∧ Reg P(S′, bS) = 0 
+
+∧ FalseTrig( s′) = 0 ,
+
+(1) where Acc is the fraction of Correct verdicts, Reg P
+
+counts protected-suite verdicts that change from Correct under bS to non-Correct under S′, and 
+
+FalseTrig counts activations on the declared neg-ative controls. Candidates may also be refused or deferred for insufficient benefit, unstable triggering, or conflict with an active skill (Appendix H). A promoted skill enters the registry with a ver-sion number. A revised version supersedes the earlier one, which becomes inactive. A skill whose behavior is absorbed by another and that stops acti-vating is retired after a removal test. The registry retains each version’s originating failures, valida-tion results, and protected-suite outcome, including those of inactive versions. 
+
+4 Experimental Setup 
+
+4.1 Datasets 
+
+We evaluate on three public and three in-house financial QA benchmarks. The public bench-marks are FinanceBench (Islam et al., 2023), 
+
+SECQUE (BenYoash et al., 2025), and FinDER (Choi et al., 2025). The in-house Lotus and Zeekr sets contain multi-entity QA pairs with annotated rele-vance labels from two automotive brands. We addi-tionally construct an enhanced in-house benchmark of 114 questions (84 Zeekr, 20 Lotus, 10 NVIDIA) written to require finer-grained period alignment, entity and scope disambiguation, multi-hop evi-dence aggregation, and more precise numerical or regulatory reasoning. Every question is grounded in company SEC filings and paired with a reference answer and key points. 
+
+4.2 Baselines and Metrics 
+
+We compare with financial RAG (FinSage (Wang et al., 2025)), financial search (our FinGPT adapta-tion (Tian et al., 2024)), multi-agent collaboration (MoA (Wang et al., 2024b), FinDebate (Cai et al., 2025)), and a direct retrieve-and-generate baseline (Naive RAG). Details are in Appendix D. A zero-shot Qwen3-Max judge scores each an-swer against its reference answer and key points. We report verdict-weighted correctness ( W-Corr. ;
+
+0–5), reference consistency ( Ref. Cons. ), and four complementary quality dimensions. On 150 sam-pled answers, the judge’s agreement with two anno-tators from the author group was κ = .820 /. 675 for four-way verdicts and κ = .827 /. 840 for Correct versus non-correct labels. Full metric definitions, judge prompts, human-agreement results, and re-trieval settings are in Appendices E, J, and G. 
+
+5 Results 
+
+5.1 Overall Answer Quality 
+
+Using the same frozen registry across datasets, F IN -SKILL OPS achieves the highest W-Corr. and Ref. Cons. on all six benchmarks (Table 1). The advan-tage is larger on Zeekr and the enhanced in-house benchmark than on the public benchmarks and Lo-tus. Results on the other quality dimensions are mixed: FinGPT leads on four dimensions on Fi-nanceBench, and F IN SKILL OPS ties for the low-est clarity on FinDER. F IN SKILL OPS also scores above the adapted AutoSkill and SkillOpt methods on average across four benchmarks (Table 4). 
+
+5.2 Component Contributions 
+
+Table 2 reports component ablations on three bench-marks. Removing Skill Evolution causes the largest W-Corr. drop on all three. In the in-house experi-ment, the ungated condition records larger gains on its candidates’ targeted sets but admits protected-case regressions. On FinanceBench and FinDER, the paired intervals for Skill Evolution and Failure Taxonomy exclude zero; the gate intervals include zero. Among the individual skills in Table 3, re-moving period alignment causes the largest score drop. The Scope Guard interval includes zero. Ap-pendix G reports evaluation details. 
+
+5.3 Evolution Dynamics and Lifecycle 
+
+To study skill evolution over time, we ran twelve update rounds with disjoint evolution (300 ques-tions), protected (120), and monitoring (200) sets. Table 1: Per-benchmark results. Best in bold , second best underlined. 
+
+Zeekr (in-house) Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 2.67 2.47 2.96 3.56 4.37 2.50 FinDebate 3.11 3.40 3.95 3.83 4.65 3.92 MoA 3.40 3.57 4.02 3.95 4.56 3.92 FinGPT 2.66 3.27 3.69 3.26 4.61 3.60 FinSage 2.83 2.76 3.32 3.96 4.47 2.84 Multi-agent init. 3.46 3.72 3.97 4.19 4.59 3.84 FIN SKILL OPS full 4.52 4.56 4.32 4.74 4.85 4.26 FinanceBench (open) Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 2.21 2.36 2.52 2.76 4.54 2.40 FinDebate 3.17 3.57 4.01 3.56 4.68 3.92 MoA 3.05 3.43 3.79 3.36 4.55 3.64 FinGPT 3.35 4.10 4.35 3.59 4.90 4.21 
+
+FinSage 2.97 3.27 3.34 3.26 4.60 3.23 Multi-agent init. 3.15 3.70 3.77 3.52 4.61 3.71 FIN SKILL OPS full 3.49 3.39 3.49 3.78 4.32 3.35 
+
+Lotus (in-house) Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 2.93 2.98 3.45 3.68 4.50 3.05 FinDebate 3.19 3.58 3.90 3.89 4.69 3.96 MoA 3.67 4.03 4.14 4.11 4.62 4.21 
+
+FinGPT 2.30 2.82 3.13 3.49 4.43 3.07 FinSage 3.08 3.26 3.75 3.99 4.53 3.48 Multi-agent init. 3.58 3.79 3.91 4.16 4.58 3.83 FIN SKILL OPS full 3.74 3.91 3.83 4.20 4.50 3.80 
+
+SECQUE (open) Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 1.67 1.68 1.90 2.20 4.24 1.70 FinDebate 2.34 2.88 3.26 2.73 4.36 3.17 
+
+MoA 2.20 2.81 3.07 2.66 4.28 3.05 FinGPT 1.92 2.49 2.81 3.02 4.06 2.70 FinSage 1.87 2.25 2.27 2.51 4.08 2.13 Multi-agent init. 2.44 2.92 2.98 2.95 4.30 2.98 FIN SKILL OPS full 2.59 3.15 3.17 3.14 4.17 3.06 
+
+Enhanced in-house Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 1.88 2.33 2.75 2.58 4.25 2.70 FinDebate 2.23 2.65 2.58 3.30 3.55 2.35 MoA 2.13 2.70 2.65 3.28 3.68 2.45 FinGPT 2.43 2.43 2.60 3.40 3.70 2.60 FinSage 3.55 3.50 3.00 3.60 4.55 4.05 Multi-agent init. 3.70 3.85 3.72 3.95 4.60 3.70 FIN SKILL OPS full 4.55 4.75 4.55 4.90 4.88 4.55 FinDER (open) Method W-Corr. Info. Reas. Ref. Cons. Clar. Depth 
+
+Naive RAG 1.55 1.52 1.65 2.35 4.14 1.48 FinDebate 2.61 2.68 3.32 3.25 4.44 3.24 
+
+MoA 2.66 2.70 3.24 3.58 4.25 3.10 FinGPT 2.66 2.56 3.04 3.32 4.35 2.96 FinSage 2.23 1.93 2.13 3.08 3.99 1.89 Multi-agent init. 2.68 2.83 3.15 3.56 4.25 3.01 FIN SKILL OPS full 2.88 2.85 3.30 3.83 3.99 2.83 
+
+Table 2: Component ablations . Parentheses give Full-minus-ablation W-Corr. differences. Target Val. ∆Acc and Reg. are in-house measures; FB is FinanceBench. Definitions and paired CIs: Appendix G. 
+
+Method Target Val. 
+
+∆Acc W-Corr. ( ∆) Reg. 
+
+In-house FB FinDER 
+
+Full F IN SKILL OPS +0.62 4.55 3.49 2.88 0w/o Skill Evolution +0.00 3.70 3.15 2.68 0
+
+(+0 .85) (+0 .34) (+0 .20) 
+
+w/o Protected Gate +0.78 4.32 3.38 2.79 3
+
+(+0 .23) (+0 .11) (+0 .09) 
+
+w/o Failure Taxonomy +0.31 4.08 3.28 2.70 0
+
+(+0 .47) (+0 .21) (+0 .18) 
+
+Table 3: Skill activation and removal . W-Corr. and 
+
+∆ are in-house; ∆ = 4 .55 − W-Corr.. Details and CIs: Appendix G. 
+
+Skill Activations Removal 
+
+In-h. FB FinDER W-Corr. ∆
+
+Period alignment v2 31 22 17 4.21 +0.34 Numeric unit guard v1 24 19 15 4.34 +0.21 Answer coverage gate v1 27 14 12 4.37 +0.18 Scope guard v1 19 6 5 4.43 +0.12 
+
+The evolution set supplied failures and targeted val-idation cases, the protected set gated promotions, and the monitoring set was evaluated after every round. As shown in Figure 2, the non-correct rate fell from 30.0% to 18.3% on the evolution set and from 20.0% to 12.5% on the monitoring set. 
+
+Table 4: Comparison with adapted skill-evolution methods. Means equally weight Zeekr, Lotus, Fi-nanceBench, and FinDER. ∆ is method minus init.; Wins counts benchmarks above init. Adapter protocols and full results: Appendix K. 
+
+Method Avg. W-Corr. ∆ vs. init Wins AutoSkill 2.00 −1.22 0/4 SkillOpt 2.66 −0.56 0/4 Multi-agent init. 3.22 – 0/4 
+
+FIN SKILL OPS 3.66 +0 .44 4/4 
+
+Only six of 33 proposed skills were promoted. Five candidates failed protected-set checks, expos-ing seven regressions, while post-round evaluation found no protected regressions in the deployed reg-istry. Two rejected candidates illustrate the role of the gate: Table Row Lock prevented valid cross-row aggregation, while Multi-Hop Decomposition improved targeted cases but over-decomposed sim-ple questions and diverted retrieval. A fusion skill was likewise withheld until its trigger became sta-ble after a diagnosis update. The registry evolved through consolidation rather than accumulation. It retained four active skills from R5 to R12 while its static skill text shrank from 421 to 347 tokens. At R7, an expanded period/entity skill replaced its earlier version; at R12, the fusion skill absorbed the slot-coverage fallback, allowing the dormant skill to be retired. Table 5: Scenarios and answer repairs. Appendix F (Cases A and C) gives the case context and skill behavior. 
+
+Earlier answer → Skill-guided repair → Revised answer Scenario A NVIDIA export controls and China Data Center business (FY2025) Later H20 restrictions and FY2026 charges were mixed into the FY2025 account. 
+
+Failure: period mismatch. 
+
+Period Align 
+
+Select evidence matching the requested fiscal year when retrieved policy disclosures conflict. NVIDIA offered compliant China-market products. China Data Center revenue grew in FY2025, while its share of total Data Center revenue remained below the pre-control level. 
+
+PARTIAL → CORRECT 
+
+4/4 key points matched. 
+
+Scenario C Comparing category shares across 2021 and 2023 The 2023 shares were 60.7%, 36.8%, and 2.5%, inconsistent with the cited category amounts and total. 
+
+Failure: inconsistent shares. 
+
+Multi-period alignment repair 
+
+Align each numerator and denominator to the same period, recompute the shares, and replace conflicting draft percentages. The revised shares are 64.3%, 30.8%, and 4.9% .
+
+4/4 key points matched. R0 R3 R6 R9 R12   
+
+> 0%
+> 10 %
+> 20 %
+> 30 %30.0 18.3 12.5 Development Monitored evaluation
+> Non-correct
+> Skill Routing Diagnosis
+> promoted promoted and superseded/retired
+
+Figure 2: Non-correct rates over R0–R12. The lanes mark skill promotions and retirements, routing changes, and the diagnosis upgrade. 
+
+The run also included a routing-priority change at R5 and a diagnosis update before R12. Appendix I provides the complete candidate and version his-tory. We repeated the evolution process for six rounds on FinanceBench and SECQUE. Monitoring-set W-Corr. increased by 0.40 and 0.25, respectively, and both runs ended with two active skills. Appendix L reports their histories and cross-registry evaluation. 
+
+5.4 Examples of Answer Repair 
+
+Table 5 summarizes two recorded repairs. In the numerical case, the static prompt already requires period anchoring, explicit denominators, and for-mulas. The added skill specifies what to do when a draft percentage conflicts with the cited amounts: align the operands to the same period and recom-pute the share. 
+
+5.5 Serving Cost 
+
+Figure 3 compares token use and time to first token. FIN SKILL OPS uses a token budget comparable to MoA and lower than FinDebate’s, with a shorter time to first token than both. FinSage uses the fewest tokens and has the shortest time to first to-ken. FIN SKILL OPS uses roughly four times as many tokens as FinSage. Prompt tokens dominate usage across systems. Skill text is a small part of this input, although its marginal serving cost was not measured separately. R0 R3 R6 R9 R12                
+
+> 0%
+> 10 %
+> 20 %
+> 30 %30.0 18.3 12.5 Development Monitored evaluation
+> Non-correct FinSage MoA
+> FinSkillOps
+> FinDebate 080k 160k
+> 166,292 68,153 62,387 17,127 Prompt Completion
+> 070 140
+> 19.2 s 61.2 s 38.3 s 143.3 s
+> Skill Routing Diagnosis skill promoted a version also superseded or retired
+> (a) Twelve-round trajectory (a)Tokens per query (b)Time to first token
+
+Figure 3: Serving cost by system: (a) prompt and com-pletion tokens per query; (b) time to first token. Both panels share the row ordering. 
+
+6 Conclusion 
+
+FIN SKILL OPS treats reliability in SEC filing QA as something a deployed system maintains. Fail-ures are attributed to typed error modes against retrieved filing text, turned into natural-language skills with explicit applicability conditions, and admitted only after targeted validation, a protected-suite check, and negative controls. The system records the highest correctness and reference con-sistency among the evaluated alternatives on six benchmarks, and the twelve-round study shows the registry both growing and shrinking. 7 Limitations 
+
+Our evidence covers SEC filing QA. Appendix K reports adaptations of other skill-evolution meth-ods; comparisons under matched evolution budgets and other financial workflows remain future work. The twelve-round study is an operational trajec-tory that also changed routing and diagnosis, and its evaluation set was monitored every round, so it measures how the deployment improved rather than the isolated effect of skill text, and it does not establish blind generalization. The qualitative cases illustrate specific repairs and unresolved er-rors through summarized answers and skill behav-ior. Available candidate artifacts, admission logs, and split manifests are incomplete, limiting verifi-cation of gate decisions and item-level separation between evolution inputs and the benchmark or ablation questions. Conservative gates slow adapta-tion: 27 of 33 candidates were refused, deferred, or withdrawn, and admission requires evaluation runs on the targeted, protected, and negative-control sets. The financial-expert review route was not staffed, so admission decisions rested on the auto-matic checks, and the judge-agreement study uses annotators from the author group rather than inde-pendent domain experts. 
+
+References 
+
+Noga BenYoash, Menachem Brief, Oded Ovadia, Gil Shenderovitz, Moshik Mishaeli, Rachel Lemberg, and Eitam Sheetrit. 2025. Secque: A benchmark for evaluating real-world financial analysis capabil-ities. In Proceedings of the Fourth Workshop on Generation, Evaluation and Metrics (GEM 2), pages 212–230. Tianshi Cai, Guanxu Li, Nijia Han, Ce Huang, Zimu Wang, Changyu Zeng, Yuqi Wang, Jingshi Zhou, Haiyang Zhang, Qi Chen, Yushan Pan, Shuihua Wang, and Wei Wang. 2025. FinDebate: Multi-agent collaborative intelligence for financial analysis. In 
+
+Proceedings of The 10th Workshop on Financial Tech-nology and Natural Language Processing , pages 268– 282, Suzhou, China. Association for Computational Linguistics. Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu. 2024. BGE M3-Embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation. 
+
+Preprint , arXiv:2402.03216. Zhiyu Chen, Wenhu Chen, Charese Smiley, Sameena Shah, Iana Borova, Dylan Langdon, Reema Moussa, Matt Beane, Ting-Hao Huang, Bryan R Routledge, and 1 others. 2021. Finqa: A dataset of numerical reasoning over financial data. In Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing , pages 3697–3711. Zhiyu Chen, Shiyang Li, Charese Smiley, Zhiqiang Ma, Sameena Shah, and William Yang Wang. 2022. Con-vfinqa: Exploring the chain of numerical reasoning in conversational finance question answering. In 
+
+Proceedings of the 2022 conference on empirical methods in natural language processing , pages 6279– 6292. Chanyeol Choi, Jihoon Kwon, Jaeseon Ha, Hojun Choi, Chaewoon Kim, Yongjae Lee, Jy-yong Sohn, and Alejandro Lopez-Lira. 2025. FinDER: Fi-nancial dataset for question answering and eval-uating retrieval-augmented generation. Preprint ,arXiv:2504.15800. Chroma. 2025. Chroma: The open-source vec-tor database. https://github.com/chroma-core/ chroma .Yufei He, Ruoyu Li, Alex Chen, Yue Liu, Yulin Chen, Yuan Sui, Cheng Chen, Yi Zhu, Luca Luo, Frank Yang, and Bryan Hooi. 2025. Enabling self-improving agents to learn at test time with human-in-the-loop guidance. In Proceedings of the 2025 Conference on Empirical Methods in Natural Lan-guage Processing: Industry Track , pages 1625–1653, Suzhou (China). Association for Computational Lin-guistics. Pranab Islam, Anand Kannappan, Douwe Kiela, Re-becca Qian, Nino Scherrer, and Bertie Vidgen. 2023. Financebench: A new benchmark for financial ques-tion answering. arXiv preprint arXiv:2311.11944 .Yidong Jiang, Junrong Chen, Eftychia Makri, Jialin Chen, Peiwen Li, Ali Maatouk, Leandros Tassiulas, Eliot Brenner, Bing Xiang, and Rex Ying. 2026. Fin-rate: A real-world financial analytics and tracking evaluation benchmark for llms on sec filings. arXiv preprint arXiv:2602.07294 .Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Hein-rich Küttler, Mike Lewis, Wen-tau Yih, Tim Rock-täschel, and 1 others. 2020. Retrieval-augmented gen-eration for knowledge-intensive nlp tasks. Advances in neural information processing systems , 33:9459– 9474. Huawei Lin, Peng Li, Jie Song, Fuxin Jiang, and Tieying Zhang. 2026. Muse-autoskill: Self-evolving agents via skill creation, memory, management, and evalua-tion. Preprint , arXiv:2605.27366. Xingyan Liu, Xiyue Luo, Linyu Li, Ganghong Huang, Jianfeng Liu, and Honglin Qiao. 2026. Skill-forge: Forging domain-specific, self-evolving agent skills in cloud technical support. arXiv preprint arXiv:2604.08618 .Jingwei Ni, Yihao Liu, Xinpeng Liu, Yutao Sun, Mengyu Zhou, Pengyu Cheng, Dexin Wang, Er-chao Zhao, Xiaoxi Jiang, and Guanjun Jiang. 2026. Trace2skill: Distill trajectory-local lessons into trans-ferable agent skills. Preprint , arXiv:2603.25158. Hongji Pu, Xinyuan Song, and Liang Zhao. 2026. Skil-lops: Managing llm agent skill libraries as self-maintaining software ecosystems. arXiv preprint arXiv:2605.13716 .Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao. 2023. Re-flexion: Language agents with verbal reinforcement learning. Advances in neural information processing systems , 36:8634–8652. Zhenghan Tai, Hanwei Wu, Qingchen Hu, Jijun Chi, Hailin He, Lei Ding, Tung Sum Thomas Kwok, Bo-huai Xiao, Yuchen Hua, Suyuchen Wang, and 1 oth-ers. 2025. VeritasFi: An adaptable, multi-tiered RAG framework for multi-modal financial question an-swering. arXiv preprint arXiv:2510.10828 .Felix Tian, Ajay Byadgi, Daniel S Kim, Daochen Zha, Matt White, Kairong Xiao, and Xiao-Yang Liu. 2024. Customized fingpt search agents using foundation models. In Proceedings of the 5th ACM Interna-tional Conference on AI in Finance , ICAIF ’24, page 469–477. ACM. Bin Wang, Chao Xu, Xiaomeng Zhao, Linke Ouyang, Fan Wu, Zhiyuan Zhao, Rui Xu, Kaiwen Liu, Yuan Qu, Fukai Shang, Bo Zhang, Liqun Wei, Zhihao Sui, Wei Li, Botian Shi, Yu Qiao, Dahua Lin, and Con-ghui He. 2024a. MinerU: An open-source solution for precise document content extraction. Preprint ,arXiv:2409.18839. Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Man-dlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and Anima Anandkumar. 2023. Voyager: An open-ended embodied agent with large language models. arXiv preprint arXiv:2305.16291 .Junlin Wang, Jue Wang, Ben Athiwaratkun, Ce Zhang, and James Zou. 2024b. Mixture-of-agents en-hances large language model capabilities. Preprint ,arXiv:2406.04692. Xinyu Wang, Jijun Chi, Zhenghan Tai, Tung Sum Thomas Kwok, Hailin He, Zhuhong Li, Yuchen Hua, Muzhi Li, Peng Lu, Suyucheng Wang, and 1 others. 2025. FinSage: A multi-aspect RAG sys-tem for financial filings question answering. In Pro-ceedings of the 34th ACM International Conference on Information and Knowledge Management , pages 6144–6152. Renjun Xu and Yang Yan. 2026. Agent skills for large language models: Architecture, acquisition, security, and the path forward. arXiv preprint arXiv:2602.12430 .Yifan Yang, Ziyang Gong, Weiquan Huang, Qihao Yang, Ziwei Zhou, Zisu Huang, Yan Li, Xuemei Gao, Qi Dai, Bei Liu, Kai Qiu, Yuqing Yang, Dong-dong Chen, Xue Yang, and Chong Luo. 2026a. Skil-lopt: Executive strategy for self-evolving agent skills. 
+
+Preprint , arXiv:2605.23904. Yutao Yang, Junsong Li, Qianjun Pan, Bihao Zhan, Yux-uan Cai, Lin Du, Jie Zhou, Kai Chen, Qin Chen, Xin Li, Bo Zhang, and Liang He. 2026b. Autoskill: Experience-driven lifelong learning via skill self-evolution. Preprint , arXiv:2603.01145. Hanrong Zhang, Shicheng Fan, Henry Peng Zou, Yankai Chen, Zhenting Wang, Jiayu Zhou, Chengze Li, Wei-Chieh Huang, Yifei Yao, Kening Zheng, and 1 others. 2026. Coevoskills: Self-evolving agent skills via co-evolutionary verification. arXiv preprint arXiv:2604.01687 .Mingtian Zhang, Yu Tang, and PageIndex Team. 2025. Pageindex: Next-generation vector-less, reasoning-based rag. PageIndex Blog .Https://pageindex.ai/blog/pageindex-intro. Fengbin Zhu, Wenqiang Lei, Youcheng Huang, Chao Wang, Shuo Zhang, Jiancheng Lv, Fuli Feng, and Tat-Seng Chua. 2021. Tat-qa: A question answering benchmark on a hybrid of tabular and textual content in finance. In Proceedings of the 59th annual meeting of the Association for Computational Linguistics and the 11th international joint conference on natural language processing (volume 1: long papers) , pages 3277–3287. 
+
+A SEC Filing Pre-processing 
+
+FIN SKILL OPS ingests raw SEC filings through a pre-processing pipeline, following the curation de-sign of VeritasFi (Tai et al., 2025). The pipeline produces a retrieval-ready, modality-aware corpus in four stages. 
+
+Multi-modal parsing. Each filing is parsed with MinerU (Wang et al., 2024a) into ordered, modality-tagged blocks (text, table, figure) anno-tated with their section hierarchy, i.e., the title path from the document root to each block. Narrative blocks are kept directly. Tables are handled on a dedicated pathway: each table region is converted by an LLM into a faithful textual/HTML rendering together with a short title summary, then stored in a separate table index so that tabular evidence is retrievable alongside narrative text. Figures are summarized into descriptive captions. 
+
+Semantic enhancement. Curated chunks un-dergo three refinements that make them coher-ent and self-contained when retrieved in isolation. (i) Near-duplicate removal : a chunk is discarded when its similarity to a retained chunk exceeds a threshold, 
+
+C′ = C \ { cj ∈ C | ∃ i̸ = j : sim( ci, c j ) > τ sim },
+
+(2) implemented with a lexical TF–IDF / MinHash similarity at τsim =0 .95 . (ii) Coreference resolu-tion : pronouns are replaced with their explicit an-tecedents by an LLM, since chunks retrieved in isolation otherwise lack the context to resolve ref-erences. (iii) Metadata augmentation : a section-level summary is generated and attached to every chunk as a shared contextual anchor for high-level queries. 
+
+Indexing. Enhanced chunks are split to a fixed length ( ∼256 words) and indexed in parallel: dense embeddings via bge-m3 (Chen et al., 2024) stored in a Chroma vector store (Chroma, 2025), a BM25 sparse inverted index, and a separate section-summary embedding index that backs the sum-mary retrieval path used by multi-path retrieval (Appendix B). A lightweight document registry tracks per-company filings and their reporting peri-ods. 
+
+B Multi-Agent Substrate Details 
+
+This appendix documents the fixed SEC filing QA substrate used in our experiments. The substrate provides the filing parser, retrieval indexes, agent roles, query decomposition procedure, and answer-synthesis pipeline. The model and retrieval back-bone are fixed during evolution. The operational study additionally changes skill routing and diagno-sis, as recorded in Appendix I; these interventions are distinct from the fixed-configuration ablations. 
+
+B.1 SEC Filing QA Substrate 
+
+Given a question q and a pre-indexed filing cor-pus D, the substrate retrieves evidence E and gen-erates an answer a following a retrieval-augmented generation pattern (Lewis et al., 2020). 
+
+Role-specialized analysis. An orchestrator re-ceives the user question and activates a subset of five analyst agents: general, quantitative, market, legal, and company. The general agent is always active, while specialist agents are selected when their expertise is relevant to the question. Each activated agent forms a role-conditioned view of the question and uses it to guide retrieval and draft generation. The five agent roles are summarized in Table 6, and a representative quantitative-agent prompt is shown below. 
+
+Database-aware query decomposition. Before generating sub-queries, each agent is exposed to a lightweight local view of the filing database ob-tained from section-level summary retrieval. The agent then rewrites the original question into role-specific, data-seeking sub-queries grounded in the available filing structure and terminology. 
+
+Multi-path retrieval. For each sub-query, the substrate retrieves candidate evidence from sparse, dense, and summary-level retrieval paths. Re-trieved candidates are ranked and filtered to pro-duce the evidence used by each agent. This multi-path design improves coverage across exact finan-cial terms, semantically related disclosures, and section-level context. 
+
+Answer synthesis. Each activated agent gener-ates a grounded draft from its retrieved evidence. The orchestrator then combines the agent drafts and evidence into a final synthesis prompt. Selected behavior text from S is injected into query decom-position and final synthesis, allowing reliability behaviors such as period alignment, numerical veri-fication, and unsupported-answer blocking to affect the final answer without changing the underlying substrate. 
+
+B.2 Agent Role Definitions and Prompt Example 
+
+Table 6 summarizes the five analyst agents in the substrate. Each agent is implemented via a role-specific prompt that defines its responsibility, re-trieval scope, and output style. The general agent handles broad or conceptual questions and is ac-tivated for every query. The remaining specialist agents are activated selectively by the orchestrator. Below we reproduce the prompt for the Quan-titative Agent as a representative example. The prompt is split into a role description, a query-decomposition phase, and an answer-generation phase. The static prompts already contain general grounding, period, and unit rules. Evolved skills add or revise triggered behaviors through the sepa-rate registry S. 
+
+> Quantitative Agent – Role Description
+> Summary: Focuses on financial statements and accounting-related ques-tions; produces concise answers with explicit units and periods.
+> Responsibilities:
+
+Table 6: Summary of the five analyst agents in the substrate. 
+
+Agent Focus Typical triggers 
+
+General Overarching affairs, simple factual questions, and con-ceptual questions Always activated Quantitative Financial metrics, numerical reasoning, and financial statement analysis Revenue, profit, cash flow, valuation, financial ratios, or calculation-intensive queries Market Industry context, market share, competitive positioning, and business model Industry trends, competitor comparisons, customer seg-ments, or market positioning Legal Legal proceedings, compliance, risk disclosures, gov-ernance, and transaction structure Regulation, governance, legal disputes, deal terms, or risk allocation Company Business structure, operations, ownership history, man-agement, and milestones Company history, operating structure, fundraising, ownership, or management background      
+
+> •Retrieve and interpret balance sheet, income statement, and cash flow disclosures. •Extract financial figures with their units, periods, and source context. •Identify when the retrieved evidence does not contain the re-quested financial information.
+> Typical triggers: Questions about revenue, profit, cash flow, valuation, financial statement items, accounting items, or calculation-intensive com-parisons.
+> Exclusions: Pure market-background questions, legal/compliance assess-ments, or company history unless they directly affect financial interpreta-tion.
+
+Quantitative Agent – Phase 1: Query Decomposition         
+
+> You are a Quantitative Analysis Specialist. Your job is to rewrite the user’s question into atomic, searchable, data-seeking sub-questions related to financial information in SEC filings. Focus on the following areas when they are relevant to the user’s question: •Balance sheet items, including assets, liabilities, and equity. •Income statement items, including revenue, costs, expenses, and profit. •Cash flow statement items, including operating, investing, and financing cash flows. •Financial ratios, accounting quantities, and numerical compar-isons. •Accounting policies only when they are directly relevant to the requested financial information. Use the provided section summaries to understand what information may be available in the filing database and to choose search terms that match the filing structure. Relevant section summaries: title summaries
+> Return only a JSON array of strings. User question: question History:
+> history
+
+Quantitative Agent – Phase 2: Answer Generation           
+
+> You are a Quantitative Analysis Specialist. Answer the user’s question using the provided evidence from SEC filings. When relevant, include: •The requested financial figures. •Units, periods, and company names. •Brief computations when the answer requires a calculation. •Source context from the provided evidence. •A brief note when the provided evidence does not contain enough information to answer the question. Question: question History: history Evidence: evidence
+> Return a concise answer grounded in the provided evidence.
+
+C Skill Evolution Algorithm 
+
+Algorithm 1 summarizes the candidate-update loop, including frequency screening. The proposal ledger also counts suggestions rejected or deferred before formal gating. We use E to denote the evolution pool used for failure diagnosis and targeted vali-dation. At evolution step t, the system samples a batch Bt ⊂ E and runs the current skill-conditioned agent AS(t) . Failed instances are collected as Ft.For each typed error mode m, Vm ⊂ E denotes a targeted validation subset that shares mode m.The protected suite P contains previously pass-ing and high-risk instances for regression gating. 
+
+Reg P(S′, S) counts protected-suite verdicts that change from Correct under S to non-Correct under the candidate skill set S′.Here P ASS GATE applies Equation 1 and the screening conditions in Appendix H against the cur-rent active registry. The working set bS preserves previously accepted updates within a round. Re-placement marks the superseded version inactive; historical entries remain in the registry. 
+
+D Baseline Details 
+
+We compare against four representative systems, drawn from financial RAG, domain-tuned finan-cial LLMs, and multi-agent collaboration. Table 1 reports our implementations or adaptations evalu-ated through the shared harness, rather than num-bers transcribed from the original papers. The de-scriptions below identify the source designs and evaluation adaptations; full shared settings are in Appendix G. • FinSage (Wang et al., 2025): An end-to-end RAG system for financial filing QA built from three components: a multi-modal pre-processing pipeline that unifies text, tables, and figures into metadata-enriched chunks; a Algorithm 1 Skill Evolution Loop 
+
+Require: A∅, S(0) , E, P, T , threshold τ
+
+Ensure: S(T ) 
+
+> 1:
+
+for t = 0 , 1, . . . , T −1 do  
+
+> 2:
+
+Run AS(t) on batch Bt 
+
+> 3:
+
+Ft ← failed instances in Bt 
+
+> 4:
+
+for i ∈ F t do ▷ diagnose  
+
+> 5:
+
+Diagnose answer, judge feedback, and evidence  
+
+> 6:
+
+Record diagnosis modes and support-ing evidence  
+
+> 7:
+
+end for  
+
+> 8:
+
+C ← { m ∈ M : freq( m) ≥ τ } 
+
+> 9:
+
+bS ← S (t) 
+
+> 10:
+
+for m ∈ C do ▷ propose & gate  
+
+> 11:
+
+Draft candidate s′ 
+
+> m
+
+from m + examples  
+
+> 12:
+
+S′ ← insert or revise s′ 
+
+> m
+
+in bS 
+
+> 13:
+
+if PassGate( s′
+
+> m
+
+, S′, bS) then  
+
+> 14:
+
+bS ← S ′; log promotion  
+
+> 15:
+
+else  
+
+> 16:
+
+Log rejection or deferral  
+
+> 17:
+
+end if  
+
+> 18:
+
+end for  
+
+> 19:
+
+S(t+1) ← bS 
+
+> 20:
+
+end for  
+
+> 21:
+
+return S(T )
+
+multi-path retrieval module combining BM25, dense, metadata, and HyDE retrievers with neighbor-chunk bundling; and a domain-specialized re-ranker fine-tuned via Direct Preference Optimization (DPO). • FinGPT (Tian et al., 2024): A single-agent, tool-augmented financial search system built on the OpenAI Agent SDK with Model Con-text Protocol (MCP) integration. Each ques-tion is classified by lexical pattern match-ing and routed through one of three paths: an MCP-first path for numerical queries that attempts structured MCP tool calls before falling back to web search; an iterative re-search path for complex queries, where a plan-ner LLM decomposes the question into typed sub-questions executed in parallel via MCP or web search with gap detection and multi-round refinement; and a single web search 
+
+path for simple or qualitative queries via the OpenAI Responses API. To ensure a fair com-parison under our strictly document-grounded benchmark, we restrict FinGPT’s tool access at evaluation by disabling the Yahoo Finance, TradingView, and filesystem MCP servers, leaving SEC-EDGAR as the only active struc-tured data source. • MoA (Mixture-of-Agents) (Wang et al., 2024b): A general-purpose multi-agent frame-work with a layered architecture. Each layer contains multiple LLM agents, and every agent conditions on all outputs from the previ-ous layer to refine its response; a final aggre-gator synthesizes these outputs into a single answer. The method operates purely through prompting, without fine-tuning. • FinDebate (Cai et al., 2025): A multi-agent framework for financial analysis pairing domain-specific RAG (FinLang embeddings over ChromaDB with context-sensitive chunk-ing) with five specialized analyst agents (earn-ings, market, sentiment, valuation, risk) run in parallel. A safe debate protocol then refines the draft through Trust, Skeptic, and Leader agents in a single round, with the pre-debate stance fixed and every addition anchored to verifiable references. 
+
+E Evaluation Protocol Details 
+
+This appendix details our LLM-as-judge evalua-tion protocol. The reference-based rubric adapts the answer-level correctness labels, fine-grained quality dimensions, and error-type taxonomy of Jiang et al. (2026). We employ a single LLM judge (Qwen3-Max), prompted in a zero-shot manner. The judge grounds its assessment solely on the provided gold answer and key points, and is con-strained to penalize only direct contradictions with the reference, treating additional correct informa-tion as acceptable. The requested judge output con-sists of one verdict, five dimensional scores, and an optional error attribution; no inter-judge fusion is applied. 
+
+E.1 Verdict Labels 
+
+Each response is assigned exactly one verdict: • Correct : all key points are covered, verbatim or through reasonable paraphrase, with no contra-dictions against the reference. • Partial : the response remains contradiction-free but omits essential key points. • Incorrect : the response directly conflicts with the gold answer or key points. Omitting refer-ence content does not count as incorrect if the response supplies alternative correct informa-tion. • Failure : the response is a refusal, is irrelevant, or is empty. A fifth operational label, Error , flags failures in the evaluation process, such as failed judge calls or unparseable outputs. 
+
+Correctness aggregation. The verdict-to-score mapping is Correct = 5 , Partial = 3 , Incorrect = 1 ,and Failure = 0 . For each reported run, N includes all evaluation records, including generation failures, evaluation errors, and fallback-processed records. Using the final correctness score ci assigned by evaluator post-processing to record i, the aggregate is W-Corr. = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+ci. (3) W-Corr. is a verdict-weighted score on 0–5, dis-tinct from the proportion of answers judged Cor-rect. The twelve-round non-correct count sums Partial, Incorrect, and Failure rather than using this weighted score. 
+
+E.2 Fine-Grained Quality Dimensions 
+
+Beyond the categorical verdict, each response is rated on five dimensions using a 1–5 scale: • Information Coverage : whether the answer includes every query-critical fact and con-straint needed to address the question, without diluting it with irrelevant content. • Reasoning Chain : whether the answer links evidence to intermediate conclusions to the final answer, rather than merely restating the evidence. • Reference Consistency (Ref. Cons.) :whether claims agree with the supplied reference answer and key points. Because the judge does not receive the full retrieved evidence, this score does not independently verify support for additional claims. • Clarity of Expression : whether the answer is organized so that the main conclusion is easy to locate, with minimal redundancy. • Analytical Depth : whether the answer pri-oritizes and synthesizes relevant evidence to reach a decisive, query-directed outcome, rather than summarizing indiscriminately. The five dimensions are scored independently of the verdict and of one another. Each dimen-sion uses scores after evaluator post-processing and the same denominator N , including all evaluation records. Failures, evaluation errors, and fallback-processed records remain in these denominators. 
+
+E.3 Judge Prompt 
+
+The historical judge prompt—including the verdict definitions, key-point checking rules, the error-type taxonomy, and the strict output template—is repro-duced verbatim in Fig 4. The prompt specifies the requested model output; aggregation and fallback are handled separately by the evaluation wrapper. 
+
+F Case Studies of Skill Evolution 
+
+These qualitative cases illustrate how diagnosed failures motivate scoped repairs and where errors remain. Cases A and B retain the question IDs, protected-set labels, and reported outcomes from the original R1–R3 analysis, separate from the twelve-round rerun. Case C provides an additional comparison between a static requirement and a specific repair procedure. Answers and skill de-scriptions below summarize the case records. 
+
+F.1 Export-Control Period Alignment Case A: From period leakage to a correct export-control answer Dataset / QID. NVIDIA protected set, 
+
+qa_kp_000015 
+
+Question. How did NVIDIA describe the im-pact of export controls on its China Data Center business in fiscal year 2025? 
+
+Reference answer. NVIDIA stated that it ex-panded its Data Center product portfolio with offerings that did not require a license or prior notification before each shipment, and intro-duced new China-market products that did not require an export license. China Data Center revenue increased in fiscal year 2025, but its share of total Data Center revenue remained far below the level before the October 2023 export controls. FIN SKILL OPS LLM-as-Judge Evaluation Prompt 
+
+System role: 
+
+You are an expert evaluator for financial Q&A tasks with retrieved evidence. Use ONLY the provided gold answer / key points as reference. The generated answer may contain additional correct information beyond the gold answer; without access to the full retrieved evidence, you cannot determine whether such additions are unsubstantiated. Therefore, only penalize DIRECT CONTRADICTIONS with the gold answer / key points, and do not penalize information merely absent from them. 
+
+Verdict labels (use exactly one): 
+
+• Correct : all key points covered (verbatim or via reasonable paraphrase); no contradictions; relevant and complete. May include additional correct information. • Partial : some key points covered but essential ones missing; no contradictions; relevant but incomplete. • Incorrect : contains direct contradictions or clear factual errors conflicting with the reference. Not marked incorrect for merely omitting reference content if alternative correct information is provided. • Failure : refuses to answer, is irrelevant, or is empty. • Error : API call failed or other unexpected error (excluded from reported statistics). 
+
+Key-point evaluation: Check each key point against the generated answer and label it as PRESENT, PARTIAL, MISSING, or INCORRECT, allowing numeric/date/percent equivalence and reasonable paraphrase. 
+
+Error-type taxonomy (choose NONE if Correct): • B. Generation-related : B1 hallucination (B1-1 numeric/categorical, B1-2 entity attribute, B1-3 comparative stance, B1-4 trend/trajectory); B2 contradicts evidence; B3 excessive inference; B4 evidence-fusion failure. • C. Finance numeric/semantic : C1 numerical precision; C2 units and scales; C3 time mismatch; C4 computation logic. • D. Query/context : D1 query misunderstanding (D1-1 intent, D1-2 entity, D1-3 metric); D2 context-window abuse. Output one primary group and subtype when the verdict is not Correct, plus up to two secondary subtypes; prefer the most causal error. 
+
+Output format (strict): The judge emits, in fixed order, an Analysis , per–key-point labels with a summary count, five 
+
+Dimensional Scores (Information Coverage, Reasoning Chain, Factual Consistency, Clarity of Expression, Analytical Depth; each an integer 1–5), the Error Type attribution, and a single Verdict label. 
+
+Figure 4: Prompt template for the F IN SKILL OPS LLM-as-judge evaluator. A single judge (Qwen3-Max) scores each generated answer against the gold answer and extracted key points, producing a verdict, five fine-grained quality scores, and an error-type attribution. Evaluation fields (question, gold answer, generated answer, key points) are injected per instance. The historical Error-exclusion instruction does not govern aggregation: all evaluation records enter the reported denominators. 
+
+Earlier answer [Partial]. The earlier answer focused on later H20 restrictions, 2026 fiscal-year charges, and subsequent policy uncertainty. It therefore conflated later regulatory events with the fiscal-year-2025 disclosure and missed the key point that NVIDIA reported compliant China-market alternatives and fiscal-year-2025 China Data Center revenue growth. 
+
+Diagnosis summary. 
+
+• Failure type: Period Mismatch + Evi-dence Conflict. • Signal: retrieved evidence contained both fiscal-year-2025 disclosure and later export-control developments. • Root cause: the answer selected later pol-icy events and overwrote the period re-quested by the question. 
+
+Skill summary. 
+
+Period Align. Trigger when a question asks for a specific fiscal year or policy period and retrieved evidence contains temporally con-flicting disclosures. Prefer evidence whose filing period matches the question; route to review when later policy events would change the answer. 
+
+Reported gate outcome. The original case description reports that Period Align passed targeted validation and protected checks and was promoted. 
+
+Later answer [Correct]. FinSkillOps an-swered under the fiscal-year-2025 disclosure: FIN SKILL OPS DRAFT Prompt Constructor 
+
+Specialist prompt: 
+
+You are the activated specialty module inside a routed financial analysis system. The upstream router selected this specialist; operate strictly within your declared domain scope and do not invent facts not present in the provided evidence or tool results. 
+
+Input: 
+
+• Specialist name and domain scope. • Available tools and tool results. • Domain rules and output template (specialist-specific). • Sub-question, retrieved evidence, and recent chat history. 
+
+Task rules: 
+
+• Produce a domain-scoped structured answer by reading the sub-question and retrieved evidence through the lens of this specialist’s declared rules. • Keep every claim grounded in the provided evidence or tool results only; if a requested fact is absent, state so explicitly rather than inferring it. • When tool results provide more recent or broader coverage than retrieved filing evidence, treat tools as authoritative and state the precedence explicitly rather than silently mixing sources. • When tools supplement rather than supersede filing evidence, combine both to show a trend. 
+
+Output format: 
+
+Specialist-specific structured sections defined in the static domain template: Key Findings (data-anchored bullets with period and value), Supporting Evidence (table references or excerpts), Computations (formula and steps for any derived figure), Policy Notes (only when explicitly relevant to the question), and Missing Data (only items that block the answer). Sub-question drafts are generated in parallel and merged into a single draft before the downstream S YNTHESIZE 
+
+operator. 
+
+Example domain rules (quant analysis specialist): 
+
+Focus on auditable financial interpretation within the declared scope (balance sheet, income statement, cash flow, accounting policies): • Period anchor : quarterly data ̸ = cumulative; identify the exact quarter, fiscal year, or TTM period the user requests 
+
+→ anchor every cited value to that period. • Units and scale : always include currency, unit, and denominator; distinguish quarterly from annual totals → no implicit unit conversion or omission. • Tool-vs-filing precedence : tools provide more recent market or financial updates than retrieved filings → overwrite older evidence and state the precedence explicitly. • Computation context : directly reported value vs. derived calculation vs. cross-period comparison → show formula and steps for any derived figure. • Evidence sufficiency : missing data, ambiguous metric naming, or period mismatch → enumerate only items that block the answer; do not report absent sections that are irrelevant. • Out-of-scope guardrail : company history, competitor landscape, or legal and compliance matters → do not answer; those belong to other routed specialists. 
+
+Figure 5: Prompt template for the F IN SKILL OPS DRAFT operator. Each specialist carries its own static prompt encoding domain scope, grounding rules, and output sections; the shared draft_answer helper injects the sub-question, per-sub-question evidence, tool results, and chat history at runtime. The quant-analyst prompt is shown as an example. 
+
+NVIDIA expanded its Data Center portfolio, of-fered products that did not require a license or prior notification for each shipment, introduced China-market products not requiring an export license, and reported that China Data Center revenue increased while remaining far below its pre-October-2023 export-control share of Data Center revenue. 
+
+Original judge trace (R1–R3). The case im-proved from P ARTIAL in R1 to C ORRECT in R2/R3 (4/4 key points matched). F.2 Remaining Limitation: Residual Risk Coverage Case B: A failure that remains partially un-resolved Dataset / QID. Lotus protected set, 
+
+lotus_gen_08 
+
+Question. Does Lotus Technology still operate through a VIE structure? 
+
+Reference answer. Lotus Technology is a Cayman Islands holding company operating through subsidiaries in China and Europe. Its restructuring eliminated the previous VIE struc-ture, so it is not a continuing VIE operating structure, although the holding-company struc-ture still carries China-related dividend and cash-transfer risks. 
+
+System answer [Partial]. The answer cor-rectly states that Lotus no longer operates through a VIE structure and explains that the prior VIE contractual arrangements were ter-minated during the restructuring. However, it does not fully preserve the remaining holding-company and China-related dividend/cash-transfer risk component. 
+
+Diagnosis summary. 
+
+• Failure type: Coverage Gap + Scope Mis-match. • Signal: the answer resolves the binary VIE question but drops residual risk language tied to the post-restructuring holding-company structure. • Root cause: the skill library focuses on detecting whether a VIE remains active, but does not yet enforce residual-risk cov-erage after a restructuring. 
+
+Skill summary.  
+
+> Risk Carryover. Trigger when a question asks whether a legacy structure has been elim-inated but the evidence also discusses contin-uing risk factors after restructuring. Require the answer to separate “structure eliminated” from “risk remains.”
+
+Reported gate outcome. The original case description reports that Risk Carryover was not promoted because the pattern was too narrow and positive/negative controls were insufficient. 
+
+Original judge trace (R1–R3). The case re-mained P ARTIAL from R1 to R3, with 2/5 key points matched and the residual China-related risk coverage still incomplete. 
+
+Takeaway. These cases illustrate period-specific evidence selection and residual-risk coverage. One reports a transition from P ARTIAL to C ORRECT ,while the other remains P ARTIAL . The twelve-round version history in Appendix I separately doc-uments skill replacement and retirement. 
+
+F.3 From Static Checks to a Specific Recalculation Rule Case C: Recomputing category shares Static rule. The static quantitative prompt al-ready requests period anchoring, explicit units and denominators, and formulas for derived figures. The additional skill specifies how to handle a conflict between a draft percentage and the cited category amount and same-period total. 
+
+Failure example. In a 2021/2023 compari-son ( qa_kp_136 ), the earlier answer gave 2023 category shares of 60.7%, 36.8%, and 2.5%, reported as inconsistent with the cited table’s category amounts and total. 
+
+Trigger and behavior summary. The skill, multi_period_alignment_repair , ap-plies to multi-period comparisons with table ev-idence assessed as sufficient. It requires align-ing each numerator and denominator to the same period, recomputing the category shares, and replacing draft percentages that conflict with those operands. The stated trigger uses query intent, source type, and evidence suf-ficiency; question IDs identify the cases for reporting and are not trigger conditions. 
+
+Sample-level outcomes. The revised answer gives 64.3%, 30.8%, and 4.9%, with four of four reference key points matched. The same skill is reported to activate on a separate 2021/2022 comparison ( qa_kp_110 ), which re-tains four of four matched key points. The two examples illustrate a repaired answer and an un-changed comparison answer under the reported skill behavior. G Model and Retrieval Configuration 
+
+Table 8 specifies the generation, evaluation, and re-trieval components. The reranker is served through vLLM as a ranking model, not a generative LLM call. Generation and evaluation use different model families; this separation does not eliminate judge bias. The additional GPT-5.5 assessment in Ap-pendix J is an agreement check, not the judge for the main results. 
+
+Registry snapshot and evaluation sets. Ac-cepted skill updates are carried forward in one shared registry across evolution rounds. For Ta-ble 1, the final registry snapshot is frozen, with the same active skill versions available across all six benchmarks; query-dependent triggering selects from this fixed set. Multi-agent init. in Table 1 denotes the same multi-agent substrate in its ini-tial state before skill evolution. Table 2 reports W-Corr. on the enhanced in-house benchmark and supplementary FinanceBench and FinDER abla-tions. These evaluations are separate from the twelve-round rerun in Appendix I. 
+
+Controlled component settings. The in-house component comparisons hold the generation back-bone, retrieval substrate, answer-format require-ments, and evaluation judge fixed. The four con-figurations use the same judge model and version, prompt, and decoding settings on the 114-question enhanced in-house benchmark. The no-skill condi-tion disables the skill-evolution layer. The no-gate condition uses the same evolution pool and evalua-tion inputs as Full F IN SKILL OPS . These controls describe the in-house ablation experiment, sepa-rately from the routing and diagnosis updates in the twelve-round study. 
+
+Targeted validation gain. In the in-house ex-periment in Table 2, Target Val. ∆ measures the absolute increase in the fraction of Correct verdicts (0–1 scale) on each promoted candidate’s targeted validation set Vm (Equation 1). Each increase com-pares the registry immediately before that candi-date’s admission with the registry after admitting it, evaluated on the same candidate-specific set. We macro-average these increases with equal weight per promotion event. All in-house configurations draw validation items from the same evolution pool. The condition without Skill Evolution proposes no candidates; we report ∆ = 0 by convention. 
+
+Paired confidence intervals. For each in-house component ablation a in Table 2, saved outputs are matched to Full by question ID. Let Ia contain questions with valid final verdicts in both condi-tions, and na = |I a|. We compute di = cFull  
+
+> i
+
+− cai
+
+using the verdict scores Correct/Partial/Incorrect/-Failure = 5 /3/1/0. Failure remains a valid zero score; records lacking a valid verdict in either con-dition are excluded from this paired analysis with-out imputation. We estimate the mean of di over 
+
+Ia and its two-sided 95% bias-corrected and ac-celerated (BCa) bootstrap interval using 10,000 resamples and a fixed random seed. Each resample draws na question indices with replacement and applies the same indices to both conditions. Resam-pling operates on saved outputs and captures varia-tion across questions. The intervals for Full minus each ablation are [0 .57 , 1.16] without Skill Evolu-tion, [0 .05 , 0.41] without the Protected Gate, and 
+
+[0 .24 , 0.70] without the Failure Taxonomy. The in-house component means retain all evaluation records (Appendix E); the intervals use complete pairs. When verdicts are missing, the paired-set mean difference can differ from the difference be-tween the table means. For FinanceBench, the reported 95% paired in-tervals for Full minus each ablation are [0 .12 , 0.56] 
+
+without Skill Evolution, [−0.02 , 0.24] without the Protected Gate, and [0 .04 , 0.38] without the Fail-ure Taxonomy. For FinDER, the correspond-ing intervals are [0 .06 , 0.34] , [−0.04 , 0.22] , and 
+
+[0 .03 , 0.33] .
+
+Individual skills in the in-house experiment. 
+
+Table 3 gives activation counts for the in-house (114 questions), FinanceBench (150), and FinDER evaluations. The removal scores and paired inter-vals compare Full with each skill removed from the final in-house registry. The paired 95% in-tervals are [0 .18 , 0.50] for period alignment v2, 
+
+[0 .06 , 0.36] for numeric unit guard v1, [0 .03 , 0.33] 
+
+for answer coverage gate v1, and [−0.02 , 0.26] for scope guard v1. Table 7 gives the corresponding skill identifiers, target modes, admission rounds, and activation entries. Admission ∆ measures the targeted Correct-rate gain when a candidate en-ters the registry, whereas the removal comparison measures its contribution in the final registry. The in-house skill records and removal comparisons are separate from the twelve-round record in Ap-pendix I. Skill (version) Target mode Round Activation /114 Admission ∆Acc                         
+
+> period_alignment_v1 Period mismatch R3 –+0.55
+> period_alignment_v2 Period mismatch R7 31 +0.70
+> numeric_unit_guard_v1 Calculation error R5 24 +0.58
+> ans_coverage_gate_v1 Unsupported claim R8 27 +0.66
+> scope_guard_v1 Entity confusion R10 19 +0.61
+> slot_coverage_v1 Unsupported claim R6 –+0.62
+
+Table 7: Skill records for the enhanced in-house experiment. Admission ∆Acc is the Correct-rate gain on a candidate’s targeted validation set relative to the pre-admission registry. Activation values are reported over the 114-question evaluation; a dash denotes an unreported value. Skill names in Table 3 are shortened for display.                               
+
+> Component / setting Value Analysts (five roles) DeepSeek-V3.2 Orchestration DeepSeek-V3.2 Decomposition / synthesis DeepSeek-V3.2 Diagnosis / skill revision DeepSeek-V3.2 Table / figure rendering DeepSeek-V3.2 Coreference resolution DeepSeek-V3.2 Main judge Qwen3-Max, zero-shot Dense embedding BAAI/bge-m3
+> Reranker BAAI/bge-reranker-v2-gemma
+> Sparse retrieval BM25 QA / diagnosis / proposal T0.0/0.1/0.2
+> Generation top_p Provider default Synthesis token limit 4096 Other generation limits Provider default Judge T/top_p 0.0/0.95
+> Judge token limit 2048 Dense / BM25 / table k10 /10 /8
+> Rerank K/ chunk size 8/≈256 words
+
+Table 8: Model, decoding, and retrieval settings. Skill proposal and revision share the diagnosis backbone. Un-specified provider defaults are not replaced with as-sumed numerical values. 
+
+H Evolution Prompt Interfaces 
+
+The following specifies prompt inputs and outputs; it is a structured description rather than a verba-tim template. The analyst and judge templates are provided in Appendices B and E.3. 
+
+Offline diagnosis and runtime applicability. 
+
+Offline diagnosis attributes answer failures using reference-derived feedback and inspected evidence. Runtime applicability detection uses the query, cor-pus metadata, and evidence-derived features to select skills from the frozen registry; reference key-point labels and judge feedback are not run-time inputs. In the twelve-round diagnosis record, 
+
+Diag-B4 denotes an observed evidence-fusion fail-ure after answer generation. Runtime applicability concerns whether an evidence-fusion behavior is relevant to the current query and available evidence. Selected behavior text is injected into query decom-position and final synthesis. Section-summary re-trieval precedes decomposition, whereas full multi-path retrieval follows it; skill selection cannot use evidence available only after the relevant injection. The reference-based evaluation judge is separate from evidence-grounding instructions within an-swer generation. 
+
+Two-stage diagnosis. Stage one receives the question, answer excerpt, judge verdict and anal-ysis, key-point counts, and a preview of retrieved passages. It returns a retrieval plan containing hy-potheses, queries with purposes, and facts to ver-ify. Queries use filing phrases, table labels, period markers, segment names, or metric aliases. De-terministic grep executes the plan against the fil-ing corpus; each hit records its source path, match score, matched terms, and snippet. Stage two re-ceives these hits with the original inputs and plan, and returns a root-cause type, inspected evidence, failure explanation, overfitting risk, and a propose / park / do-not-fix recommendation. The specified diagnosis inputs exclude protected-suite records. 
+
+Error labels and record identifiers. Judge cat-egories describe answer-level errors against the reference (Appendix E.3). Diagnosis uses that feedback together with inspected evidence to as-sign root-cause modes for failure grouping and skill proposal. Table 9 lists the eight modes in the twelve-round record. Outside the reproduced judge prompt, we use role prefixes to distinguish code references: Judge-C1 means numerical preci-sion, while Diag-C1 means period mismatch. The record’s Conflict-C1 –Conflict-C6 identify six governance events, grouped into trigger overlap, in-struction contradiction, functional redundancy, and ordering/priority conflicts. The prefixes distinguish the paper’s references to these separate schemes. Code Diagnosis mode         
+
+> Diag-B1 Unsupported claim
+> Diag-B2 Unresolved evidence conflict
+> Diag-B3 Cross-filing entity confusion
+> Diag-B4 Multi-evidence fusion failure
+> Diag-C1 Period mismatch
+> Diag-C2 Table-unit or row-semantics misreading
+> Diag-D1 Missing answer slots
+> Diag-D2 Context-priority error
+
+Table 9: Diagnosis labels listed in the R0–R12 record. The displayed Diag- prefix distinguishes them from the judge taxonomy. 
+
+Proposal and registry. The proposer receives questions, answer excerpts, judge analyses, and missing/incorrect key-point labels, but not the full reference answer text. These labels supply reference-derived, answer-specific feedback. The registry is a flat list of JSON entries with identifier, version, status, trigger conditions, evidence signals, false-trigger guards, natural-language behavior, ex-pected fixes and exclusions, required tests, gate policy, conflict group, and priority. Parked failures retain a reason. Only the behavior is injected as an instruction into query decomposition and final syn-thesis; structured fields support routing and gating. No executable skill code is generated. Superseded entries retain their history while becoming inactive. 
+
+Admission. Automatic admission checks tar-geted improvement, zero protected regressions, and zero false triggers on no-op, multi-period, and cross-company negative controls. The run specifi-cation also requires non-decreasing evidence sup-port and factuality; the reference-based judge does not independently verify every claim against re-trieved evidence. Candidates may additionally be refused or deferred for insufficient benefit, unsta-ble triggering, or conflicts. High-risk or unclear candidates have a financial-expert review route; no such expert was available, so this route defaulted to pass. 
+
+I Twelve-Round Evolution Record 
+
+The evolution run uses three disjoint question sets: 300 development questions, a protected suite of 120 questions (90 previously correct and 30 high-risk cases), and a 200-question final monitoring set eval-uated once per round. Development data support diagnosis and targeted validation; protected data are reserved for gating. The proposal cap is three per round, the supporting-failure threshold is eight per recorded operational mode, and the skill-text                                                                                     
+
+> Round Prop. Acc. Dev Final E/A Tok. R0 ––90 40 0/0 0R1 3181 37 1/1 165 R2 3173 33 2/2 255 R3 3073 33 2/2 255 R4 3167 34 3/3 342 R5 3161 28 4/4 421 R6 3061 28 4/4 421 R7 3158 27 5/4 386 R8 3058 27 5/4 386 R9 3058 27 5/4 386 R10 2058 27 5/4 386 R11 2058 27 5/4 386 R12 2155 25 6/4 347
+
+Table 10: R0–R12 ledger. Prop./Acc.: proposed/ac-cepted updates; Dev/Final: non-correct counts out of 300/200, including partial, incorrect, and failure ver-dicts. E/A: ever-promoted/active entries. Tok.: static active skill-text total, not mean selective injection. 
+
+budget has a soft limit of 500 tokens. No stopping protocol is specified for this R0–R12 record. This evolution run is separate from the main benchmark, ablation, and efficiency evaluations. 
+
+Promotion accounting. There were 33 propos-als, six promotions, and 27 non-promotions, includ-ing refusals, deferrals, and a withdrawal. The two R11 proposals are counted in the overview with-out individual identities or dispositions. Five can-didates explicitly failed protected checks: one at R2, two at R3, one at R4, and one at R9. Their tests recorded 2 + 1 + 2 + 1 + 1 = 7 item-regression events, which need not involve seven distinct questions. These candidate tests are dis-tinct from the zero post-deployment protected re-gressions reported in every round. 
+
+Lifecycle of admitted skills. Table 11 follows all six promoted versions from admission through revision, replacement, and retirement. An active skill can be revised or have its routing changed; a watch-list entry remains active until a removal decision. The candidate index below also records proposals that never entered the active registry. 
+
+Interactions between skills. Table 12 records the six conflict events. Static checks stopped redun-dant or contradictory proposals before admission. Coverage checks supported version replacement, while activation monitoring led to routing changes for skills already in use. 
+
+Skill-function index. Table 13 groups 31 named proposal entries into 18 functions and lists their Version / admission Admission evidence Revision and maintenance history R12 status / tokens 
+
+period_entity_ alignment_v1 
+
+R1 Period errors 23 → 7;zero protected regressions. Quarterly-scope amendments were deferred at R2 and R4. At R7, v2 covered the earlier behavior and added quarterly scope and entity disambiguation; v1 left the active set after the replacement check. Superseded at R7 165 tokens 
+
+table_unit_semantics_v1 
+
+R2 Unit errors 17 → 5;gate passed. R5 routing gave the calculation skill priority on calculation queries and retained this skill for unit checking. A broader v2 was rejected as redundant at R6; a template amendment was deferred at R8. Active 90 tokens 
+
+answer_slot_coverage_v1 
+
+R4 Slot errors 15 → 6;gate passed. The v2 proposal was rejected as redundant at R8. Low activation prompted watch-list review at R10. At R12, the fusion skill covered its fallback behavior; a removal test found zero protected regressions, and v1 was retired. Retired at R12 87 tokens 
+
+cited_operand_ calculation_v1 
+
+R5 Calculation errors 
+
+11 → 4; gate passed. R5 priority rules resolved its interaction with unit checking. At R11, over-activation on simple year-on-year queries prompted tighter router triggers; the skill text was retained. Active 79 tokens 
+
+period_entity_ alignment_v2 
+
+R7 Coverage check for replacing v1; zero protected regressions. Combined period alignment, quarterly scope, and entity disambiguation. It replaced v1 with a shorter instruction; the separate entity-disambiguation v3 proposal was rejected as redundant. Active 130 tokens 
+
+evidence_fusion_ tiebreak_v1 
+
+R12 Fusion errors 8 → 2;zero protected regressions. Fusion merge v1 failed a protected check at R9; merge v2 was withheld for unstable triggering at R10. This skill was admitted after a diagnosis update and covered the slot-coverage fallback. Active 48 tokens 
+
+Table 11: Lifecycle of the six promoted versions in the twelve-round run. Error counts refer to each candidate’s targeted validation. Token counts are per-version instruction lengths, including inactive versions. These records are separate from the in-house ablation skills in Table 7. 
+
+Round / event Interaction Decision and effect 
+
+R5 / Conflict-C4 Calculation instructions overrode unit declarations when both skills were active. Give calculation instructions priority on calculation queries, retain their unit-check fields, and use the unit skill for auxiliary checking. R6 / Conflict-C1 The proposed unit-semantics v2 duplicated the active v1. Reject v2 during static checking, before gate evaluation. R7 / Conflict-C2 The alignment v2 trigger overlapped with v1. Check coverage and replace v1 with v2, retaining one active alignment version. R8 / Conflict-C3 The slot-coverage v2 proposal duplicated the existing behavior. Reject the redundant candidate and retain v1. R8 / Conflict-C5 Blanket abstention on conflicting evidence contradicted the slot skill’s requirement to explain gaps and provide the supported answer. Reject the abstention candidate during static checking. R11 / Conflict-C6 The calculation skill over-activated on simple year-on-year queries. Restrict routing to explicit calculation intent or multi-operand structure; keep the skill text unchanged. 
+
+Table 12: Conflict handling across the skill lifecycle. Event identifiers follow the report and use the Conflict-
+
+prefix introduced in Appendix H. 
+
+recorded outcomes. The entries include amend-ments and repeated reviews. Versions share a func-tion; evidence-fusion and policy-recency variants are grouped by function. The two unnamed R11 entries are outside this index. The descriptions summarize the run record. 
+
+Final registry. Four versions remained active at R12: period/entity alignment v2, table-unit seman-tics v1, cited-operand calculation v1, and evidence-fusion tiebreak v1. Their static instruction lengths Function Recorded candidates / rounds Outcome and maintenance Period/Entity Alignment period_entity_alignment_v1 (R1); quarterly amendments (R2, R4); 
+
+period_entity_alignment_v2 (R7) v1 promoted; amendments deferred. v2 added quarterly scope and entity disambiguation, superseding v1 at R7; active at R12. Entity Disambiguation entity_disambiguation_v1/v2/v3 
+
+(R4/R5/R7) v1 failed a protected check; v2 had insufficient benefit; v3 was rejected as redundant with alignment v2. Evidence Fusion evidence_fusion_merge_v1/v2 
+
+(R9/R10); 
+
+evidence_fusion_tiebreak_v1 (R12) v1 caused a protected regression; v2 was withheld for unstable triggering. The revised procedure was promoted at R12 and remained active. Policy Recency d2_context_priority_v1 (R9, R10); 
+
+d2_policy_recency_v1 (R12) Deferred, then declined for insufficient recurring failures; the remaining issue became a known limitation. Table Unit Semantics table_unit_semantics_v1 (R2), 
+
+table_unit_semantics_v2 (R6); template amendment (R8) v1 promoted and active at R12; routing priority adjusted at R5. v2 rejected as redundant; amendment deferred. Answer Slot Coverage answer_slot_coverage_v1 (R4); 
+
+answer_slot_coverage_v2 (R8) v1 promoted; v2 rejected as redundant. v1 entered dormancy review at R10 and was retired at R12 after a protected removal test. Cross-Filing Chronology cross_filing_date_order_v1 (R6, R7) Deferred, then withdrawn after alignment v2 addressed most reviewed cases. Answer Length answer_length_guard_v1 (R3) Declined as an output-style adjustment outside the reliability-repair scope. Cited Calculation cited_operand_calculation_v1 (R5) Promoted and active at R12; routing priority changed at R5 and triggering restricted at R11. Company Aliases company_alias_table_v1 (R1) Declined because the supporting failure count was below threshold. Conservative Abstention conservative_abstention_v1 (R8) Rejected for conflicting with the existing answer-slot behavior. Date Normalization fiscal_calendar_normalizer_v1 (R1) Declined: date formatting did not address incorrect fiscal-period selection. Fiscal Year Assertion fiscal_period_assert_v1 (R6) Rejected for overlap with alignment v1; directed to version revision. Multi-Hop Decomposition 
+
+multi_hop_decomposer_v1 (R3) Failed protected checks: over-decomposition diverted retrieval on simple queries. Numeric Bounds numeric_sanity_bound_v1 (R9) Declined because financial magnitudes vary across industries, limiting fixed bounds. Numeric Citation evidence_quote_required_v1 (R3) Declined after reduced clarity and a protected regression. Summary Priority summary_over_narrative_v1 (R5) Rejected for overlap with reranking and the risk of worsening summary-over-body preference. Table Row Lock table_row_lock_v1 (R2) Failed protected checks: legitimate queries required aggregation across rows. 
+
+Table 13: Functional index of the named R1–R12 proposal entries. Version suffixes separated by slashes denote separate candidates. Active status refers to the end of R12. 
+
+totalled 130 + 90 + 79 + 48 = 347 tokens. Align-ment v2 replaced a 165-token v1 with 130 to-kens at R7. The R12 fusion skill added 48 tokens while slot-coverage retirement removed 87, reduc-ing the active text from 386 to 347 tokens. The fu-sion behavior aligns period/entity/accounting-basis triplets, merges consistent evidence, and describes inconsistent evidence separately. 
+
+Interventions and cost. The R9 fusion candidate reduced targeted errors from eight to five but caused one protected regression. At R10, its revision passed protected checks but was withheld for unsta-ble diagnosis-dependent triggering. A diagnostic upgrade preceded the R12 promotion. Routing also changed: an R5 priority adjustment resolved a unit/calculation interaction, and an R11 hotfix re-stricted over-triggering on simple queries detected through production telemetry. Thus, the trajectory combines skill, routing, and diagnostic changes un-der fixed model and retrieval components. It does not isolate a skill-text effect or establish long-term production generalization. The Final count tem-porarily worsened at R4. At R12 the reported mean prompt is 15,480 tokens; 347 /15 ,480 ≈ 2.2% Pair Four-way Correct / non-correct % / κ % / κ          
+
+> A–B 82.0 / .687 92.7 / .853 Qwen3-Max–A 90.7 / .820 91.3 / .827 Qwen3-Max–B 81.3 / .675 92.0 / .840 GPT-5.5–A 78.0 / .639 95.3 / .907 GPT-5.5–B 81.3 / .703 94.7 / .893
+
+Table 14: Agreement on the same 150-answer sample. 
+
+compares static skill text with this mean, not in-dependently measured runtime injection overhead. 
+
+J Judge–Human Agreement 
+
+Two annotators from the author group indepen-dently judged a mixed sample of 150 answers against gold answers and key points. Both had financial backgrounds, but neither was a financial domain expert; no external annotator participated. Table 14 includes the primary Qwen3-Max judge and an additional GPT-5.5 check. The annotators disagreed on 27 four-way and 11 binary decisions. Human–human binary κ has a 95% bootstrap interval of [0 .760 , 0.933] . Judge– human binary estimates lie within this interval; this descriptive comparison is not an equivalence test or evidence of expert-level financial assessment. 
+
+K Adaptations of Other Skill-Evolution Methods 
+
+We adapted AutoSkill (Yang et al., 2026b) and Skil-lOpt (Yang et al., 2026a) to the filing-QA substrate, using DeepSeek-V3.2 for generation and Qwen3-Max with the same evaluation rubric. The adapters converted input/output schemas, trajectories, and scores, and inserted skill text into prompts. They left retrieval, the agent workflow, and the evaluator unchanged, with no method-specific tuning. 
+
+AutoSkill interface. For each question, Au-toSkill retrieved relevant skills from its own bank and added them to the answer-generation prompt. After scoring, the question, answer, and judge feed-back were returned to AutoSkill to update its bank online. This evaluation therefore used a chang-ing bank, unlike the frozen registry used for Full FIN SKILL OPS .
+
+SkillOpt interface. The substrate served as Skil-lOpt’s environment and rollout interface. SkillOpt revised one Markdown skill using fixed training and validation sets. After optimization, the best skill was frozen and injected only into final synthe-sis for evaluation. Its optimization loop completed even when no candidate update was accepted. 
+
+Benchmark results. Table 15 reports four bench-marks. SkillOpt improved W-Corr. over Naive RAG on three, and AutoSkill on two. On Lotus and FinDER, AutoSkill had the highest clarity but the lowest correctness. Full F IN SKILL OPS had the highest correctness on all four. These results de-scribe the filing-QA adapters with their different update and injection interfaces; they do not isolate the effect of a gate or provide a comparison under matched evolution budgets. 
+
+Earlier interface tests. Separate pilot runs exam-ined whether the methods could extract and revise skills from filing-QA feedback. With raw question– answer pairs, AutoSkill produced no skills over eleven rounds. Wrapping judge feedback as policy corrections enabled skill extraction: from R00 to R06, its bank grew from zero to four skills. The injected context reached 36,214 characters, and the answer prompt grew from 6,105 to 11,551 to-kens. Correct counts on the target, protected, and monitoring splits remained unchanged across these rounds.                                                                                                  
+
+> Method W-Corr. Info. Reas. Fact. Clar. Depth
+> Zeekr
+> Naive RAG 2.67 2.47 2.96 3.56 4.37 2.50 AutoSkill 2.97 2.73 2.27 3.00 4.17 2.53 SkillOpt 3.40 3.63 2.60 3.10 4.13 2.80 Full F IN SKILL OPS 4.52 4.56 4.32 4.74 4.85 4.26
+> Lotus
+> Naive RAG 2.93 2.98 3.45 3.68 4.50 3.05 AutoSkill 1.33 1.57 1.43 2.03 4.73 1.37 SkillOpt 2.63 2.70 1.63 3.00 3.70 1.90 Full F IN SKILL OPS 3.74 3.91 3.83 4.20 4.50 3.80
+> FinanceBench
+> Naive RAG 2.21 2.36 2.52 2.76 4.54 2.40 AutoSkill 2.53 2.17 2.33 2.97 4.37 2.30 SkillOpt 2.60 3.40 3.13 2.63 4.87 2.90 Full F IN SKILL OPS 3.49 3.39 3.49 3.78 4.32 3.35
+> FinDER
+> Naive RAG 1.55 1.52 1.65 2.35 4.14 1.48 AutoSkill 1.17 1.23 1.20 2.20 4.33 1.23 SkillOpt 2.00 2.53 1.70 2.20 3.43 2.67 Full F IN SKILL OPS 2.88 2.85 3.30 3.83 3.99 2.83
+
+Table 15: Filing-QA results for the AutoSkill and Skil-lOpt adapters, with Naive RAG as the no-skill reference. W-Corr. uses the verdict-score mapping in Appendix E; the remaining columns are the five judge-rated quality dimensions. SkillOpt was tested at four scales, the largest with 90 training, 22 validation, and 100 test items. The reported optimizer counters were 
+
+accept=0 , reject=0 , and skip=6 . Reflection identified failures in the larger runs but judged them unsuitable for repair through the skill document, often because evidence was insuffi-cient. A separate epoch-boundary update path was enabled with use_slow_update=true and 
+
+slow_update_gate_with_selection=false ;this path bypassed validation. Test hard accuracy changed from 0.680 to 0.670 on 100 items, a net decrease of one correct answer. This pilot used hard accuracy, separately from the W-Corr. results in Table 15. 
+
+L Evolution on Public Benchmarks 
+
+We ran six-round evolution pilots on FinanceBench and SECQUE. Table 16 gives the development, pro-tected, and monitoring allocations and summarizes the runs. Promotion followed Equation 1. Table 18 reports each monitoring observation, including the brief drop in SECQUE W-Corr. at R3. These pi-lots are separate from the twelve-round study in Appendix I. 
+
+FinanceBench. At R2, we promoted fiscal_ period_anchor_v1 to address recurring answers that identified the right metric but used the wrong fiscal year. At R3, segment_total_guard_v1 en-tered the registry. At R4, derived_ratio_check_ v1 added a check that recomputed the denomina-tor when draft percentages conflicted with cited amounts. By R6, the ratio-check skill had absorbed                             
+
+> FinanceBench SECQUE Total questions 150 100 Development 60 40 Protected 30 20 Monitoring 60 40 Evolution rounds 66Proposed candidates 15 9Promotions 32Active skills at R6 22Protected-gate refusals 21Candidate regression events 31Deployed regressions 00Skill-text tokens at R6 214 163 Reported Target Val. ∆+0.44 +0.38
+
+Table 16: Six-round public-benchmark evolution pilots. Candidate regression events occur during validation; de-ployed regressions concern the admitted registry. Target Val. ∆ is the reported targeted-validation gain. Tokens count active skill text.                      
+
+> Registry C/P/I/F Non-correct W-Corr.
+> FinanceBench (60 monitoring questions)
+> No skills 37/0/2/21 38.3% 3.12 Local R6 42/0/1/17 30.0% 3.52 In-house 42/1/2/15 30.0% 3.58
+> SECQUE (40 monitoring questions)
+> No skills 17/2/0/21 57.5% 2.28 Local R6 20/0/1/19 50.0% 2.53 In-house 21/0/0/19 47.5% 2.63
+
+Table 17: Registry comparison on common monitor-ing questions under one frozen judge. C/P/I/F denotes Correct/Partial/Incorrect/Failure counts. W-Corr. is 
+
+(5 C + 3 P + I)/N , including Failure as zero. No skills is the R0 condition; Local R6 is the registry evolved on the respective benchmark. In-house is the registry used for Full in Table 1, re-evaluated on these subsets. 
+
+the segment-total behavior; the older skill passed a removal test and was retired. Two other candidates were refused at R3 and R5 after causing three item-level protected regression events in total. The deployed registry recorded zero protected regressions throughout the run. 
+
+SECQUE. At R2, filing_section_scope_v1 
+
+restricted answers to the section and entity re-quested by the question. At R5, numeric_unit_ guard_v1 was promoted. This pilot independently produced a skill with the same name and numeric-unit function as the in-house skill listed in Table 7. A separate candidate was refused at R4 after one protected regression event. 
+
+Registry comparison. The in-house registry scored above the locally evolved registry on both monitoring splits (Table 17). On FinanceBench, their Correct counts were equal; the gap came from the non-correct verdicts. The in-house scores dif-fer from Table 1 because the evaluations here use monitoring subsets.                                    
+
+> FinanceBench ( n= 60 )SECQUE ( n= 40 )Round NC (%) W-Corr. NC (%) W-Corr. R0 23 (38.3) 3.12 23 (57.5) 2.28 R1 22 (36.7) 3.18 22 (55.0) 2.33 R2 21 (35.0) 3.27 21 (52.5) 2.45 R3 20 (33.3) 3.35 21 (52.5) 2.40 R4 19 (31.7) 3.43 20 (50.0) 2.50 R5 19 (31.7) 3.45 20 (50.0) 2.53 R6 18 (30.0) 3.52 20 (50.0) 2.53
+
+Table 18: Monitoring trajectories over six update rounds. NC gives non-correct counts (percentages); both metrics use the same per-question verdicts. R0 is the no-skill baseline.
