@@ -1,0 +1,89 @@
+{
+  "date": "20260919",
+  "date_label": "",
+  "generated_at": "2026-09-19 21:38:42 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.14633v2",
+      "route": "202609/19/2609.14633v2-revolve-an-automated-closed-loop-framework-for-evolving-robot-manipulation-with-minimal-human-intervention",
+      "title": "REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向机器人操作的持续学习闭环演化框架",
+      "first_seen_at": "2026-09-19 21:38:42 UTC",
+      "updated_at": "2026-09-19 21:38:42 UTC"
+    },
+    {
+      "paper_id": "2609.12404v1",
+      "route": "202609/19/2609.12404v1-vrl-bench-benchmarking-agents-on-computer-control-tasks-under-finite-trial-budgets",
+      "title": "VRL-Bench: Benchmarking agents on computer control tasks under finite trial budgets",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "评测通过言语记忆提升语言智能体的试错学习",
+      "first_seen_at": "2026-09-19 21:38:42 UTC",
+      "updated_at": "2026-09-19 21:38:42 UTC"
+    },
+    {
+      "paper_id": "2609.15915v1",
+      "route": "202609/19/2609.15915v1-safe-meta-reinforcement-learning-via-information-space-reachability",
+      "title": "Safe Meta-Reinforcement Learning via Information Space Reachability",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "元强化学习使智能体适应未见任务",
+      "first_seen_at": "2026-09-19 21:38:42 UTC",
+      "updated_at": "2026-09-19 21:38:42 UTC"
+    },
+    {
+      "paper_id": "2609.19523v1",
+      "route": "202609/19/2609.19523v1-econskills-studying-skill-transfer-and-retrieval-for-web-agents-on-live-economic-data",
+      "title": "EconSkills: Studying Skill Transfer and Retrieval for Web Agents on Live Economic Data",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从轨迹蒸馏技能库，使智能体保留并复用已学流程",
+      "first_seen_at": "2026-09-19 21:38:42 UTC",
+      "updated_at": "2026-09-19 21:38:42 UTC"
+    },
+    {
+      "paper_id": "2609.20784v1",
+      "route": "202609/19/2609.20784v1-retireopd-self-retiring-on-policy-distillation-for-agentic-reinforcement-learning",
+      "title": "RetireOPD: Self-Retiring On-Policy Distillation for Agentic Reinforcement Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用自同策略蒸馏内化特权任务技能",
+      "first_seen_at": "2026-09-19 21:38:42 UTC",
+      "updated_at": "2026-09-19 21:38:42 UTC"
+    }
+  ]
+}

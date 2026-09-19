@@ -1,0 +1,228 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-19T21:37:34.436414+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 4,
+    "quick_skim_target": 11,
+    "quick_selected": 4
+  },
+  "deep_dive": [
+    {
+      "id": "2609.14633v2",
+      "source": "arxiv",
+      "title": "REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention",
+      "abstract": "Recent advances in data-driven robot manipulation policies have substantially improved task execution and generalization. However, real-world deployment still relies heavily on humans for failure assessment, correction, and environment reset, while models often fail to continually learn from failures and corrective experience. We present REVOLVE (Robot Evolving via Orchestrated Loops, Verification, and Experience), an automated closed-loop framework for evolving robot manipulation with minimal human intervention. Built on a unified software platform, REVOLVE integrates data collection, policy training and deployment, failure recovery, and continual learning into a single closed-loop workflow. Its Automated Reset and Correction (ARC) architecture automatically resets the environment and intervenes to correct policy failures. Dual-Loop Evolution (DLE) continually improves the manipulation policy and agent by feeding real-world interaction and failure--correction data back into policy learning and using an external mismatch memory to refine agent judgments. Experiments across four real-world manipulation tasks show that, after five iterations, REVOLVE improves average policy success rate by 18.5% and agent judgment accuracy by 8.5%, while reducing human effort in data collection and deployment testing by 94.4% and 95.1%, respectively. These results demonstrate that REVOLVE transforms real-world deployment into a closed-loop learning process that continually accumulates and uses execution experience, enabling continual evolution of both the policy and supervisory model with substantially less human intervention.",
+      "authors": [
+        "Hanyu Liu",
+        "Qian Li",
+        "Yizhu Ding",
+        "Jiayi Wen",
+        "Keqiang Ren",
+        "Yunsheng Ma",
+        "Tao Jian",
+        "Zhihua Wang",
+        "Zhuofan Yu",
+        "Xinran Li",
+        "Zhigong Song"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-13T16:08:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.14633v2",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "closed-loop continual learning for evolving robot manipulation",
+      "llm_evidence_cn": "面向机器人操作的持续学习闭环演化框架",
+      "llm_evidence": "面向机器人操作的持续学习闭环演化框架",
+      "canonical_evidence": "面向机器人操作的持续学习闭环演化框架",
+      "llm_tldr_en": "REVOLVE is an automated closed-loop framework that evolves robot manipulation with minimal human intervention, unifying data collection, training, deployment, failure recovery, and continual learning to overcome heavy reliance on human correction.",
+      "llm_tldr_cn": "该文针对真实机器人操作部署仍依赖人工失败评估、纠正与环境重置，且模型难以从失败经验中持续学习的问题，提出REVOLVE自动化闭环框架，将数据采集、策略训练与部署、失败恢复和持续学习整合为统一工作流，并引入自动重置机制。实验表明该框架可在最小人工干预下实现机器人操作的持续演化，为自主持续改进的智能体提供了可落地的闭环方案。",
+      "llm_tldr": "该文针对真实机器人操作部署仍依赖人工失败评估、纠正与环境重置，且模型难以从失败经验中持续学习的问题，提出REVOLVE自动化闭环框架，将数据采集、策略训练与部署、失败恢复和持续学习整合为统一工作流，并引入自动重置机制。实验表明该框架可在最小人工干预下实现机器人操作的持续演化，为自主持续改进的智能体提供了可落地的闭环方案。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.12404v1",
+      "source": "arxiv",
+      "title": "VRL-Bench: Benchmarking agents on computer control tasks under finite trial budgets",
+      "abstract": "Learning from trial and error is a promising way to improve language agents on complex tasks such as computer control. Reflexion introduced verbal reinforcement learning, which turns failed trials into text that guides later attempts without updating model parameters. We introduce VRL-Bench, a harness for fair evaluation of trial-and-error learning under finite trial budgets. Across three models on MiniWoB and WebShop, we evaluate updates from several prominent verbal-memory methods spanning Reflexion and later work: each improves observed success over memory-free retry in some settings but reduces it in others. Replay experiments show that using reflection can reduce success rates, revealing a trade-off between exploiting experience and continued exploration. We propose VEX$^2$, a verbal exploration--exploitation scheduler that uses a language model to jointly select policies and allocate the remaining trial budget. VEX$^2$ is the only evaluated update to achieve positive observed success-rate gains over retry in all six settings.",
+      "authors": [
+        "Yu Bai",
+        "Yukai Miao",
+        "Dawei Wang",
+        "Li Chen",
+        "Yanyu Ren",
+        "Yuqian Shi",
+        "Dan Li",
+        "Ying Xiong",
+        "Chengqiu Tan",
+        "Run Zhou",
+        "Li Li"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-11T03:54:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.12404v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmarking trial-and-error learning that improves language agents through verbal memory",
+      "llm_evidence_cn": "评测通过言语记忆提升语言智能体的试错学习",
+      "llm_evidence": "评测通过言语记忆提升语言智能体的试错学习",
+      "canonical_evidence": "评测通过言语记忆提升语言智能体的试错学习",
+      "llm_tldr_en": "VRL-Bench fairly evaluates trial-and-error learning of language agents under finite budgets, finding verbal-memory methods help in some settings but reflection can reduce success.",
+      "llm_tldr_cn": "试错学习是提升语言智能体完成计算机控制等复杂任务的重要途径，Reflexion等方法把失败试验转成文字引导后续尝试而无需更新参数，但缺乏在有限试错预算下公平评估的手段。作者提出VRL-Bench评测框架，在MiniWoB与WebShop上比较多种言语记忆方法的更新效果并加入重放实验。结果显示各方法在部分设定下提升成功率、在另一些设定下反而降低，反思有时会拉低成功率，揭示利用经验与过度反思之间的权衡，为智能体从试错中自我改进提供更严谨的评测基础。",
+      "llm_tldr": "试错学习是提升语言智能体完成计算机控制等复杂任务的重要途径，Reflexion等方法把失败试验转成文字引导后续尝试而无需更新参数，但缺乏在有限试错预算下公平评估的手段。作者提出VRL-Bench评测框架，在MiniWoB与WebShop上比较多种言语记忆方法的更新效果并加入重放实验。结果显示各方法在部分设定下提升成功率、在另一些设定下反而降低，反思有时会拉低成功率，揭示利用经验与过度反思之间的权衡，为智能体从试错中自我改进提供更严谨的评测基础。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.15915v1",
+      "source": "arxiv",
+      "title": "Safe Meta-Reinforcement Learning via Information Space Reachability",
+      "abstract": "Meta-reinforcement learning (meta-RL) enables agents to adapt to unseen tasks with limited experience. Despite its promise, the application of meta-RL in real-world tasks is hindered by safety requirements, which have been underexplored in prior work. In this paper, we propose a safe meta-RL framework that explicitly accounts for safety during adaptation. Our key insight is to reason about safety in the information space, which captures both the physical state and the agent's belief over the underlying task. Within this space, we introduce a safety value function that measures the probability of the agent avoiding unsafe regions indefinitely. We show that this function satisfies a self-consistency condition and a Bellman equation, which make it learnable via meta-RL. Based on this formulation, we develop a safe meta-RL algorithm that learns the safety value function and leverages it for safety filtering and constrained policy optimization. Experiments on meta-RL benchmarks demonstrate the effectiveness of the proposed method.",
+      "authors": [
+        "Zeyang Li",
+        "Sunbochen Tang",
+        "Navid Azizan"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-09-14T17:27:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.15915v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Meta-reinforcement learning enables agents to adapt to unseen tasks",
+      "llm_evidence_cn": "元强化学习使智能体适应未见任务",
+      "llm_evidence": "元强化学习使智能体适应未见任务",
+      "canonical_evidence": "元强化学习使智能体适应未见任务",
+      "llm_tldr_en": "Meta-RL lets agents adapt to unseen tasks but safety during adaptation is underexplored. This paper proposes a safe meta-RL framework reasoning in an information space capturing state and task belief, with a safety value function satisfying self-consistency and a Bellman equation, making safety learnable.",
+      "llm_tldr_cn": "元强化学习能让智能体用少量经验快速适应新任务，但适应过程中的安全性长期被忽视。本文提出安全元强化学习框架，在同时刻画物理状态与任务信念的信息空间中推理安全性，并引入满足自洽条件与贝尔曼方程的安全价值函数使其可学习。该工作为智能体在动态任务中的安全适应与自我改进提供了理论基础。",
+      "llm_tldr": "元强化学习能让智能体用少量经验快速适应新任务，但适应过程中的安全性长期被忽视。本文提出安全元强化学习框架，在同时刻画物理状态与任务信念的信息空间中推理安全性，并引入满足自洽条件与贝尔曼方程的安全价值函数使其可学习。该工作为智能体在动态任务中的安全适应与自我改进提供了理论基础。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self improvement and meta learning techniques for evolving agent behaviors",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19523v1",
+      "source": "arxiv",
+      "title": "EconSkills: Studying Skill Transfer and Retrieval for Web Agents on Live Economic Data",
+      "abstract": "Web agents often revisit the same sites, yet most evaluations discard the procedures learned in earlier successful interactions. We introduce EconSkills, a skill library and evaluation framework that distills verified EconWebArena trajectories into parameterized standard operating procedures for retrieving live economic data. Each skill records its scope, navigation procedure, site-specific guidance, verification checks, and recovery steps while replacing source-instance values with placeholders. EconSkills separates two questions: whether a known relevant procedure transfers to a held-out task, and whether an agent can retain that benefit when selecting from a library. In controlled transfer, matched skills improve success over no-skill prompting and require fewer steps on paired successes, while abstraction is substantially more effective than replaying raw trajectories. At library scale, retrieval is competitive with the no-skill baseline overall and performs best on directly covered tasks; coverage-stratified outcomes show that approximate matches on uncovered tasks offset these gains. Browser trajectories further identify when procedural guidance shortens portal-specific navigation and when semantic verification remains necessary. These results establish that reusable economic web procedures can transfer across task instances and provide a concrete design target for coverage-aware selection and context delivery.",
+      "authors": [
+        "Yinzhu Quan",
+        "Zefang Liu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-17T00:29:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.19523v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "skill library distilled from trajectories enabling agents to retain and reuse learned procedures",
+      "llm_evidence_cn": "从轨迹蒸馏技能库，使智能体保留并复用已学流程",
+      "llm_evidence": "从轨迹蒸馏技能库，使智能体保留并复用已学流程",
+      "canonical_evidence": "从轨迹蒸馏技能库，使智能体保留并复用已学流程",
+      "llm_tldr_en": "EconSkills distills verified web-agent trajectories into parameterized skills and evaluates whether learned procedures transfer and can be retrieved, showing matched skills improve success.",
+      "llm_tldr_cn": "网页智能体常反复访问同一站点，但现有评测往往丢弃此前成功交互中学到的流程，导致经验难以复用。为此作者提出EconSkills技能库与评测框架，把已验证轨迹蒸馏为参数化的标准操作流程，并区分技能能否迁移到新任务以及智能体能否从技能库中检索受益两个问题。受控迁移实验显示匹配技能可提升成功率，说明可积累的技能库有助于智能体持续改进。",
+      "llm_tldr": "网页智能体常反复访问同一站点，但现有评测往往丢弃此前成功交互中学到的流程，导致经验难以复用。为此作者提出EconSkills技能库与评测框架，把已验证轨迹蒸馏为参数化的标准操作流程，并区分技能能否迁移到新任务以及智能体能否从技能库中检索受益两个问题。受控迁移实验显示匹配技能可提升成功率，说明可积累的技能库有助于智能体持续改进。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.20784v1",
+      "source": "arxiv",
+      "title": "RetireOPD: Self-Retiring On-Policy Distillation for Agentic Reinforcement Learning",
+      "abstract": "Multi-turn agents trained with reinforcement learning (RL) receive a single scalar reward per trajectory, which motivates self on-policy distillation (OPD) to supply dense token-level supervision from a self-teacher with privileged task skills, letting a skill-free student internalize them. This recipe, however, is undermined by two findings in agentic tasks: privileged information alone does not always make a teacher reliable, and the benefit of teacher supervision is stage-dependent. We therefore propose RetireOPD (Self-Retiring On-Policy Distillation), which first optimizes a decoupled, skill-conditioned teacher with environment rewards and then trains a skill-free student jointly with RL and OPD. Rather than following a predefined distillation schedule, RetireOPD adopts Adaptive Retirement: the student drops the teacher on its own once their discrepancy stops shrinking and it reaches a target fraction of the teacher's success rate, after which training proceeds with RL alone. Across Qwen2.5 models from 1.5B to 7B, RetireOPD improves ALFWorld success rate over RL baseline by 14.1% to 18.8% and WebShop accuracy by 11.8% to 19.0%, and surpasses its own skill-conditioned teacher in every setting.",
+      "authors": [
+        "Yan Yu",
+        "Zhengxi Lu",
+        "Yizhou Liu",
+        "Yichen Pan",
+        "Aozhe Wang",
+        "Qipeng Chen",
+        "Hua Yang",
+        "Wenqi Zhang",
+        "Weiming Lu",
+        "Qianglong Chen",
+        "Yongliang Shen"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL",
+        "cs.AI"
+      ],
+      "published": "2026-09-17T17:52:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.20784v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "self on-policy distillation to internalize privileged task skills",
+      "llm_evidence_cn": "用自同策略蒸馏内化特权任务技能",
+      "llm_evidence": "用自同策略蒸馏内化特权任务技能",
+      "canonical_evidence": "用自同策略蒸馏内化特权任务技能",
+      "llm_tldr_en": "Multi-turn RL agents get only a scalar reward per trajectory; RetireOPD first trains a skill-conditioned teacher then jointly trains a skill-free student with RL and self on-policy distillation, retiring the teacher over time.",
+      "llm_tldr_cn": "多轮智能体用强化学习训练时每条轨迹只得到单一标量奖励，监督稀疏。自同策略蒸馏借助具备特权技能的自教师为学生提供词元级稠密监督，但特权信息并不总使教师可靠，且监督收益依赖阶段。本文提出RetireOPD，先优化解耦的技能条件教师，再联合RL与蒸馏训练无技能学生，并让教师逐步退场，从而更稳定地把任务技能内化到智能体中。",
+      "llm_tldr": "多轮智能体用强化学习训练时每条轨迹只得到单一标量奖励，监督稀疏。自同策略蒸馏借助具备特权技能的自教师为学生提供词元级稠密监督，但特权信息并不总使教师可靠，且监督收益依赖阶段。本文提出RetireOPD，先优化解耦的技能条件教师，再联合RL与蒸馏训练无技能学生，并让教师逐步退场，从而更稳定地把任务技能内化到智能体中。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
