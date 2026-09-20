@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-19</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-20</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 5 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-19 21:38:42 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 21:16:10 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 5 篇推荐（精读 1 篇，速读 4 篇）</p>
-<p>精读：《REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention》（8.0/10）</p>
-<p>速读：《VRL-Bench: Benchmarking agents on computer control tasks under finite trial budgets》（6.0/10）, 《Safe Meta-Reinforcement Learning via Information Space Reachability》（6.0/10）, 《EconSkills: Studying Skill Transfer and Retrieval for Web Agents on Live Economic Data》（6.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日精读1篇、速读2篇，重点聚焦9.0分的SoL-Pi如何递归扩展自动研究循环以打造高效Agent Harness。最值得看的是SoL-Pi的自动研究循环思路，以及RESKILL用显式失败归因和结构化修复提升交互Agent可靠性。普通读者可先读SoL-Pi理解递归扩展框架，再按需了解Agent失败修复与自进化搜索索引。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -84,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention">REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness">SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>1</strong></span></div>
 </section>
@@ -94,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">2 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VRL-Bench: Benchmarking agents on computer control tasks under finite trial budgets">VRL-Bench: Benchmarking agents on computer control tasks under finite trial budgets</span></li><li><span class="dpr-home-dashboard-paper-title" title="Safe Meta-Reinforcement Learning via Information Space Reachability">Safe Meta-Reinforcement Learning via Information Space Reachability</span></li><li><span class="dpr-home-dashboard-paper-title" title="EconSkills: Studying Skill Transfer and Retrieval for Web Agents on Live Economic Data">EconSkills: Studying Skill Transfer and Retrieval for Web Agents on Live Economic Data</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents">RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Self-Evolving Search Index">Self-Evolving Search Index</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>2</strong></span></div>
 </section>
 </div>
 

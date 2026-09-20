@@ -1,0 +1,57 @@
+{
+  "date": "20260920",
+  "date_label": "",
+  "generated_at": "2026-09-20 21:16:10 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.20519v1",
+      "route": "202609/20/2609.20519v1-sol-pi-recursively-scaling-auto-research-loops-for-efficient-agent-harness",
+      "title": "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "受RSI启发，递归扩展自动研究循环以实现智能体框架自我改进",
+      "first_seen_at": "2026-09-20 21:16:10 UTC",
+      "updated_at": "2026-09-20 21:16:10 UTC"
+    },
+    {
+      "paper_id": "2609.15684v1",
+      "route": "202609/20/2609.15684v1-reskill-explicit-failure-attribution-and-structured-repair-for-interactive-language-agents",
+      "title": "RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "结构化失败后技能修复，多轮迭代提升技能",
+      "first_seen_at": "2026-09-20 21:16:10 UTC",
+      "updated_at": "2026-09-20 21:16:10 UTC"
+    },
+    {
+      "paper_id": "2609.19656v1",
+      "route": "202609/20/2609.19656v1-self-evolving-search-index",
+      "title": "Self-Evolving Search Index",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无需人工干预即可自进化的索引框架",
+      "first_seen_at": "2026-09-20 21:16:10 UTC",
+      "updated_at": "2026-09-20 21:16:10 UTC"
+    }
+  ]
+}

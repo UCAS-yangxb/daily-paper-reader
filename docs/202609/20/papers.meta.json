@@ -1,0 +1,54 @@
+{
+  "label": "2026-09-20",
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T21:16:11",
+  "count": 3,
+  "papers": [
+    {
+      "paper_id": "202609/20/2609.20519v1-sol-pi-recursively-scaling-auto-research-loops-for-efficient-agent-harness",
+      "section": "deep",
+      "title_en": "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+      "authors": "Haozhe Liu, Tian Ye, Sensen Gao, Qihang Cao, Yitong Li, Mingchen Zhuge, Duomin Wang, Ruihua Zhang, Ping Luo, Jiawang Bian, Lei Zhu, Ligeng Zhu, Enze Xie, Song Han",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.20519v1",
+      "score": "9.0",
+      "evidence": "受RSI启发，递归扩展自动研究循环以实现智能体框架自我改进",
+      "tldr": "编码智能体转向无人值守长时探索，长轨迹推高token开销，成为递归自我改进瓶颈。本文在harness层递归扩展自动研究循环，跨多样环境筛选出动作执行、上下文压缩、观测处理和委派阅读四项机制，形成SoL-Pi。在51项EdgeBench上，其性能与Pi在GPT-5.6 Sol和Opus 5上相当，token流量降44.7-49.0%，API成本降约三分之一。每小时较原生harness省8.75-13.50美元，较Pi省4.36-5.71美元。",
+      "tags": "query:self-evolve",
+      "abstract_en": "As coding agents move from supervised code completion to unattended, around-the-clock exploration, their work expands from isolated predictions into long trajectories of reasoning, tool use, and feedback. Token efficiency therefore becomes important for scaling recursive self-improvement. We take an RSI-inspired approach at the harness layer, scaling auto-research loops across increasingly numerous and diverse environments for harness rollouts. At this scale, the process yields reusable improvements that transfer beyond their development setting, moving automated harness discovery toward production-level outcomes. Four mechanisms survive selection and form SoL-Pi, spanning action execution, context compaction, observation handling, and delegated reading. On the 51-task EdgeBench evaluation, SoL-Pi achieves performance comparable to Pi across GPT-5.6 Sol and Opus 5 while reducing recorded token traffic by 44.7-49.0% and API cost by about one third. In other words, estimated hourly savings are \\$8.75-\\$13.50 relative to native Codex and Claude Code harnesses, and \\$4.36-\\$5.71 relative to Pi.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.15684v1-reskill-explicit-failure-attribution-and-structured-repair-for-interactive-language-agents",
+      "section": "quick",
+      "title_en": "RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents",
+      "authors": "Mengyi Deng, Xin Li, Duyi Pan, Zilin Wang, Zhiwei Li, Zhijiang Guo, Wei Wang",
+      "date": "2026-09-14",
+      "pdf": "https://arxiv.org/pdf/2609.15684v1",
+      "score": "6.0",
+      "evidence": "结构化失败后技能修复，多轮迭代提升技能",
+      "tldr": "交互式语言智能体依赖可复用技能，但失败后修复常依赖不透明的一次性反思，难以关联失败解释与候选补丁。RESKILL 维护跨轮显式修复状态，将失败假设链接到候选技能补丁，经覆盖归因选择局部修复并重测，用重测结果更新后续修复。在 ALFWorld 与 TextCraft 三种模型规模、固定预算下，六项设置均取得最佳最终成功率，平均较直接修复提升 3.7 个百分点、较假设条件修复提升 3.3 个百分点。它表明显式归因需与修复选择和持久重测条件更新结合，才能带来稳定改进。",
+      "tags": "query:self-evolve",
+      "abstract_en": "Language agents increasingly rely on reusable skills, but post-failure repair is often handled by opaque one-shot reflection: a model generates a skill patch without explicitly maintaining how failure explanations relate to candidate repairs or how unsuccessful retests should influence later edits. We introduce RESKILL, a structured repair framework that maintains an explicit repair state across repair rounds. Given a failed rollout, the framework links failure hypotheses to candidate skill patches, selects local repairs through coverage-based attribution, retests the edited skill set in the environment, and uses retest outcomes to guide subsequent repair updates. The language model supplies structured repair factors, while the repair procedure records them, compares local skill patches by how well they address active failure explanations, and carries unsuccessful retest outcomes into later repair rounds. We evaluate RESKILL on ALFWorld and TextCraft across three model sizes under fixed repair budgets. RESKILL obtains the strongest final success in all six benchmark-model settings, improving average final success by 3.7 percentage points over direct repair and 3.3 points over hypothesis-conditioned repair. These results suggest that explicit attribution alone is insufficient; durable improvement emerges when attribution is integrated with repair selection and persistent retest-conditioned update.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.19656v1-self-evolving-search-index",
+      "section": "quick",
+      "title_en": "Self-Evolving Search Index",
+      "authors": "Sangam Lee, Wonjae Lee, Sunghwan Kim, Deogyong Kim, Jaehoon Kim, Daye Nam, SeongKu Kang, Dongha Lee",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19656v1",
+      "score": "6.0",
+      "evidence": "无需人工干预即可自进化的索引框架",
+      "tldr": "检索质量高度依赖索引键能否有效暴露文档知识，但不同检索环境需要不同索引表示，固定优化策略难以稳定奏效，而索引演化仍依赖人工诊断与调优。为此，作者提出 SELF-INDEX：其 Optimizer 自动诊断检索短板、选择性改写问题索引键，并在更新前验证每次修订；Query Simulator 还主动模拟额外查询需求，使索引超越现有查询演化。在多语料与多检索器上，该方法持续提升检索性能并优于现有索引优化方法，还能提升搜索代理与代理记忆系统的效果和效率。",
+      "tags": "query:self-evolve",
+      "abstract_en": "Information retrieval is increasingly important as LLM agents tackle complex tasks involving diverse information needs. Because retrieval relies on an index that represents each document through index keys, retrieval quality depends heavily on how effectively these keys expose the knowledge contained in each document. However, effective index representations vary across retrieval environments, making it difficult for any fixed optimization strategy to perform consistently. Yet evolving an index to its retrieval environment remains largely human-driven, requiring humans to diagnose retrieval failures, refine the optimization strategy, and reprocess the index accordingly. We propose SELF-INDEX, a framework that enables an index to self-evolve without human intervention. Its Optimizer autonomously diagnoses retrieval shortfalls, selectively revises the responsible index keys, and validates each revision before updating the index. Beyond reacting to observed retrieval demands, SELF-INDEX proactively explores additional demands through a Query Simulator, allowing the index to evolve beyond the queries already available for optimization. Across diverse corpora and retrievers, SELF-INDEX consistently improves retrieval performance while outperforming existing index optimization methods. We further show that these benefits extend to downstream applications, improving the effectiveness and efficiency of search agents and helping agent memory systems retrieve useful past interactions.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

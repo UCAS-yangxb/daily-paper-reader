@@ -1,0 +1,149 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-20T21:13:32.989477+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 2,
+    "quick_skim_target": 11,
+    "quick_selected": 2
+  },
+  "deep_dive": [
+    {
+      "id": "2609.20519v1",
+      "source": "arxiv",
+      "title": "SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness",
+      "abstract": "As coding agents move from supervised code completion to unattended, around-the-clock exploration, their work expands from isolated predictions into long trajectories of reasoning, tool use, and feedback. Token efficiency therefore becomes important for scaling recursive self-improvement. We take an RSI-inspired approach at the harness layer, scaling auto-research loops across increasingly numerous and diverse environments for harness rollouts. At this scale, the process yields reusable improvements that transfer beyond their development setting, moving automated harness discovery toward production-level outcomes. Four mechanisms survive selection and form SoL-Pi, spanning action execution, context compaction, observation handling, and delegated reading. On the 51-task EdgeBench evaluation, SoL-Pi achieves performance comparable to Pi across GPT-5.6 Sol and Opus 5 while reducing recorded token traffic by 44.7-49.0% and API cost by about one third. In other words, estimated hourly savings are \\$8.75-\\$13.50 relative to native Codex and Claude Code harnesses, and \\$4.36-\\$5.71 relative to Pi.",
+      "authors": [
+        "Haozhe Liu",
+        "Tian Ye",
+        "Sensen Gao",
+        "Qihang Cao",
+        "Yitong Li",
+        "Mingchen Zhuge",
+        "Duomin Wang",
+        "Ruihua Zhang",
+        "Ping Luo",
+        "Jiawang Bian",
+        "Lei Zhu",
+        "Ligeng Zhu",
+        "Enze Xie",
+        "Song Han"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-17T14:58:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.20519v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RSI-inspired recursive scaling of auto-research loops for agent harness self-improvement",
+      "llm_evidence_cn": "受RSI启发，递归扩展自动研究循环以实现智能体框架自我改进",
+      "llm_evidence": "受RSI启发，递归扩展自动研究循环以实现智能体框架自我改进",
+      "canonical_evidence": "受RSI启发，递归扩展自动研究循环以实现智能体框架自我改进",
+      "llm_tldr_en": "Long coding-agent trajectories make token efficiency key to scaling recursive self-improvement. SoL-Pi scales RSI-style auto-research loops across diverse environments and distills reusable harness mechanisms.",
+      "llm_tldr_cn": "随着编码智能体转向无人值守的持续探索，其轨迹变长，令牌效率成为递归自我改进规模化的瓶颈。作者在智能体框架层提出RSI式方法，将自动研究循环扩展到大量多样环境中进行框架部署。实验筛选出四项可复用机制，涵盖动作执行、上下文压缩、观察处理与委派，形成SoL-Pi。结果表明这些改进可跨开发环境迁移，推动自动化框架发现走向生产级应用。",
+      "llm_tldr": "随着编码智能体转向无人值守的持续探索，其轨迹变长，令牌效率成为递归自我改进规模化的瓶颈。作者在智能体框架层提出RSI式方法，将自动研究循环扩展到大量多样环境中进行框架部署。实验筛选出四项可复用机制，涵盖动作执行、上下文压缩、观察处理与委派，形成SoL-Pi。结果表明这些改进可跨开发环境迁移，推动自动化框架发现走向生产级应用。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "large language model based agents with self-evolution capabilities",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.15684v1",
+      "source": "arxiv",
+      "title": "RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents",
+      "abstract": "Language agents increasingly rely on reusable skills, but post-failure repair is often handled by opaque one-shot reflection: a model generates a skill patch without explicitly maintaining how failure explanations relate to candidate repairs or how unsuccessful retests should influence later edits. We introduce RESKILL, a structured repair framework that maintains an explicit repair state across repair rounds. Given a failed rollout, the framework links failure hypotheses to candidate skill patches, selects local repairs through coverage-based attribution, retests the edited skill set in the environment, and uses retest outcomes to guide subsequent repair updates. The language model supplies structured repair factors, while the repair procedure records them, compares local skill patches by how well they address active failure explanations, and carries unsuccessful retest outcomes into later repair rounds. We evaluate RESKILL on ALFWorld and TextCraft across three model sizes under fixed repair budgets. RESKILL obtains the strongest final success in all six benchmark-model settings, improving average final success by 3.7 percentage points over direct repair and 3.3 points over hypothesis-conditioned repair. These results suggest that explicit attribution alone is insufficient; durable improvement emerges when attribution is integrated with repair selection and persistent retest-conditioned update.",
+      "authors": [
+        "Mengyi Deng",
+        "Xin Li",
+        "Duyi Pan",
+        "Zilin Wang",
+        "Zhiwei Li",
+        "Zhijiang Guo",
+        "Wei Wang"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-14T14:55:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.15684v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "structured post-failure skill repair improving agent skills over rounds",
+      "llm_evidence_cn": "结构化失败后技能修复，多轮迭代提升技能",
+      "llm_evidence": "结构化失败后技能修复，多轮迭代提升技能",
+      "canonical_evidence": "结构化失败后技能修复，多轮迭代提升技能",
+      "llm_tldr_en": "RESKILL replaces opaque one-shot reflection with an explicit repair state that links failure hypotheses to skill patches and uses retest outcomes to guide iterative skill repair in language agents.",
+      "llm_tldr_cn": "语言智能体依赖可复用技能，但失败后的修复常由不透明的一次性反思完成，难以追踪失败解释与修复方案的对应关系。本文提出RESKILL结构化修复框架，在多轮修复中维护显式修复状态，将失败假设与候选技能补丁关联，通过覆盖度归因选择局部修复，并在环境中重测以指导后续更新。实验证明该框架能更有效地修复技能，提升智能体自主改进能力。其价值在于让智能体技能修复过程可追踪、可迭代。",
+      "llm_tldr": "语言智能体依赖可复用技能，但失败后的修复常由不透明的一次性反思完成，难以追踪失败解释与修复方案的对应关系。本文提出RESKILL结构化修复框架，在多轮修复中维护显式修复状态，将失败假设与候选技能补丁关联，通过覆盖度归因选择局部修复，并在环境中重测以指导后续更新。实验证明该框架能更有效地修复技能，提升智能体自主改进能力。其价值在于让智能体技能修复过程可追踪、可迭代。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.19656v1",
+      "source": "arxiv",
+      "title": "Self-Evolving Search Index",
+      "abstract": "Information retrieval is increasingly important as LLM agents tackle complex tasks involving diverse information needs. Because retrieval relies on an index that represents each document through index keys, retrieval quality depends heavily on how effectively these keys expose the knowledge contained in each document. However, effective index representations vary across retrieval environments, making it difficult for any fixed optimization strategy to perform consistently. Yet evolving an index to its retrieval environment remains largely human-driven, requiring humans to diagnose retrieval failures, refine the optimization strategy, and reprocess the index accordingly. We propose SELF-INDEX, a framework that enables an index to self-evolve without human intervention. Its Optimizer autonomously diagnoses retrieval shortfalls, selectively revises the responsible index keys, and validates each revision before updating the index. Beyond reacting to observed retrieval demands, SELF-INDEX proactively explores additional demands through a Query Simulator, allowing the index to evolve beyond the queries already available for optimization. Across diverse corpora and retrievers, SELF-INDEX consistently improves retrieval performance while outperforming existing index optimization methods. We further show that these benefits extend to downstream applications, improving the effectiveness and efficiency of search agents and helping agent memory systems retrieve useful past interactions.",
+      "authors": [
+        "Sangam Lee",
+        "Wonjae Lee",
+        "Sunghwan Kim",
+        "Deogyong Kim",
+        "Jaehoon Kim",
+        "Daye Nam",
+        "SeongKu Kang",
+        "Dongha Lee"
+      ],
+      "primary_category": "cs.IR",
+      "categories": [
+        "cs.IR",
+        "cs.AI"
+      ],
+      "published": "2026-09-17T03:56:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.19656v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Self-evolving index framework that evolves without human intervention",
+      "llm_evidence_cn": "无需人工干预即可自进化的索引框架",
+      "llm_evidence": "无需人工干预即可自进化的索引框架",
+      "canonical_evidence": "无需人工干预即可自进化的索引框架",
+      "llm_tldr_en": "Self-Index proposes a framework that lets a retrieval index self-evolve to its environment without human intervention, using an Optimizer that autonomously diagnoses failures and refines the optimization strategy.",
+      "llm_tldr_cn": "检索质量高度依赖索引键表示，但有效表示随检索环境变化，固定优化策略难以稳定生效，且索引进化长期依赖人工诊断与重处理。论文提出SELF-INDEX框架，由优化器自主诊断检索失败并迭代精炼优化策略，使索引无需人工干预即可自进化。该工作展示了自主自进化机制在信息检索系统中的可行性，对自进化智能体方法具有借鉴意义。",
+      "llm_tldr": "检索质量高度依赖索引键表示，但有效表示随检索环境变化，固定优化策略难以稳定生效，且索引进化长期依赖人工诊断与重处理。论文提出SELF-INDEX框架，由优化器自主诊断检索失败并迭代精炼优化策略，使索引无需人工干预即可自进化。该工作展示了自主自进化机制在信息检索系统中的可行性，对自进化智能体方法具有借鉴意义。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}
