@@ -1,0 +1,302 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-21T22:14:04.325572+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 1,
+    "deep_cap": 6,
+    "deep_selected": 1,
+    "quick_candidates": 6,
+    "quick_skim_target": 11,
+    "quick_selected": 6
+  },
+  "deep_dive": [
+    {
+      "id": "2609.21749v1",
+      "source": "arxiv",
+      "title": "GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills",
+      "abstract": "Skills can improve the performance of Large Language Model (LLM) agents by providing task-specific procedural guidance, while skill optimization further improves their effectiveness through iterative refinement. However, existing skill optimization methods typically represent skills as unstructured natural-language instructions, creating two key challenges: 1) Unstructured skills often lack explicit workflow-level guidance and contain substantial redundancy, making them difficult for LLMs to execute; 2) the vast search space of unconstrained natural-language skills makes skill optimization ineffective. To address these challenges, we propose representing skills as graph-structured natural-language artifacts. In graph-structured skills, each node represents an execution step together with its operational guidance, while directed edges encode context-dependent transitions between steps. Compared to unstructured skills, graph-structured skills can provide clear workflow-level guidance. Moreover, the proposed graph-structured skill can also facilitate skill optimization. Building on this structured representation, we introduce GraphSkillEvo, a population-based evolutionary optimization framework with mutation and crossover operators for graph-structured skills. By maintaining multiple candidate skills and combining effective components, GraphSkillEvo enables broader and more comprehensive exploration of the structured skill space than purely LLM-based iterative self-refinement. Extensive experiments across five agent benchmarks demonstrate that GraphSkillEvo consistently outperforms the strong skill optimization baseline SkillOpt, improving average accuracy by 4.01% on GPT-5.4-nano and 1.76% on GPT-5.4. Our code is available at https://github.com/ruisun7/GraphSkillEvo.",
+      "authors": [
+        "Rui Sun",
+        "Zhi Zheng",
+        "Zhenkun Wang",
+        "Zhichao Lu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-18T13:24:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.21749v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "evolutionary optimization of graph-structured agent skills",
+      "llm_evidence_cn": "对图结构智能体技能的进化优化",
+      "llm_evidence": "对图结构智能体技能的进化优化",
+      "canonical_evidence": "对图结构智能体技能的进化优化",
+      "llm_tldr_en": "Unstructured natural-language skills are hard to execute and search. GraphSkillEvo represents skills as graph-structured artifacts and evolves them, improving LLM agent skill optimization.",
+      "llm_tldr_cn": "技能可为大语言模型智能体提供任务特定流程指导，迭代优化能进一步提升其效果，但现有方法多以非结构化自然语言表示技能，导致缺乏显式工作流指导、冗余严重且搜索空间巨大，优化效率低下。本文将技能表示为图结构自然语言产物，每个节点承载具体步骤与依赖关系，并通过进化方式对技能进行迭代优化以缩小搜索空间。该工作以进化算法优化智能体技能，与演化式技能获取和智能体行为进化主题紧密相关。",
+      "llm_tldr": "技能可为大语言模型智能体提供任务特定流程指导，迭代优化能进一步提升其效果，但现有方法多以非结构化自然语言表示技能，导致缺乏显式工作流指导、冗余严重且搜索空间巨大，优化效率低下。本文将技能表示为图结构自然语言产物，每个节点承载具体步骤与依赖关系，并通过进化方式对技能进行迭代优化以缩小搜索空间。该工作以进化算法优化智能体技能，与演化式技能获取和智能体行为进化主题紧密相关。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "evolutionary algorithms for evolving agent behaviors and architectures",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.21358v1",
+      "source": "arxiv",
+      "title": "FAN: Foresight Action Normalization for Continual Adaptation of Vision-Language-Action Models",
+      "abstract": "Vision-Language-Action (VLA) models pre-trained on large-scale, closed datasets have demonstrated remarkable success across diverse robotic manipulation tasks. However, their long-term real-world deployment necessitates continuously acquiring new skills while retaining previously learned capabilities. While pioneering works have explored continual VLA adaptation using techniques such as experience replay and reinforcement fine-tuning, they overlook a foundational mechanism: action normalization, which determines the underlying coordinate system in which policies perceive and execute physical actions. To bridge this gap, we systematically evaluate five normalization strategies across four real-world task streams covering single-arm and bimanual manipulation. Our analysis reveals that existing protocols induce severe failure modes due to inter-task coordinate drift, limited motion coverage, or train-test coordinate mismatches. Motivated by these insights, we formulate three core design principles: consistency, coverage, and causality (3C), and introduce foresight action normalization (FAN). FAN estimates normalization statistics once from a small, task-independent calibration set prior to continual learning and freezes them throughout adaptation. Across all evaluated streams, FAN achieves the highest performance and demonstrates consistent robustness, providing insightful guidance for building stable action representations in achieving effective lifelong VLA adaptation.",
+      "authors": [
+        "Yijun Hong",
+        "Jiarun Zhu",
+        "Xiaoquan Sun",
+        "Le Xu",
+        "Qijun He",
+        "Xin Jin",
+        "Mingqi Yuan",
+        "Wenjun Zeng",
+        "Jiayu Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-18T06:17:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.21358v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "continually acquiring new skills while retaining previously learned capabilities",
+      "llm_evidence_cn": "持续获取新技能同时保留已学能力",
+      "llm_evidence": "持续获取新技能同时保留已学能力",
+      "canonical_evidence": "持续获取新技能同时保留已学能力",
+      "llm_tldr_en": "VLA models need to continually acquire new skills while retaining old ones during long-term deployment, but prior continual adaptation works overlook action normalization. FAN evaluates five normalization strategies across four real-world task streams and proposes foresight action normalization.",
+      "llm_tldr_cn": "视觉-语言-动作模型在长期真实部署中需持续学习新技能并保留旧能力，但已有持续适应工作忽略了动作归一化这一基础机制。本文系统评估五种归一化策略在四条真实任务流上的表现，并提出前瞻动作归一化方法。研究表明归一化决定了策略感知与执行动作的坐标系，对缓解灾难性遗忘至关重要，为持续适应提供了关键设计依据。",
+      "llm_tldr": "视觉-语言-动作模型在长期真实部署中需持续学习新技能并保留旧能力，但已有持续适应工作忽略了动作归一化这一基础机制。本文系统评估五种归一化策略在四条真实任务流上的表现，并提出前瞻动作归一化方法。研究表明归一化决定了策略感知与执行动作的坐标系，对缓解灾难性遗忘至关重要，为持续适应提供了关键设计依据。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.18167v1",
+      "source": "arxiv",
+      "title": "Characterizing Replay Retention Under Dynamics Shift in Model-Based Reinforcement Learning",
+      "abstract": "Adapting to changes in robot dynamics requires learning from new data without discarding experience that may still be useful. In continual model-based reinforcement learning (RL), replay collected before a dynamics change can slow adaptation, while removing it unnecessarily reduces available training data and can be especially costly if earlier dynamics return. We study when recent transitions are preferable to the full replay history. Two quantities characterize this trade-off: change magnitude and age-staleness area under the curve (AUC), measuring how well transition age separates stale from fresh data. Forgetting stale data helps after large permanent shifts but hurts when dynamics recur and older data becomes useful again. Choosing a replay strategy therefore depends on predicting when older data will help or hurt. We test these effects across two locomotion morphologies, two model-based RL algorithms, and Real-World RL benchmark perturbations. Because ground-truth staleness labels are unavailable on deployed robots, we evaluate whether an estimator built from interaction data can still provide the quantities needed to choose a replay strategy after permanent changes. Our results show that replay retention depends on change magnitude and on how the dynamics evolve.",
+      "authors": [
+        "Everest Yang",
+        "Skye Thompson",
+        "George D. Konidaris"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T05:47:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.18167v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "continual adaptation to dynamics shift via replay retention",
+      "llm_evidence_cn": "通过回放保留实现对动力学变化的持续适应",
+      "llm_evidence": "通过回放保留实现对动力学变化的持续适应",
+      "canonical_evidence": "通过回放保留实现对动力学变化的持续适应",
+      "llm_tldr_en": "This paper characterizes replay retention under dynamics shift in continual model-based RL, using change magnitude and age-staleness AUC to decide when forgetting stale data helps or hurts adaptation.",
+      "llm_tldr_cn": "论文针对机器人动力学变化下需学习新数据又不丢弃仍有用经验的问题，研究持续基于模型强化学习中的回放保留。作者用变化幅度与年龄-陈旧度AUC两个量刻画近期数据与完整历史之间的权衡。实验显示遗忘陈旧数据在永久大幅变化后有益，而在动力学重现时反而有害。该工作为持续学习中的经验保留与适应策略提供了量化依据。",
+      "llm_tldr": "论文针对机器人动力学变化下需学习新数据又不丢弃仍有用经验的问题，研究持续基于模型强化学习中的回放保留。作者用变化幅度与年龄-陈旧度AUC两个量刻画近期数据与完整历史之间的权衡。实验显示遗忘陈旧数据在永久大幅变化后有益，而在动力学重现时反而有害。该工作为持续学习中的经验保留与适应策略提供了量化依据。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.22055v1",
+      "source": "arxiv",
+      "title": "Benchmarking World Models for Continual Learning on Compositional Tasks",
+      "abstract": "A desirable property of a world model is the ability to learn continually across tasks, adapting to new environments without forgetting what the agent has already learnt. In particular, the ability to retain and reuse knowledge obtained from prior experiences underpins an agent's ability to efficiently adapt to novel environments, as the dynamics of the physical world can often be described in recurring mechanisms. However, the world model's measure of adaptation entangles two abilities: the speed and capacity to learn unseen tasks, and the reuse of knowledge already acquired, since incoming tasks carry novel content alongside what recurs. In order to isolate knowledge reuse from prior experiences, we propose a compositional continual learning benchmark for world models in robot manipulation. Specifically, we design each task curriculum with compositional tasks that combine aspects of the tasks seen in the sequence. We further factorise this composition along the axes of action and perception to better understand how different input modalities bottleneck knowledge reuse. We evaluate state-of-the-art world models under canonical continual learning methods, alongside a modular world model whose dynamics backbone contains explicitly reusable components. Results show that modularity balances reuse against forgetting better than conventional methods, but none solve the problem fully, leaving clear room for continual world models built to reuse without forgetting. More details are available on our project website: https://object814.github.io/Compositional-Continual-Learning/.",
+      "authors": [
+        "Haoyu Zhou",
+        "Joe Watson",
+        "Anson Lei",
+        "Ingmar Posner"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.RO"
+      ],
+      "published": "2026-09-18T17:46:28+00:00",
+      "link": "https://arxiv.org/pdf/2609.22055v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "continual learning benchmark isolating knowledge reuse across tasks",
+      "llm_evidence_cn": "隔离跨任务知识复用的持续学习基准",
+      "llm_evidence": "隔离跨任务知识复用的持续学习基准",
+      "canonical_evidence": "隔离跨任务知识复用的持续学习基准",
+      "llm_tldr_en": "World model adaptation metrics entangle learning new tasks with reusing prior knowledge; the authors propose a compositional continual learning benchmark that separates novel content from recurring mechanisms, isolating knowledge reuse and enabling finer evaluation of continual adaptation.",
+      "llm_tldr_cn": "理想的世界模型应能跨任务持续学习，在适应新环境时不遗忘已学知识，但现有度量把学习新任务的速度与旧知识复用混为一谈。论文提出组合式持续学习基准，将任务中的新颖内容与重复出现的机制分离，从而单独考察知识复用能力。实验表明该基准能更清晰地刻画世界模型在持续适应中的表现，为评估智能体的终身学习能力提供更精细的工具。",
+      "llm_tldr": "理想的世界模型应能跨任务持续学习，在适应新环境时不遗忘已学知识，但现有度量把学习新任务的速度与旧知识复用混为一谈。论文提出组合式持续学习基准，将任务中的新颖内容与重复出现的机制分离，从而单独考察知识复用能力。实验表明该基准能更清晰地刻画世界模型在持续适应中的表现，为评估智能体的终身学习能力提供更精细的工具。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.19754v1",
+      "source": "arxiv",
+      "title": "AutoData: Agentic Search for Pre-training Data Selection",
+      "abstract": "LLM agents have recently shown promise in automating machine learning engineering by editing model and training code under execution feedback. Data, however, remains largely outside this agentic optimisation loop. We frame pre-training data selection as heuristic engineering over per-document features, i.e., lexical statistics, categorical labels, and perplexity. We introduce AutoData, an agent that searches directly over executable selection algorithms. Unlike prior data mixture methods that optimise weights over a fixed set of domains, AutoData searches a richer program space of scoring, stratification, and stochastic selection rules, discovering feature interactions automatically by iteratively refining algorithms with validation feedback from a proxy model. Within an overnight search, AutoData discovers a selection algorithm that outperforms existing human-designed curation pipelines. Despite being searched only on this small proxy, the discovered recipe transfers to larger scales and improves the downstream metric CORE. These results suggest that data engineering can be treated as an agentic machine learning problem, extending autonomous research from model and training-code optimization to the data.",
+      "authors": [
+        "Yan Meng",
+        "Dhruv Srikanth",
+        "Bingchen Zhao",
+        "Zhengyao Jiang",
+        "Yuxiang Wu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-17T06:24:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.19754v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "agent searches over executable algorithms, iteratively refining with feedback",
+      "llm_evidence_cn": "智能体搜索可执行算法并依据反馈迭代改进",
+      "llm_evidence": "智能体搜索可执行算法并依据反馈迭代改进",
+      "canonical_evidence": "智能体搜索可执行算法并依据反馈迭代改进",
+      "llm_tldr_en": "LLM agents can automate ML engineering but data selection stays outside the loop. AutoData frames pre-training data selection as heuristic engineering and searches directly over executable selection algorithms, refining scoring and stratification rules via validation feedback from a proxy model.",
+      "llm_tldr_cn": "LLM智能体已能自动化机器学习工程，但数据选择仍游离于智能体优化回路之外。本文把预训练数据选择建模为对文档特征的启发式工程，提出AutoData智能体，直接在可执行选择算法的程序空间中搜索评分、分层与随机选择规则。它借助代理模型的验证反馈迭代改进算法，自动发现特征交互，扩展了智能体自我改进在数据层面的应用。",
+      "llm_tldr": "LLM智能体已能自动化机器学习工程，但数据选择仍游离于智能体优化回路之外。本文把预训练数据选择建模为对文档特征的启发式工程，提出AutoData智能体，直接在可执行选择算法的程序空间中搜索评分、分层与随机选择规则。它借助代理模型的验证反馈迭代改进算法，自动发现特征交互，扩展了智能体自我改进在数据层面的应用。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21378v1",
+      "source": "arxiv",
+      "title": "ArenaFlow: From Trajectory Ranking to Hierarchical Credit Propagation for Open-Ended Agent RL",
+      "abstract": "Reinforcement learning has substantially improved large language model (LLM) agents in verifiable domains, but remains difficult to apply to open-ended agent tasks, where solutions are diverse and reliable scalar rewards are hard to obtain. Recent pairwise evaluation methods alleviate reward discrimination collapse by replacing pointwise scoring with relative preferences. However, they still compress rich comparative feedback into a single trajectory-level reward, obscuring decisive intermediate steps and preventing successful behaviors from being consolidated into reusable skills. We propose ArenaFlow, a hierarchical credit propagation framework for open-ended agent reinforcement learning. ArenaFlow leverages tournament-based relative ranking to derive trajectory-level reward signals. Each comparison is further equipped with structured reflective evaluation, which reveals three types of supervision: pivotal success steps, reusable strategy skills, and usage attribution of retrieved skills. At the step level, ArenaFlow propagates trajectory-level advantages to high-confidence pivotal steps according to tournament survival depth, enabling more targeted optimization of local reasoning behaviors. At the skill level, ArenaFlow estimates skill utility from group-level usage attribution and maintains a global skill memory through utility-aware updating, pruning, and retrieval. The resulting high-utility skills further serve as policy priors for future exploration. Extensive experiments validate ArenaFlow's effectiveness on open-ended agent tasks.",
+      "authors": [
+        "Qiang Zhang",
+        "Ruixue Ding",
+        "Fanrui Zhang",
+        "Xi Chen",
+        "Boli Chen",
+        "Shihang Wang",
+        "Yinfeng Huang",
+        "Yi Zheng",
+        "Pengjun Xie",
+        "Kaipeng Zhang",
+        "Jiawei Liu",
+        "Zheng-Jun Zha"
+      ],
+      "primary_category": "cs.CL",
+      "categories": [
+        "cs.CL"
+      ],
+      "published": "2026-09-18T06:44:44+00:00",
+      "link": "https://arxiv.org/pdf/2609.21378v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "consolidating successful behaviors into reusable skills for open-ended agent RL",
+      "llm_evidence_cn": "开放智能体强化学习中将成功行为固化为可复用技能",
+      "llm_evidence": "开放智能体强化学习中将成功行为固化为可复用技能",
+      "canonical_evidence": "开放智能体强化学习中将成功行为固化为可复用技能",
+      "llm_tldr_en": "Open-ended LLM agent RL lacks reliable scalar rewards, and pairwise methods compress feedback into a single trajectory reward, obscuring key steps. ArenaFlow proposes hierarchical credit propagation with tournament-based ranking to consolidate successful behaviors into reusable skills.",
+      "llm_tldr_cn": "开放型LLM智能体任务解多样、奖励难以标定，现有成对评估方法将比较反馈压缩为轨迹级单一奖励，掩盖关键中间步骤且无法沉淀技能。本文提出ArenaFlow，一种面向开放型智能体强化学习的分层信用传播框架，借助锦标赛式排序将信用分配到具体步骤。该框架使成功行为得以固化为可复用技能，推动智能体在开放环境中持续积累与自我提升。",
+      "llm_tldr": "开放型LLM智能体任务解多样、奖励难以标定，现有成对评估方法将比较反馈压缩为轨迹级单一奖励，掩盖关键中间步骤且无法沉淀技能。本文提出ArenaFlow，一种面向开放型智能体强化学习的分层信用传播框架，借助锦标赛式排序将信用分配到具体步骤。该框架使成功行为得以固化为可复用技能，推动智能体在开放环境中持续积累与自我提升。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "open ended learning and evolutionary approaches for self evolving artificial agents",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.21533v1",
+      "source": "arxiv",
+      "title": "MACE: Memory-Agent Co-Evolution with Adaptive Memory Graphs for Multi-Agent Systems",
+      "abstract": "LLM-based multi-agent systems generate collaboration traces that record how agents plan tasks, verify intermediate results, and repair failures. Reusing these procedures requires preserving an action's prerequisites and the outputs needed by subsequent agents. Our empirical studies show that grouping these dependencies into functional memory units improves their retention, while connecting units increases retrieval of the units and links jointly required by a task. The preferred combination of units also changes between instructions and checklists, even when each combination's content is fixed across formats. Updating choices from the outcomes of each combination and format pairing outperforms scoring combinations and formats separately. These findings motivate MACE, a memory-agent co-evolution framework that adapts memory organization and agent memory use through execution feedback. Its MemGoG structure represents functional units as subgraphs of related conditions, actions, and outputs, connecting them through support, conflict, and repair relations. MACE Loop selects task-relevant units and relations within a memory budget and provides each agent with instructions or checklists for its current operation. It records the selected units, presentation formats, agent outputs, and task outcomes to update unit scores and relations for retrieval and inform subsequent presentation choices. Across eight benchmarks, MACE outperforms ten baselines with an average score of 81.11%, compared with 78.97% for the strongest baseline, SAGE.",
+      "authors": [
+        "Kairui Yang",
+        "Minghao An",
+        "Xunkai Li",
+        "Ziheng Yi",
+        "Zekai Chen",
+        "Guangyuan He",
+        "Rong-Hua Li"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-18T09:25:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.21533v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "memory-agent co-evolution with adaptive memory graphs",
+      "llm_evidence_cn": "记忆与智能体的协同演化及自适应记忆图",
+      "llm_evidence": "记忆与智能体的协同演化及自适应记忆图",
+      "canonical_evidence": "记忆与智能体的协同演化及自适应记忆图",
+      "llm_tldr_en": "MACE organizes multi-agent collaboration traces into functional memory units linked as adaptive graphs, enabling memory-agent co-evolution and better reuse of planning and repair procedures.",
+      "llm_tldr_cn": "论文针对多智能体系统产生的协作轨迹难以保留动作前置条件与后续依赖以便复用的问题，提出MACE框架。该方法将依赖关系组织为功能记忆单元并连接为自适应记忆图，实现记忆与智能体的协同演化。实验表明功能记忆单元提升保留率，连接单元增强检索，且依据组合与格式结果更新选择优于单独打分。该工作为多智能体系统的记忆复用与协同演化提供了有效机制。",
+      "llm_tldr": "论文针对多智能体系统产生的协作轨迹难以保留动作前置条件与后续依赖以便复用的问题，提出MACE框架。该方法将依赖关系组织为功能记忆单元并连接为自适应记忆图，实现记忆与智能体的协同演化。实验表明功能记忆单元提升保留率，连接单元增强检索，且依据组合与格式结果更新选择优于单独打分。该工作为多智能体系统的记忆复用与协同演化提供了有效机制。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "date": "20260921",
+  "date_label": "",
+  "generated_at": "2026-09-21 22:15:25 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.21749v1",
+      "route": "202609/21/2609.21749v1-graphskillevo-evolutionary-optimization-of-graph-structured-agent-skills",
+      "title": "GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "对图结构智能体技能的进化优化",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.21358v1",
+      "route": "202609/21/2609.21358v1-fan-foresight-action-normalization-for-continual-adaptation-of-vision-language-action-models",
+      "title": "FAN: Foresight Action Normalization for Continual Adaptation of Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "持续获取新技能同时保留已学能力",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.22055v1",
+      "route": "202609/21/2609.22055v1-benchmarking-world-models-for-continual-learning-on-compositional-tasks",
+      "title": "Benchmarking World Models for Continual Learning on Compositional Tasks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "隔离跨任务知识复用的持续学习基准",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.18167v1",
+      "route": "202609/21/2609.18167v1-characterizing-replay-retention-under-dynamics-shift-in-model-based-reinforcement-learning",
+      "title": "Characterizing Replay Retention Under Dynamics Shift in Model-Based Reinforcement Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过回放保留实现对动力学变化的持续适应",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.19754v1",
+      "route": "202609/21/2609.19754v1-autodata-agentic-search-for-pre-training-data-selection",
+      "title": "AutoData: Agentic Search for Pre-training Data Selection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "智能体搜索可执行算法并依据反馈迭代改进",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.21378v1",
+      "route": "202609/21/2609.21378v1-arenaflow-from-trajectory-ranking-to-hierarchical-credit-propagation-for-open-ended-agent-rl",
+      "title": "ArenaFlow: From Trajectory Ranking to Hierarchical Credit Propagation for Open-Ended Agent RL",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "开放智能体强化学习中将成功行为固化为可复用技能",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    },
+    {
+      "paper_id": "2609.21533v1",
+      "route": "202609/21/2609.21533v1-mace-memory-agent-co-evolution-with-adaptive-memory-graphs-for-multi-agent-systems",
+      "title": "MACE: Memory-Agent Co-Evolution with Adaptive Memory Graphs for Multi-Agent Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "记忆与智能体的协同演化及自适应记忆图",
+      "first_seen_at": "2026-09-21 22:15:25 UTC",
+      "updated_at": "2026-09-21 22:15:25 UTC"
+    }
+  ]
+}

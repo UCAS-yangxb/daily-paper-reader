@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-20</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-21</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 3 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 7 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>1</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>2</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>6</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 21:16:10 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-21 22:15:25 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读1篇、速读2篇，重点聚焦9.0分的SoL-Pi如何递归扩展自动研究循环以打造高效Agent Harness。最值得看的是SoL-Pi的自动研究循环思路，以及RESKILL用显式失败归因和结构化修复提升交互Agent可靠性。普通读者可先读SoL-Pi理解递归扩展框架，再按需了解Agent失败修复与自进化搜索索引。</p>
+<p>今日共处理 7 篇论文，精读 1 篇、速读 6 篇，重点落在图结构智能体技能进化与持续学习/持续适应方向。</p>
+<p>最值得看的是 8.0 分的《GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills》，其次可关注 7.0 分的 VLA 持续适应（FAN）和组合任务世界模型持续学习基准。</p>
+<p>普通读者可先读精读了解图结构技能优化，再按需浏览 VLA 与持续学习基准类速读，暂不必深追 6.0 分的 replay retention 细节。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,7 +83,7 @@
     <strong class="dpr-home-dashboard-count">1 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness">SoL-Pi: Recursively Scaling Auto-Research Loops for Efficient Agent Harness</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills">GraphSkillEvo: Evolutionary Optimization of Graph-Structured Agent Skills</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>1</strong></span></div>
 </section>
@@ -91,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">2 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents">RESKILL: Explicit Failure Attribution and Structured Repair for Interactive Language Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Self-Evolving Search Index">Self-Evolving Search Index</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="FAN: Foresight Action Normalization for Continual Adaptation of Vision-Language-Action Models">FAN: Foresight Action Normalization for Continual Adaptation of Vision-Language-Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Benchmarking World Models for Continual Learning on Compositional Tasks">Benchmarking World Models for Continual Learning on Compositional Tasks</span></li><li><span class="dpr-home-dashboard-paper-title" title="Characterizing Replay Retention Under Dynamics Shift in Model-Based Reinforcement Learning">Characterizing Replay Retention Under Dynamics Shift in Model-Based Reinforcement Learning</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>2</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">self-evolve <strong>6</strong></span></div>
 </section>
 </div>
 
