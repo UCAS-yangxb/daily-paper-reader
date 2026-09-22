@@ -1,0 +1,410 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-22T22:06:51.293733+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 3,
+    "quick_skim_target": 11,
+    "quick_selected": 3
+  },
+  "deep_dive": [
+    {
+      "id": "2609.24289v1",
+      "source": "arxiv",
+      "title": "TTSE: A Two-Track Online Self-Evolution Framework",
+      "abstract": "As Large Language Model (LLM) agents are applied in continuously interactive environments, driving the evolution of their own capabilities becomes a core problem for achieving long-term autonomy. Currently, environmental knowledge is typically treated as an external fixed input rather than as part of the agent's ongoing evolution. Reinforcement learning methods usually optimize policies through environmental interaction but tend to adapt only to fixed task distributions or single environments. This paper proposes TTSE (Two-Track Self-Evolution), a dual-track online self-evolution framework that separates evolving knowledge into FACT (environmental facts, whose reliability is continuously verified through interaction evidence) and TIP (task-conditioned implementation procedures). From a decision-theoretic perspective, we decompose the agent's excess risk into environment-representation regret and conditional-execution regret, characterize the conditions under which environment-conditioned policies strictly outperform condition-agnostic policies, and bound the downstream risk in terms of FACT identification error and cross-condition mismatch cost. In practice, TTSE's ablation experiments on GDPevo validate the advantage of dual-track evolution. On the classic agent task benchmarks ALFWorld and ScienceWorld, TTSE further demonstrates superior task adaptation. Moreover, TTSE is broadly compatible with existing skill self-evolution methods; combined with the Bayesian-Agent algorithm, a single-track ablation validates the dual-track advantage, substantially improving the aggregate score across the five major domains of SOPBench over three independent repetitions. Finally, on the real end-to-end task benchmark PinchBench, TTSE is integrated into a general agent framework via retrieval-based injection and stably outperforms the baseline across three independent runs.",
+      "authors": [
+        "Ruimin Pei",
+        "Yongkang Wu",
+        "Shangyi Zheng",
+        "Yaqing Zhang",
+        "Deyang Li",
+        "Jianjun Tao",
+        "Xinyu Zhang",
+        "Xiang Zhang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-09-21T08:47:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.24289v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "dual-track online self-evolution of LLM agents in interactive environments",
+      "llm_evidence_cn": "LLM智能体在交互环境中的双轨在线自我演化",
+      "llm_evidence": "LLM智能体在交互环境中的双轨在线自我演化",
+      "canonical_evidence": "LLM智能体在交互环境中的双轨在线自我演化",
+      "llm_tldr_en": "Driving LLM agents to evolve their own capabilities is key to long-term autonomy, yet environmental knowledge is treated as fixed input and RL adapts only to fixed task distributions. TTSE is a two-track online self-evolution framework separating verified facts from task procedures.",
+      "llm_tldr_cn": "在持续交互环境中，驱动智能体自身能力演化是实现长期自主的核心问题，但环境知识常被当作固定外部输入，强化学习也仅适应固定任务分布。本文提出双轨在线自我演化框架TTSE，将演化知识分为持续验证的环境事实FACT与任务条件化的实现流程TIP，实现知识与能力的在线协同演化，为LLM智能体长期自主提供新框架。",
+      "llm_tldr": "在持续交互环境中，驱动智能体自身能力演化是实现长期自主的核心问题，但环境知识常被当作固定外部输入，强化学习也仅适应固定任务分布。本文提出双轨在线自我演化框架TTSE，将演化知识分为持续验证的环境事实FACT与任务条件化的实现流程TIP，实现知识与能力的在线协同演化，为LLM智能体长期自主提供新框架。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.24972v1",
+      "source": "arxiv",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "abstract": "An LLM agent's capability is largely magnified by its harness, namely the prompts, control flow, tooling, memory, and context management surrounding the frozen backbone model. Recent methods increasingly automate this process by iteratively proposing and selecting component-wise edits of an agent harness, practically establishing a form of recursive self-improvement (RSI) at the agent-system level. However, such recursive evolution may overfit by memorizing the training tasks, showing large in-distribution gains that shrink or even vanish on out-of-distribution benchmarks. We introduce Regularized Recursive Self-Improvement of Agent Harnesses (RRSI), which incorporates the principles of regularizations into harness self-improvement by constraining the evolution candidate proposal and selection. The proposer operates with a temporally annealed budget, limiting how many edits a candidate can bundle, and it encourages unexplored trajectories based on evolution history. The selector is equipped with a critic and a pruner: the critic screens benchmark-specific proposals, while the pruner, removes changes that are too small, too expensive, or no longer useful. Together these constraints favor reusable agent mechanisms over benchmark-specific ones or even noises. Across eight benchmarks spanning coding, agentic workspace and engineering design tasks, RRSI gains up to 14.1 points on the split it evolves against and up to 4.7 points on the five out-of-distribution benchmarks, while producing a harness that runs on 30% fewer policy tokens than the unregularized evolution. Code is available at https://github.com/google-research/rrsi and project page is https://regularized-rsi.com/.",
+      "authors": [
+        "Peng Xia",
+        "Rujun Han",
+        "Zifeng Wang",
+        "Yanfei Chen",
+        "Yufan Zhang",
+        "Yoonho Lee",
+        "Chengsong Huang",
+        "Han Yu",
+        "Zhongying CuiZhu",
+        "Yifei Ming",
+        "Huaxiu Yao",
+        "Burak Gokturk",
+        "Tomas Pfister",
+        "Chen-Yu Lee"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-09-21T17:54:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.24972v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "regularized recursive self-improvement of agent harnesses",
+      "llm_evidence_cn": "智能体工具链的正则化递归自我改进",
+      "llm_evidence": "智能体工具链的正则化递归自我改进",
+      "canonical_evidence": "智能体工具链的正则化递归自我改进",
+      "llm_tldr_en": "RRSI introduces regularization into recursive self-improvement of LLM agent harnesses to prevent overfitting to training tasks, improving out-of-distribution generalization of autonomously evolved agent systems.",
+      "llm_tldr_cn": "该文指出LLM智能体的能力很大程度上由其工具链（提示、控制流、工具、记忆与上下文管理）决定，近期方法通过迭代提出并选择组件级编辑来自动改进工具链，形成智能体系统层面的递归自我改进，但这种递归进化容易记忆训练任务而过拟合，在分布外基准上增益骤减甚至消失。作者提出RRSI，将正则化思想引入工具链自改进，约束进化过程以提升泛化。该方法缓解了自进化中的过拟合问题，为智能体系统的自主递归改进提供了更稳健的机制，直接契合自进化主题。",
+      "llm_tldr": "该文指出LLM智能体的能力很大程度上由其工具链（提示、控制流、工具、记忆与上下文管理）决定，近期方法通过迭代提出并选择组件级编辑来自动改进工具链，形成智能体系统层面的递归自我改进，但这种递归进化容易记忆训练任务而过拟合，在分布外基准上增益骤减甚至消失。作者提出RRSI，将正则化思想引入工具链自改进，约束进化过程以提升泛化。该方法缓解了自进化中的过拟合问题，为智能体系统的自主递归改进提供了更稳健的机制，直接契合自进化主题。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.23989v1",
+      "source": "arxiv",
+      "title": "ACLArena: Agent Continue Learning in Multi-stage Post-training",
+      "abstract": "Building general-purpose agents for industrial deployment requires integrating multiple capabilities, each typically acquired at a distinct stage of training. Yet there is currently no well-established recipe for Agent Continual Learning (ACL), with little understanding of the trade-offs among existing integration paradigms. To address this gap, we introduce ACLArena, a framework for comprehensively studying, analyzing, and evaluating ACL. We first build a sequential training pipeline and conduct an in-depth analysis that explains the mechanisms of forgetting and generalization from two complementary perspectives, the model level and the token level. Guided by these analyses, we systematically compare multi-teacher on-policy distillation, self-distilled fine-tuning, and model merging to assess their ability to recover previously learned capabilities while preserving newly acquired ones. Through extensive experiments, we develop a detailed understanding of how capabilities transfer across stages. Finally, we propose a new ACL recipe that combines offline replay over high-quality trajectories with a routed network of multiple LoRA experts each specialized via RL, substantially improving the agent's ability to learn across multiple domains. Comprehensive experiments on four reasoning and agentic tasks, evaluated under both in-domain and out-of-domain settings, demonstrate the value of our analysis and the effectiveness of our approach.",
+      "authors": [
+        "Haixin Wang",
+        "Xiaoxuan Wang",
+        "Junkai Zhang",
+        "Han Zhang",
+        "Renliang Sun",
+        "Alexander K Taylor",
+        "Yidan Shi",
+        "Haoran Deng",
+        "Chenguang Wang",
+        "Jason Cong",
+        "Yizhou Sun",
+        "Wei Wang"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-21T01:48:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.23989v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Agent Continual Learning framework studying forgetting and generalization",
+      "llm_evidence_cn": "智能体持续学习框架，研究遗忘与泛化",
+      "llm_evidence": "智能体持续学习框架，研究遗忘与泛化",
+      "canonical_evidence": "智能体持续学习框架，研究遗忘与泛化",
+      "llm_tldr_en": "There is no established recipe for Agent Continual Learning; ACLArena builds a sequential training pipeline and systematically compares integration paradigms to analyze forgetting and generalization.",
+      "llm_tldr_cn": "构建工业级通用智能体需要整合多个在不同训练阶段获得的能力，但智能体持续学习缺乏成熟方案，各集成范式的权衡也鲜有理解。本文提出 ACLArena 框架，搭建顺序训练流水线，从模型层与token层两个视角解释遗忘与泛化机制，并系统比较多教师在线策略蒸馏、自蒸馏微调等范式。该工作为持续学习提供可复现的评测与深入分析，是智能体终身学习方向的重要基础设施。",
+      "llm_tldr": "构建工业级通用智能体需要整合多个在不同训练阶段获得的能力，但智能体持续学习缺乏成熟方案，各集成范式的权衡也鲜有理解。本文提出 ACLArena 框架，搭建顺序训练流水线，从模型层与token层两个视角解释遗忘与泛化机制，并系统比较多教师在线策略蒸馏、自蒸馏微调等范式。该工作为持续学习提供可复现的评测与深入分析，是智能体终身学习方向的重要基础设施。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "lifelong learning and continual adaptation in artificial agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.24271v1",
+      "source": "arxiv",
+      "title": "ME-Brain-1.0: Memory, Cognition and Action for Evolving Embodied Intelligence",
+      "abstract": "Current embodied systems largely rely on pretrained capabilities that remain fixed after deployment, limiting their ability to learn from physical interaction. We introduce MachEmbodied-Brain (ME-Brain), a self-evolving embodied system organized around a closed loop of action execution, experience acquisition, experience evolution, and improved execution. Evolvable Memory consolidates multimodal trajectories into hierarchical, reusable experience; Cognitive Core transforms physical experience into transferable skills; and the Action Model combines event-driven keyframes, EventCell local-world prediction, and action-conditioned memory modulation to focus computation on decision-critical moments, regions, and historical evidence. Together, these modules shift embodied intelligence from train-and-freeze to deploy-and-evolve without model retraining. Cognitive Core outperforms the strongest comparison models by 8.2 and 9.6 points on embodied and agent benchmarks. The Action Model achieves 47.88% mean success on RoboMME, a 3.26-point improvement over the strongest baseline. On RoboDojo, it reaches a 21.51 mean Score and 16.03% success rate, exceeding $π_{0.5}$ by 10.10 and 9.12 points. On the six-task ME-RealBench, ME-Brain achieves a 69.5 mean Score and 66.7% success rate, outperforming DM0.5 by 12.8 and 11.7 points, respectively.",
+      "authors": [
+        "Wei He",
+        "Hengtao Li",
+        "Zhongrui Yu",
+        "Xuhan Zhu",
+        "Maokui He",
+        "Zide Liu",
+        "Xiyue Zhang",
+        "Xianwei Mao",
+        "Chunpeng Zhou",
+        "Jia Shi",
+        "Yanze Xin",
+        "Jingwen Li",
+        "Jingxie Zheng",
+        "Sijie Zeng",
+        "Chenfeng Wang",
+        "Fan Lu",
+        "Zeyu Zhang",
+        "Shuai Guo",
+        "Hengxuan Zhang",
+        "Pengfei Yu",
+        "Jia Shi",
+        "Yu Liu",
+        "Kun Zhan",
+        "Yan Xie"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T08:35:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.24271v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-evolving embodied system with closed loop of experience evolution and improved execution",
+      "llm_evidence_cn": "自演化具身系统，闭环实现经验演化与执行改进",
+      "llm_evidence": "自演化具身系统，闭环实现经验演化与执行改进",
+      "canonical_evidence": "自演化具身系统，闭环实现经验演化与执行改进",
+      "llm_tldr_en": "Embodied systems rely on fixed pretrained capabilities after deployment. ME-Brain is a self-evolving embodied system closing the loop of execution, experience evolution and improved execution, turning physical interaction into transferable skills.",
+      "llm_tldr_cn": "现有具身系统在部署后能力固定，难以从物理交互中持续学习与改进。论文提出 ME-Brain 自演化具身系统，围绕动作执行、经验获取、经验演化与改进执行的闭环，设计可演化记忆将多模态轨迹固化为分层可复用经验，认知核心把物理经验转化为可迁移技能，动作模型则结合事件驱动关键帧与记忆调制聚焦关键决策。该工作为具身智能的自主进化提供了完整系统框架。",
+      "llm_tldr": "现有具身系统在部署后能力固定，难以从物理交互中持续学习与改进。论文提出 ME-Brain 自演化具身系统，围绕动作执行、经验获取、经验演化与改进执行的闭环，设计可演化记忆将多模态轨迹固化为分层可复用经验，认知核心把物理经验转化为可迁移技能，动作模型则结合事件驱动关键帧与记忆调制聚焦关键决策。该工作为具身智能的自主进化提供了完整系统框架。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.22792v1",
+      "source": "arxiv",
+      "title": "SelfOp: An Optimization Algorithm for Self-Improving Security Agents",
+      "abstract": "LLM agents are increasingly used for security tasks: vulnerability discovery, exploit reproduction, and patch generation. Improving them at the model level demands expert demonstrations or computable rewards, which security tasks rarely offer: traces are costly, failures hard to diagnose, rewards sparse, and non-computable. Efforts thus shift to the harness and context, but manual tuning needs task-specific expertise and scales poorly, while automated methods rely on scarce ground truth, stronger optimizer models, or unguided propose-and-evaluate loops that reduce to costly trial and error.   We introduce SelfOp, an algorithm that automatically improves a frozen security agent's task context (instructions, skills, and reference documents), without modifying its execution harness and model weights. SelfOp casts context optimization as chain-rule-inspired textual gradient descent: from a single instance's outcome, it propagates error signals backward through the evaluator, the agent's trajectory, and the context artifacts that shaped its behavior, yielding per-instance textual gradients. Gradients are accumulated across instances by clustering, ranking, and filtering, and committed only under cross-instance consensus. A convergence detector monitors the gradient signal itself and stops once the context has absorbed the generalizable information in the training data, without held-out validation data.   We evaluate SelfOp on CyberGym, a benchmark of real-world vulnerability reproduction tasks. With fewer than 200 training examples, SelfOp yields a 17-point self-improvement for GPT-5.4-mini (with Codex), enough to surpass the frontier GPT-5.4 baseline by 6 points, and an 18.5-point self-improvement for GPT-5.4 itself. The optimized skills also transfer across models, highlighting that SelfOp-optimized skills learn generalizable task knowledge not model-specific patterns.",
+      "authors": [
+        "Saad Ullah",
+        "Yigitcan Kaya",
+        "Christopher Kruegel",
+        "Giovanni Vigna",
+        "Gianluca Stringhini"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-09-19T05:51:27+00:00",
+      "link": "https://arxiv.org/pdf/2609.22792v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "algorithm that automatically improves a frozen security agent task context and skills",
+      "llm_evidence_cn": "自动优化冻结安全智能体任务上下文与技能的算法",
+      "llm_evidence": "自动优化冻结安全智能体任务上下文与技能的算法",
+      "canonical_evidence": "自动优化冻结安全智能体任务上下文与技能的算法",
+      "llm_tldr_en": "Security LLM agents are hard to improve at the model level due to sparse, non-computable rewards. SelfOp automatically optimizes a frozen agent task context including instructions, skills and reference documents, without modifying the model.",
+      "llm_tldr_cn": "安全领域的 LLM 智能体面临轨迹昂贵、失败难诊断、奖励稀疏且不可计算的困境，模型层面改进缺乏专家示范与可计算奖励，人工调参又难以规模化。论文提出 SelfOp 算法，在不修改冻结智能体模型的前提下，自动优化其任务上下文，包括指令、技能与参考文档，从而避免依赖更强优化模型或无指导的试错循环。该工作为缺乏监督信号场景下的智能体自我改进提供了可行路径。",
+      "llm_tldr": "安全领域的 LLM 智能体面临轨迹昂贵、失败难诊断、奖励稀疏且不可计算的困境，模型层面改进缺乏专家示范与可计算奖励，人工调参又难以规模化。论文提出 SelfOp 算法，在不修改冻结智能体模型的前提下，自动优化其任务上下文，包括指令、技能与参考文档，从而避免依赖更强优化模型或无指导的试错循环。该工作为缺乏监督信号场景下的智能体自我改进提供了可行路径。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.24663v1",
+      "source": "arxiv",
+      "title": "Beyond Endpoint Performance: Process-Level Evaluation of Self-Evolving Agents",
+      "abstract": "Self-evolving agents convert interaction feedback into persistent artifacts, such as memories or skills, which in turn guide subsequent decisions. As these artifacts are iteratively updated throughout an experience stream, the capabilities they support may evolve. Consequently, endpoint performance alone offers an incomplete view of self-evolution. Process-level evaluation is therefore essential to identify when a target capability emerges and whether later updates strengthen, preserve, or weaken it. Motivated by this, we propose \\textsc{EvoPathBench}, a benchmark that tracks individual capabilities during artifact-level self-evolution. EvoPathBench fixes the base model, tools, freezes evolving artifacts at successive checkpoints, and evaluates the target capability on held-out episodes. This benchmark evaluates agent self-evolution using public trading data and calibrated trajectories. It tests three capabilities: generalization to unseen tasks, retention after unrelated learning, and rule adaptation to new evidence. Experimental results show that gains on similar unseen tasks often weaken under distribution shift, retention losses are concentrated in a minority of evolution paths, and no method achieves reliable rule adaptation. Moreover, while self-evolution enables agents to generate candidate artifacts with substantial held-out gains, the selected updates consistently fall short of realizing this potential. Together, these findings establish capability-level process evaluation as a foundation for analyzing self-evolution, identifying candidate evaluation and selection as key targets for improvement.",
+      "authors": [
+        "Hongqiang Lin",
+        "Chao Liu",
+        "Xiaofan Bai",
+        "Xuan Jin",
+        "Yuhong Li",
+        "Nenggan Zheng",
+        "Xipeng Cao"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-21T14:28:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.24663v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "process-level evaluation of self-evolving agents tracking evolving artifacts",
+      "llm_evidence_cn": "面向自进化智能体的过程级评估，追踪演化产物",
+      "llm_evidence": "面向自进化智能体的过程级评估，追踪演化产物",
+      "canonical_evidence": "面向自进化智能体的过程级评估，追踪演化产物",
+      "llm_tldr_en": "EvoPathBench tracks capabilities during artifact-level self-evolution, freezing evolving artifacts at checkpoints to see when capabilities emerge or degrade.",
+      "llm_tldr_cn": "自进化智能体将交互反馈转化为记忆或技能等持久产物，这些产物随经验流不断更新，使能力持续演化，因此仅凭终点性能无法完整刻画自我进化。本文提出EvoPathBench基准，固定基础模型与工具，在连续检查点冻结演化产物并逐项追踪能力变化。它能识别目标能力何时出现，以及后续更新是增强、保持还是削弱该能力。该工作强调自进化智能体的评估应从终点性能转向过程层面。",
+      "llm_tldr": "自进化智能体将交互反馈转化为记忆或技能等持久产物，这些产物随经验流不断更新，使能力持续演化，因此仅凭终点性能无法完整刻画自我进化。本文提出EvoPathBench基准，固定基础模型与工具，在连续检查点冻结演化产物并逐项追踪能力变化。它能识别目标能力何时出现，以及后续更新是增强、保持还是削弱该能力。该工作强调自进化智能体的评估应从终点性能转向过程层面。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.24862v1",
+      "source": "arxiv",
+      "title": "When Tomorrow Becomes Today: Self-Evolving Policies for Agentic Time-Series Forecasting",
+      "abstract": "Agentic time series forecasting concerns systems whose underlying mechanisms evolve, making the relative effectiveness of numerical models, reasoning strategies, and intervention rules inherently time-varying. Consequently, a time series agent must adapt the forecasts it produces and the orchestration policy that determines which components to trust and how to coordinate them. The deployment process naturally provides supervision for this adaptation as forecast horizons elapse and realized targets reveal the effectiveness of earlier decisions. Committing all numerical expert forecasts and candidate agent paths before target observation allows each realized outcome to evaluate the entire alternative set, providing delayed feedback without additional annotation. However, existing time series agents primarily incorporate prior experience through forecast refinement, reflection, or retrieval, without systematically converting realized outcomes into persistent updates to the joint orchestration policy governing later origins. To exploit this delayed feedback systematically, we introduce TimEvolve, a frozen-backbone time series agent that converts each realized outcome into persistent joint updates of expert trust, agent path selection, and intervention strength. A temporally ordered predict, reveal, and update protocol applies this feedback to subsequent forecasts. Experiments across eight Time-MMD domains show that TimEvolve achieves the best average MSE and MAE ranks among fifteen methods and the lowest errors on both metrics in seven domains. These results demonstrate the value of learning forecasting policies from the futures encountered during deployment.",
+      "authors": [
+        "Yifan Hu",
+        "Xilin Dai",
+        "Zhiyuan Qu",
+        "Yiding Liu",
+        "Zewei Dong",
+        "Jiang-ming Yang",
+        "Qiang Xu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI"
+      ],
+      "published": "2026-09-21T16:33:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.24862v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-evolving policies for agentic forecasting, adapt orchestration policy online",
+      "llm_evidence_cn": "智能体预测的自进化策略，在线自适应编排策略",
+      "llm_evidence": "智能体预测的自进化策略，在线自适应编排策略",
+      "canonical_evidence": "智能体预测的自进化策略，在线自适应编排策略",
+      "llm_tldr_en": "Time-series agentic forecasting has time-varying mechanisms; this work lets the agent self-evolve its orchestration policy using delayed feedback from realized forecast outcomes.",
+      "llm_tldr_cn": "智能体时间序列预测面对机制持续演化的系统，数值模型、推理策略与干预规则的相对有效性随时间变化，因此智能体必须同时调整预测与决定信任哪些组件的编排策略。本文提出自进化策略方法，利用预测期结束后真实目标揭示的延迟反馈，在观测前提交全部候选专家预测与智能体路径，使每个结果能评估整个备选集合。该机制让编排策略随部署在线演化，提升长期预测的自适应能力。",
+      "llm_tldr": "智能体时间序列预测面对机制持续演化的系统，数值模型、推理策略与干预规则的相对有效性随时间变化，因此智能体必须同时调整预测与决定信任哪些组件的编排策略。本文提出自进化策略方法，利用预测期结束后真实目标揭示的延迟反馈，在观测前提交全部候选专家预测与智能体路径，使每个结果能评估整个备选集合。该机制让编排策略随部署在线演化，提升长期预测的自适应能力。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "self-evolving agents that autonomously improve their capabilities over time",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.23512v1",
+      "source": "arxiv",
+      "title": "AgentBetta: Verification-Driven Adaptive Configuration of an AI Nano-Agent through Selective Expansion and Verified Contraction",
+      "abstract": "Large language model agents are typically deployed with predefined configurations, although the required model capability, context, tools, permissions, memory, and computational resources can vary substantially across tasks. This study develops and evaluates AgentBetta, an adaptive AI Nano-Agent framework that represents these factors as an executable configuration and updates them through verification-driven diagnosis, selective expansion, and verification-based counterfactual contraction. The evaluation distinguishes controlled mechanism validation from external agent comparisons. On the AB-ConfigBench benchmark, AgentBetta achieved 91.38% verified success while reducing median context allocation from 64,000 to 8,000 context characters and median tool exposure from five tools to zero compared with the fully provisioned configuration. The configuration-deficiency diagnosis achieved a macro-F1 score of 0.819 with precision of 1.000 across the evaluated dimensions, and selective expansion avoided unnecessary changes to unrelated configuration dimensions. Post-success contraction preserved verification outcomes in 56.41% of evaluated one-dimension contraction probes, indicating that some successful configurations contained removable capability under the tested conditions. External evaluations indicate that adaptive configuration can improve the balance between verified task completion and capability exposure; however, the results vary across benchmarks and agent families. In particular, the cross-family replication did not reproduce the primary-backbone accuracy ordering, and specialized systems remained advantageous for certain task domains. These results support interpreting AgentBetta as a configuration-adaptation mechanism that regulates capability allocation and inference expenditure rather than as a universal replacement for specialized agent architectures.",
+      "authors": [
+        "Md. Ashraful Babu"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-20T09:56:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.23512v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptive agent configuration updated via verification-driven expansion and contraction",
+      "llm_evidence_cn": "通过验证驱动的扩张与收缩自适应更新智能体配置",
+      "llm_evidence": "通过验证驱动的扩张与收缩自适应更新智能体配置",
+      "canonical_evidence": "通过验证驱动的扩张与收缩自适应更新智能体配置",
+      "llm_tldr_en": "LLM agents ship with fixed configs though task needs vary; AgentBetta treats capability, context, tools and memory as an executable config and adapts it via verification-driven diagnosis and contraction.",
+      "llm_tldr_cn": "大模型智能体通常以预定义配置部署，但任务所需的模型能力、上下文、工具与资源差异巨大。本文提出 AgentBetta 框架，将上述因素表示为可执行配置，并通过验证驱动的诊断、选择性扩张与基于验证的反事实收缩进行自适应更新。在 AB-ConfigBench 上取得 91.38% 的验证成功率，同时降低上下文占用，表明自适应配置能兼顾效果与资源效率。",
+      "llm_tldr": "大模型智能体通常以预定义配置部署，但任务所需的模型能力、上下文、工具与资源差异巨大。本文提出 AgentBetta 框架，将上述因素表示为可执行配置，并通过验证驱动的诊断、选择性扩张与基于验证的反事实收缩进行自适应更新。在 AB-ConfigBench 上取得 91.38% 的验证成功率，同时降低上下文占用，表明自适应配置能兼顾效果与资源效率。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "adaptive mechanisms enabling agents to evolve in dynamic environments",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.22682v1",
+      "source": "arxiv",
+      "title": "Self-Organizing Agent Teams Learn to Reason Together",
+      "abstract": "Collective intelligence depends not only on what team members know, but also on how they organize their work. When the structure of a solution is unknown, useful roles and divisions of labor cannot be specified in advance; teams must learn from experience how to organize reasoning as it unfolds. Human teams routinely adapt this way, while existing AI agent teams rely on fixed protocols, explicit task decomposition, or routing. We introduce Self-Organizing Agent Teams (SAT), fixed teams of AI agents that learn reusable strategies from prior collaborations to organize roles, conversational phases, participation, and information flow. These strategies enable what we call collaborative computation: agents exchange, challenge, repair, and synthesize partial reasoning into solutions no member produced independently. In two independent settings, we learn teamwork strategies that transfer unchanged to unseen benchmarks, using only 15 mathematics and 25 graduate-level knowledge problems. Across five mathematics and physics benchmarks, self-organizing teams average 66.7% accuracy, versus 48.8% for their strongest member, 58.7% for compute-matched inference by that agent, and 59.0% for a perfect router over members' independent answers; on AIME 2026, they exceed this router by 13.4 points. Because gains vary across benchmarks, we ask when self-organizing collaboration helps. Across eight benchmarks, demonstrability (the organizational-psychology construct of whether a team can distinguish correct from incorrect reasoning) strongly tracks improvement over the strongest member (Spearman $ρ=0.90$, $p=0.005$): teams benefit most when correct reasoning can be recognized once it appears. More broadly, these results suggest that organization itself can become an agent capability: agent teams can learn how to reason together and produce solutions their members could not reach independently.",
+      "authors": [
+        "Aneesh Pappu",
+        "Mirac Suzgun",
+        "Yongchan Kwon",
+        "Federico Bianchi",
+        "Batu El",
+        "Mykel J. Kochenderfer",
+        "Hancheng Cao",
+        "James Zou"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-09-19T01:27:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.22682v1",
+      "tags": [
+        "keyword:self-evolve",
+        "query:self-evolve"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "agent teams learning reusable strategies from prior collaborations to self-organize",
+      "llm_evidence_cn": "智能体团队从既往协作中学习可复用策略实现自组织",
+      "llm_evidence": "智能体团队从既往协作中学习可复用策略实现自组织",
+      "canonical_evidence": "智能体团队从既往协作中学习可复用策略实现自组织",
+      "llm_tldr_en": "When solution structure is unknown, roles and division of labor cannot be predefined, yet AI agent teams rely on fixed protocols. Self-Organizing Agent Teams learn reusable strategies from prior collaborations to organize roles, phases, participation, and information flow.",
+      "llm_tldr_cn": "集体智能不仅取决于成员知识，也取决于其组织方式，但结构未知时角色与分工难以预先指定，现有AI智能体团队多依赖固定协议或显式分解。本文提出自组织智能体团队SAT，从既往协作中学习可复用策略来组织角色、会话阶段、参与与信息流，使智能体通过交换、质疑、修复与综合推进协同推理。",
+      "llm_tldr": "集体智能不仅取决于成员知识，也取决于其组织方式，但结构未知时角色与分工难以预先指定，现有AI智能体团队多依赖固定协议或显式分解。本文提出自组织智能体团队SAT，从既往协作中学习可复用策略来组织角色、会话阶段、参与与信息流，使智能体通过交换、质疑、修复与综合推进协同推理。",
+      "llm_tags": [
+        "query:self-evolve"
+      ],
+      "matched_query_tag": "query:self-evolve",
+      "matched_query_text": "agents capable of self-improvement and autonomous skill acquisition",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

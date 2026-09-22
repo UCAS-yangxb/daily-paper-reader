@@ -1,0 +1,153 @@
+{
+  "date": "20260922",
+  "date_label": "",
+  "generated_at": "2026-09-22 22:10:19 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.24289v1",
+      "route": "202609/22/2609.24289v1-ttse-a-two-track-online-self-evolution-framework",
+      "title": "TTSE: A Two-Track Online Self-Evolution Framework",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "LLM智能体在交互环境中的双轨在线自我演化",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.24972v1",
+      "route": "202609/22/2609.24972v1-rrsi-regularized-recursive-self-improvement-of-agent-harnesses",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "智能体工具链的正则化递归自我改进",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.23989v1",
+      "route": "202609/22/2609.23989v1-aclarena-agent-continue-learning-in-multi-stage-post-training",
+      "title": "ACLArena: Agent Continue Learning in Multi-stage Post-training",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "智能体持续学习框架，研究遗忘与泛化",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.24271v1",
+      "route": "202609/22/2609.24271v1-me-brain-10-memory-cognition-and-action-for-evolving-embodied-intelligence",
+      "title": "ME-Brain-1.0: Memory, Cognition and Action for Evolving Embodied Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "自演化具身系统，闭环实现经验演化与执行改进",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.22792v1",
+      "route": "202609/22/2609.22792v1-selfop-an-optimization-algorithm-for-self-improving-security-agents",
+      "title": "SelfOp: An Optimization Algorithm for Self-Improving Security Agents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "自动优化冻结安全智能体任务上下文与技能的算法",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.24663v1",
+      "route": "202609/22/2609.24663v1-beyond-endpoint-performance-process-level-evaluation-of-self-evolving-agents",
+      "title": "Beyond Endpoint Performance: Process-Level Evaluation of Self-Evolving Agents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向自进化智能体的过程级评估，追踪演化产物",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.24862v1",
+      "route": "202609/22/2609.24862v1-when-tomorrow-becomes-today-self-evolving-policies-for-agentic-time-series-forecasting",
+      "title": "When Tomorrow Becomes Today: Self-Evolving Policies for Agentic Time-Series Forecasting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "智能体预测的自进化策略，在线自适应编排策略",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.23512v1",
+      "route": "202609/22/2609.23512v1-agentbetta-verification-driven-adaptive-configuration-of-an-ai-nano-agent-through-selective-expansion-and-verified-contraction",
+      "title": "AgentBetta: Verification-Driven Adaptive Configuration of an AI Nano-Agent through Selective Expansion and Verified Contraction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过验证驱动的扩张与收缩自适应更新智能体配置",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    },
+    {
+      "paper_id": "2609.22682v1",
+      "route": "202609/22/2609.22682v1-self-organizing-agent-teams-learn-to-reason-together",
+      "title": "Self-Organizing Agent Teams Learn to Reason Together",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "self-evolve"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "智能体团队从既往协作中学习可复用策略实现自组织",
+      "first_seen_at": "2026-09-22 22:10:19 UTC",
+      "updated_at": "2026-09-22 22:10:19 UTC"
+    }
+  ]
+}
